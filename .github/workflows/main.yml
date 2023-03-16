@@ -1,0 +1,73 @@
+resources:
+  repositories:
+    - repository: pipeline_templates
+      type: git
+      name: "DevOps/pipeline-templates"
+trigger:
+  branches:
+    include:
+      - master
+      - main
+pool:
+  vmImage: 'ubuntu-latest'
+  demands: npm
+variables:
+  PackageJsonLocation: './'
+  BuildCommand: 'build'
+  BuildOutputDirectory: './dist'
+  TestCommand: 'test'
+  RunGitleaksScan: 'true'
+  RunOWASPScan: 'true'
+  RunFortifySSCscan: 'false'
+  system.debug: false
+stages:
+  - stage: Build
+    jobs:
+    - job: BuildJob
+      steps:
+      - task: UseNode@1
+        displayName: 'Use Node.js 14.x'
+        inputs:
+          version: 14.x
+      - task: Npm@1
+        displayName: 'Install Dependencies'
+        inputs:
+          command: 'install'
+          workingDir: '$(PackageJsonLocation)'
+          verbose: true
+      - ${{ if eq(variables.RunGitleaksScan, 'true') }}:
+        - template: pipeline_templates/security/gitleaks-scan.yaml@pipeline_templates
+      - ${{ if eq(variables.RunOWASPScan, 'true') }}:
+        - template: pipeline_templates/security/owasp-scan.yaml@pipeline_templates
+          parameters:
+            additionalArguments: '--disableOssIndex true'
+            scanPath: '**/*.json'
+            failOnCVSS: '12'
+      - task: Npm@1
+        displayName: 'Run Tests'
+        inputs:
+          command: custom
+          workingDir: '$(PackageJsonLocation)'
+          customCommand: '--verbose run-script $(TestCommand)'
+        condition: and(succeeded(), variables['TestCommand'])
+      - task: PublishTestResults@2
+        displayName: 'Publish Test Results'
+        inputs:
+          testResultsFiles: '**/junit.xml'
+          mergeTestResults: true
+      - task: Npm@1
+        displayName: 'Build'
+        inputs:
+          command: custom
+          workingDir: '$(PackageJsonLocation)'
+          customCommand: '--verbose run-script $(BuildCommand)'
+      - task: ArchiveFiles@1
+        displayName: 'Archive Files'
+        inputs:
+          rootFolder: '$(Build.SourcesDirectory)/$(BuildOutputDirectory)'
+          includeRootFolder: false
+          archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.DefinitionName).zip'
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish Artifact: drop'
+        inputs:
+          PathtoPublish: '$(build.artifactstagingdirectory)'
