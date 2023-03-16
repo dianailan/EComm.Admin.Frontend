@@ -1,0 +1,41 @@
+name: EComm.Admin.Frontend-CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Test
+        run: npm run test
+
+      - name: Publish Test Results
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: test-results
+          path: ./coverage
+
+      - name: Deploy to Production
+        if: github.ref == 'refs/heads/main'
+        uses: dploy-io/deploy-action@v1.2
+        with:
+          access_key: ${{ secrets.DEPLOY_ACCESS_KEY }}
+          secret_key: ${{ secrets.DEPLOY_SECRET_KEY }}
+          service: frontend
+          image_url: ${{ secrets.FRONTEND_IMAGE_URL }}
