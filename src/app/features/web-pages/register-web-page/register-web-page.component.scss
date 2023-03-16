@@ -1,0 +1,30 @@
+* {
+  font-size: 16px;
+}
+
+.juridicalNameLabel,
+.identificationNumberLabel {
+  color: rgb(0, 0, 0, .7);
+}
+
+.juridicalName,
+.identificationNumber {
+  font-weight: 500;
+}
+
+a {
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+p {
+  margin-bottom: 0;
+}
+
+.company-info, .submit-button-container {
+  max-width: 700px;
+  margin: 0 auto;
+}

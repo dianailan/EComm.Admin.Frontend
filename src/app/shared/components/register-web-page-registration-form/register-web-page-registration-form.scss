@@ -1,0 +1,34 @@
+form {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.form-group.tbc-merchant-radios {
+  div.custom-control {
+    margin-right: 50%;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.checkbox-container {
+  width: 100%;
+
+  div {
+    display: inline-block;
+    float: left;
+    width: 33%;
+    margin-bottom: 0.5rem;
+  }
+}
+
+.isRec-container {
+  width: 100%;
+  display: flex;
+}
+
+.recc-inp {
+  margin-left: 11px;
+}

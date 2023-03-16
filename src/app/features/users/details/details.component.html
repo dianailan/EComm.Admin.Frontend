@@ -1,0 +1,148 @@
+<div class="container">
+  <div class="row">
+    <div class="col wrapper">
+      <div class="row mr-0 ml-0">
+        <div class="col border-bottom details-header">
+          <h3 class="m-0">დეტალები</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <span>
+            <b>მომხმარებლის სახელი</b>
+          </span>
+        </div>
+        <div class="col">
+          <span>{{userDetails?.username}}</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <span>
+            <b>სახელი</b>
+          </span>
+        </div>
+        <div class="col">
+          <span>{{userDetails?.firstname}}</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <span>
+            <b>გვარი</b>
+          </span>
+        </div>
+        <div class="col">
+          <span>{{userDetails?.lastname}}</span>
+        </div>
+      </div>
+      <form [formGroup]="userInfo">
+        <div class="row">
+          <div class="col">
+            <span>
+              <b>კლიენტის ნომერი</b>
+            </span>
+          </div>
+          <div class="col">
+            <span *ngIf="!editMode">{{userDetails?.clientNo}}</span>
+            <input *ngIf="editMode" type="text" id="userClientNo" class="form-control form-control-sm" formControlName="clientNo" maxlength="50">
+            <app-validation-messages *ngIf="userInfo.get('personalId').invalid && submitted" [formGroup]="userInfo" maxlength="50" controlName="clientNo" patternErrorMessage="შეიყვანე მხოლოდ ციფრები"></app-validation-messages>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <span>
+              <b>პირადი ნომერი</b>
+            </span>
+          </div>
+          <div class="col">
+            <span *ngIf="!editMode">{{userDetails?.personalId}}</span>
+            <input *ngIf="editMode" type="text" id="personalId" class="form-control form-control-sm" maxlength="20" formControlName="personalId">
+            <app-validation-messages *ngIf="userInfo.get('personalId').invalid && submitted" [formGroup]="userInfo" controlName="personalId" maxlength="20" patternErrorMessage="შეიყვანე მხოლოდ ციფრები"></app-validation-messages>
+          </div>
+        </div>
+      </form>
+      <div class="row">
+        <div class="col">
+          <span>
+            <b>მისამართი</b>
+          </span>
+        </div>
+        <div class="col">
+          <span>{{userDetails?.address}}</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <span>
+            <b>იმეილი</b>
+          </span>
+        </div>
+        <div class="col">
+          <span>{{userDetails?.email}}</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <span>
+            <b>შექმნის თარიღი</b>
+          </span>
+        </div>
+        <div class="col">
+          <span>{{userDetails?.createdAt | date: 'dd/MM/yyyy HH:mm:ss'}}</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <span>
+            <b>სტატუსი</b>
+          </span>
+        </div>
+        <div class="col">
+          <span>{{userDetails?.status === 0 ? 'აქტიური' : userDetails?.status === 1 ? 'დაბლოკილი' : userDetails?.status === 2 ? 'გაუქმებული' : ''}}</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <span>
+            <b>დაბლოკილია ავტორიზაციის სერვერის მხარეს</b>
+          </span>
+        </div>
+        <div class="col">
+          <span>{{userDetails?.isBlockedExternally === true ? 'კი' : 'არა'}}</span>
+        </div>
+      </div>
+      <div *ngIf="userDetails" class="row">
+        <div class="col">
+          <button *ngIf="userDetails.authorizationProvider === 0 && userDetails.status !== 2"
+                  id="editButton"
+                  appPermissionsattr [permissionToCheck]="['R_UM_Update']"
+                  (click)="enableEditMode()" class="btn btn-info mr-1">
+            {{editMode ? 'გაუქმება' : 'რედაქტირება'}}
+          </button>
+          <button *ngIf="editMode" id="saveChanges"
+                  [disabled]="userInfo.invalid"
+                  appPermissionsattr [permissionToCheck]="['R_UM_Update']"
+                  (click)="updateClientNo()" class="btn btn-success mr-1">
+            შენახვა
+          </button>
+          <button id="changeUserStatus"
+                  *ngIf="!editMode && userDetails.status !== 2"
+                  appPermissionsattr [permissionToCheck]="['R_UM_Unblock', 'R_UM_Block']"
+                  (click)="changeUserStatus()" class="btn mr-1"
+                  [ngClass]="{'btn-primary': userDetails.status === 1, 'btn-danger': userDetails.status === 0}">
+            {{ userDetails.status === 1 ? 'ბლოკის მოხსნა' : 'დაბლოკვა'}}
+          </button>
+          <button *ngIf="!editMode" id="disableUser"
+                  appPermissionsattr [permissionToCheck]="['R_UM_Delete']"
+                  [disabled]="userDetails?.status === 2 || userDetails?.authorizationProvider === 0"
+                  (click)="deleteUserConfirm()" class="btn btn-danger">
+            გაუქმება
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div kendoDialogContainer></div>

@@ -1,0 +1,21 @@
+<div class="wrapper w-100">
+  <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
+  <div class="row mr-0 vh-100">
+    <div class="col-sm-auto order-first pr-0 app-nav-bar-container">
+      <app-nav-bar [loadNavBar]="permissionLoaded"></app-nav-bar>
+    </div>
+    <div class="col order-last p-0 page-content-wrap">
+      <div class="row border-bottom mr-0 ml-0 top-nav-bar-container">
+        <div class="col pr-0">
+          <app-top-nav-bar [useName]="userInfo"></app-top-nav-bar>
+        </div>
+      </div>
+      <div class="row mr-0 border-bottom ml-0">
+        <div class="col pb-2 pt-2">
+          <app-info-bar></app-info-bar>
+        </div>
+      </div>
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

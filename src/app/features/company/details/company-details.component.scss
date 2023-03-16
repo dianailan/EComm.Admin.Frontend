@@ -1,0 +1,91 @@
+.users-grid-data-row {
+  .col.p-0.grid-data-col {
+    max-height: 500px;
+    overflow: auto;
+    padding-bottom: 90px !important;
+  }
+}
+
+.company-change-status-button-container {
+  button {
+    margin-bottom: 10px;
+    min-width: 120px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.details-row {
+  align-items: center;
+  font-size: 14px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  min-height: 35px;
+
+  .col:first-child {
+    flex-grow: 1;
+  }
+
+  .col:last-child {
+    flex-grow: 2;
+  }
+
+  .field-info {
+    word-break: break-word;
+  }
+}
+
+.field-name {
+  color: rgba(0, 0, 0, .6);
+  font-weight: 400;
+}
+
+.field-info {
+  font-weight: 500;
+}
+
+.form-control, .custom-select {
+  font-size: 14px;
+  margin-bottom: 0;
+  font-family: "TBC Din Nusxuri", sans-serif;
+  margin-left: -9px;
+}
+
+.editable-field {
+  display: inline-block;
+  width: 100%;
+  padding-right: 20px;
+
+  .edit-field-icon {
+    float: right;
+    //margin-left: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 18px;
+    color: rgba(0,0,0,0.6);
+  }
+}
+
+.details-buttons-row {
+  .col {
+    button {
+      margin-right: 10px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .wrapper {
+    form {
+      .first-row {
+        flex-direction: column;
+      }
+    }
+  }
+}

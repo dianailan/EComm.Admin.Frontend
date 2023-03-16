@@ -1,0 +1,37 @@
+* {
+  font-size: 16px;
+}
+
+.userNameLabel,
+.userPhoneLabel,
+.userEmailLabel,
+.userClientNoLabel {
+  color: rgb(0, 0, 0, .7);
+}
+
+.userName,
+.userEmail,
+.userPhone,
+.userClientNo {
+  font-weight: 500;
+}
+
+a {
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+p {
+  margin-bottom: 0;
+}
+
+.user-info, .submit-button-container, .company-details {
+  max-width: 700px;
+  margin: 0 auto;
+}
+.terminal-page-btn{
+  margin-right: 13px;
+}

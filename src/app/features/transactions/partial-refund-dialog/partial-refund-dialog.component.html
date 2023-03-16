@@ -1,0 +1,21 @@
+<div class="container">
+  <div class="alert alert-info">აირჩიეთ რევერსალ/რეფანდის ტიპი</div>
+  <div class="custom-control custom-radio">
+    <input type="radio" class="custom-control-input" id="fullRefund" [value]="0" [(ngModel)]="refundType">
+    <label class="custom-control-label" for="fullRefund">სრული</label>
+  </div>
+  <div class="custom-control custom-radio">
+    <input type="radio" class="custom-control-input" id="partialRefund" [value]="1" [(ngModel)]="refundType" [disabled]="partialReadonly">
+    <label class="custom-control-label" for="partialRefund">ნაწილობრივი</label>
+  </div>
+  <div class="form-group" *ngIf="refundType == 1">
+    <input type="text" class="form-control form-control-sm" [(ngModel)]="refundAmount">
+    <span class="error-message text-danger" *ngIf="errorMessage">{{errorMessage}}</span>
+  </div>
+</div>
+<kendo-dialog-actions>
+  <button kendoButton (click)="onCancelAction()">დახურვა</button>
+  <button kendoButton id="confButton" (click)="onConfirmAction($event)" [disabled]="refundType == 1 && refundAmount == null" [primary]="true">
+    გაგრძელება
+  </button>
+</kendo-dialog-actions>

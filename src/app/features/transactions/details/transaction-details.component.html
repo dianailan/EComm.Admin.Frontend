@@ -1,0 +1,404 @@
+<div class="ibox col-lg-12">
+  <div class="ibox-content ">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">ტრანზაქციის Id</label>
+          <div class="col-md-6">
+            <div>{{transactionDetailsModel.transactionId}}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">მომხმარებლის Ip</label>
+          <div class="col-md-6">
+            <div>{{transactionDetailsModel.customerIp}}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">ვალუტა</label>
+          <div class="col-md-6">
+            <div>{{transactionDetailsModel.currency}}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">თანხა</label>
+          <div class="col-md-6">
+            <div>{{transactionDetailsModel.amount}}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">ჩამოჭრილი თანხა</label>
+          <div class="col-md-6">
+            <div>{{transactionDetailsModel.confirmedAmount}}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">დაბრუნებული თანხა</label>
+          <div class="col-md-6">
+            <div>{{transactionDetailsModel.returnAmount}}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">აღწერა</label>
+          <div class="col-md-6">
+            <div>{{transactionDetailsModel.description}}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">მერჩანტ Id</label>
+          <div class="col-md-6">
+            <div>{{transactionDetailsModel.paymentMerchantId}}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">მერჩანტის სახელი</label>
+          <div class="col-md-6">
+            <div>{{transactionDetailsModel.paymentMerchantName}}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">
+            კომპანიის საინდეთიფიკაციო
+            ნომერი
+          </label>
+          <div class="col-md-6">
+            <div>{{transactionDetailsModel.companyIdentificationNumber}}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">მომხმარებლის ინფორმაცია</label>
+          <div class="col-md-6">
+            <div>{{transactionDetailsModel.userInfo}}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">RRN</label>
+          <div class="col-md-6">
+            <div>{{transactionDetailsModel.rrn}}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">დასტურის კოდი</label>
+          <div class="col-md-6">
+            <div>{{transactionDetailsModel.approvalCode}}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Return Url</label>
+          <div class="col-md-6">
+            <div>{{transactionDetailsModel.returnUrl}}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Callback Url</label>
+          <div class="col-md-6">
+            <div>{{transactionDetailsModel.callbackUrl}}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Skip Info Message</label>
+          <div class="col-md-6">
+            <div>{{transactionDetailsModel.skipInfoMessage ? 'კი' : 'არა'}}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-6">
+            <div>
+              <button *ngIf="transactionDetailsModel.canBeReversed !== undefined && transactionDetailsModel.canCancelTransaction"
+                      class="btn-primary btn btn-md"
+                      (click)="transactionReverseOrRefund()"
+                      [disabled]="transactionCancelDisabled"
+                      appPermissionsattr [permissionToCheck]="buttonPermission()">
+                {{transactionDetailsModel.canBeReversed ? 'რევერსალი' : 'რეფანდი'}}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">გადახდის კოდი</label>
+          <div class="col-md-6">
+            <div>{{transactionDetailsModel.paymentGenId}}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">მშობელი გადახდის კოდი</label>
+          <div class="col-md-6">
+            <div>{{transactionDetailsModel.parentPaymentGenId}}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">მერჩანტის გადახდის კოდი</label>
+          <div class="col-md-6">
+            <div>{{transactionDetailsModel.merchantPaymentId}}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">გადახდის ტიპი</label>
+          <div class="col-md-6">
+            <div>{{transactionDetailsModel.paymentTypeName}}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">გადახდის ობიექტის ტიპი</label>
+          <div class="col-md-6">
+            <div>{{transactionDetailsModel.paymentObjectTypeName}}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">ინიცირების ტიპი</label>
+          <div class="col-md-6">
+            <a *ngIf="transactionDetailsModel.payByLinkId !== null && checkInitializerType(InitializerType.Product)"
+               [href]="'products/'+transactionDetailsModel.payByLinkId" target="_blank">
+              {{transactionDetailsModel.initializerTypeName}}
+            </a>
+            <a *ngIf="transactionDetailsModel.payByLinkId !== null && checkInitializerType(InitializerType.Basket)"
+               [href]="'baskets/'+transactionDetailsModel.payByLinkId" target="_blank">
+              {{transactionDetailsModel.initializerTypeName}}
+            </a>
+            <a class="pointer" *ngIf="checkInitializerType(InitializerType.Regular)"> {{transactionDetailsModel.initializerTypeName}}</a>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">გადახდის არხი</label>
+          <div class="col-md-6">
+            <div>{{transactionDetailsModel.paymentChannel}}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">გადახდის მეთოდი</label>
+          <div class="col-md-6">
+            <div>{{transactionDetailsModel.paymentMethod}}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">BNPL</label>
+          <div class="col-md-6">
+            <div *ngIf="transactionDetailsModel.isBnpl == true">კი</div>
+            <div *ngIf="transactionDetailsModel.isBnpl == false">არა</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Terminal ID</label>
+          <div class="col-md-6">
+            <div>{{transactionDetailsModel.terminalNo}}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">ფიზიკური Terminal ID</label>
+          <div class="col-md-6">
+            <div>{{transactionDetailsModel.physicalTerminalNo}}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">რექარინგ გადახდის ტიპი</label>
+          <div class="col-md-6">
+            <div>{{transactionDetailsModel.initiator}}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">ტრანზაქციის ტიპი</label>
+          <div class="col-md-6">
+            <div>{{transactionDetailsModel.transactionTypeName}}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">სტატუსი</label>
+          <div class="col-md-6">
+            <div>{{transactionDetailsModel.statusName}}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">შექმნის თარიღი</label>
+          <div class="col-md-6">
+            <div>{{transactionDetailsModel.createDate | date: 'dd/MM/yyyy HH:mm:ss'}}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">დასრულების თარიღი</label>
+          <div class="col-md-6">
+            <div>{{transactionDetailsModel.finishDate | date: 'dd/MM/yyyy HH:mm:ss'}}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">ვადის გასვლის თარიღი</label>
+          <div class="col-md-6">
+            <div>{{transactionDetailsModel.expirationDate | date: 'dd/MM/yyyy HH:mm:ss'}}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">ბოლო განახლების თარიღი</label>
+          <div class="col-md-6">
+            <div>{{transactionDetailsModel.lastUpdateDate | date: 'dd/MM/yyyy HH:mm:ss'}}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">ქრ-კოდი</label>
+          <div class="col-md-6">
+            <div>{{transactionDetailsModel.qrCode}}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">ბარათი</label>
+          <div class="col-md-6">
+            <div>{{transactionDetailsModel.paymentCardNumber}}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">response code</label>
+          <div class="col-md-6">
+            <div>{{transactionDetailsModel.responseCode}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row m-0 mb-5"
+         *ngIf="transactionDetailsModel.status === 10 || transactionDetailsModel.status === 14 ||  transactionDetailsModel.status === 7 || transactionDetailsModel.status === 1">
+      <div class="col p-0">
+        <p class="font-weight-bold">სტატუსის ცვლილება</p>
+        <button class="btn btn-success mr-1" appPermissionsattr [permissionToCheck]="['R_TM_Status']"
+                (click)="changeTransactionStatus(true)">
+          წარმატებული
+        </button>
+        <button class="btn btn-danger" appPermissionsattr [permissionToCheck]="['R_TM_Status']"
+                (click)="changeTransactionStatus(false)">
+          წარუმატებელი
+        </button>
+      </div>
+    </div>
+
+    <div class="row m-0 mb-5" *ngIf="operators">
+      <div class="col p-0">
+        <h2>ოპერატორ(ებ)ი</h2>
+        <div class="row m-0">
+          <div class="table-responsive">
+            <kendo-grid [data]="operators" [scrollable]="'scrollable'" style="max-height: 300px">
+              <kendo-grid-column field="N" title="N" sortable="false" width="9" class="row-number">
+                <ng-template kendoGridCellTemplate let-rowIndex="rowIndex">
+                  <span>{{rowIndex}}</span>
+                </ng-template>
+              </kendo-grid-column>
+              <kendo-grid-column field="FirstName" title="სახელი" width="80"></kendo-grid-column>
+              <kendo-grid-column field="LastName" title="გვარი" width="50"></kendo-grid-column>
+              <kendo-grid-column field="PhoneNumber" title="ტელეფონი" width="80"></kendo-grid-column>
+            </kendo-grid>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="logs-data-container">
+      <div class="data-header mb-2">
+        <h2>ტრანზაქციის ლოგები</h2>
+      </div>
+      <div class="table-responsive">
+        <kendo-grid [data]="logsGridData"
+                    [scrollable]="'scrollable'"
+                    [pageable]="pageable"
+                    [pageSize]="pageSize"
+                    [sortable]="sortable"
+                    [skip]="this.state.skip"
+                    (dataStateChange)="changeState($event)">
+          <kendo-grid-column field="operationDate" title="Operation Date" width="80">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <span>{{ dataItem.operationDate | date: 'dd/MM/yyyy HH:mm:ss' }}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="paymentLogType" title="Payment Log Type" width="50">
+            <ng-template kendoGridCellTemplate let-dateItem>
+              <span>{{dateItem.paymentLogType}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="requestBody" title="Request Body" width="80"></kendo-grid-column>
+          <kendo-grid-column field="responseBody" title="Response Body" width="80"></kendo-grid-column>
+          <kendo-grid-column field="amount" title="Amount" width="80"></kendo-grid-column>
+          <kendo-grid-column field="description" title="Description" width="80"></kendo-grid-column>
+        </kendo-grid>
+      </div>
+    </div>
+
+    <div class="refund-info-container  mt-5 pb-5" *ngIf="refundsGridData?.data?.length">
+      <div class="refund-info-header mb-2">
+        <h2>თანხის დაბრუნების დეტალები</h2>
+      </div>
+      <div class="table-responsive">
+        <kendo-grid [data]="refundsGridData" [scrollable]="true">
+          <kendo-grid-column field="N" title="N" sortable="false" width="20" class="row-number">
+            <ng-template kendoGridCellTemplate let-rowIndex="rowIndex">
+              <span>{{rowIndex}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="dateCreated" title="შექმნის თარიღი" width="80">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <span>{{ dataItem.dateCreated | date: 'dd/MM/yyyy HH:mm:ss' }}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="refundType" title="რეფანდის ტიპი" width="100">
+            <ng-template kendoGridCellTemplate let-dateItem>
+              <span>{{dateItem.refundType}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="status" title="სტატუსი" width="60">
+          </kendo-grid-column>
+          <kendo-grid-column field="amount" title="თანხა" width="50">
+          </kendo-grid-column>
+          <kendo-grid-column field="reversalTryCount" title="ცდების რაოდენობა" width="80">
+          </kendo-grid-column>
+          <kendo-grid-column field="userCreatorClientNo" title="კლიენტის ნომერი" width="80">
+          </kendo-grid-column>
+          <kendo-grid-column field="userCreatorFullName" title="სახელი" width="80">
+          </kendo-grid-column>
+          <kendo-grid-column field="userCreatorPhoneNumber" title="ტელეფონი" width="80">
+          </kendo-grid-column>
+        </kendo-grid>
+      </div>
+    </div>
+
+    <div class="row m-0 mb-4 mt-4">
+      <div class="col p-0">
+        <button class="btn btn-info mr-1" id="apiLogs" (click)="getApiLogs()">Api ლოგები</button>
+      </div>
+    </div>
+
+    <div class="refund-info-container  mt-5 pb-5" *ngIf="apiLogsGridData?.data !== undefined">
+      <div class="refund-info-header mb-2">
+        <h2>Api ლოგები</h2>
+      </div>
+      <div class="table-responsive">
+        <kendo-grid [data]="apiLogsGridData" [scrollable]="true">
+          <kendo-grid-column field="N" title="N" sortable="false" width="20" class="row-number">
+            <ng-template kendoGridCellTemplate let-rowIndex="rowIndex">
+              <span>{{rowIndex}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="id" title="ID" width="30">
+          </kendo-grid-column>
+          <kendo-grid-column field="clientIp" title="clientIp" width="80">
+          </kendo-grid-column>
+          <kendo-grid-column field="query" title="query" width="90">
+          </kendo-grid-column>
+          <kendo-grid-column field="method" title="method" width="40">
+          </kendo-grid-column>
+          <kendo-grid-column field="statusCode" title="statusCode" width="40">
+          </kendo-grid-column>
+          <kendo-grid-column field="requestTime" title="requestTime" width="80">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <span>{{ dataItem.requestTime | date: 'dd/MM/yyyy HH:mm:ss' }}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="request" title="request" width="80">
+          </kendo-grid-column>
+          <kendo-grid-column field="responseTime" title="responseTime" width="80">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <span>{{ dataItem.responseTime | date: 'dd/MM/yyyy HH:mm:ss' }}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="response" title="response" width="80">
+          </kendo-grid-column>
+        </kendo-grid>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div kendoDialogContainer></div>

@@ -1,0 +1,29 @@
+.container {
+  .client-no,
+  .user-info,
+  .merchants,
+  .submit-btn {
+    width: 300px;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .user-info {
+    .name {
+      p {
+        font-weight: bold;
+      }
+    }
+  }
+
+  .merchants {
+    .custom-control-label {
+      span.merchant-type {
+        font-size: 12px;
+      }
+    }
+  }
+
+  .submit-btn {
+  }
+}

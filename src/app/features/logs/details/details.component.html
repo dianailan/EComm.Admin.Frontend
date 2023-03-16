@@ -1,0 +1,46 @@
+<div class="row mr-0 ml-0 mb-4 mt-4">
+  <div class="col">
+    <div class="row mr-0 ml-0 mb-2">
+      <div class="col p-0">მომხმარებელი</div>
+      <div class="col p-0">{{details?.userName}}</div>
+    </div>
+    <div class="row mr-0 ml-0 mb-2">
+      <div class="col p-0">ქმედება</div>
+      <div class="col p-0">{{details?.actionType}}</div>
+    </div>
+    <div class="row mr-0 ml-0 mb-2">
+      <div class="col p-0">შექმნის თარიღი</div>
+      <div class="col p-0">{{details?.dateCreated | date: 'dd/MM/yyyy HH:mm:ss'}}</div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="row mr-0 ml-0 mb-2">
+      <div class="col p-0">ობიექტი</div>
+      <div class="col p-0">{{details?.actionEntity}}</div>
+    </div>
+    <div class="row mr-0 ml-0 mb-2">
+      <div class="col p-0">წყარო</div>
+      <div class="col p-0">{{details?.actionSource}}</div>
+    </div>
+    <div class="row mr-0 ml-0 mb-2">
+      <div class="col p-0">უნიკალური იდენტიფიკატორი</div>
+      <div class="col p-0">{{details?.actionEntityPk}}</div>
+    </div>
+  </div>
+</div>
+<div class="row mr-0 ml-0">
+  <div class="col">
+    <div class="table-responsive">
+      <kendo-grid [data]="gridData" [scrollable]="true">
+        <kendo-grid-column field="N" title="N" sortable="false" width="10" class="row-number">
+          <ng-template kendoGridCellTemplate let-rowIndex="rowIndex">
+            <span>{{rowIndex}}</span>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="name" title="ველის დასახელება" width="50"></kendo-grid-column>
+        <kendo-grid-column field="originalValue" title="ძველი მნიშვნელობა" width="80"></kendo-grid-column>
+        <kendo-grid-column field="newValue" title="ახალი მნიშვნელობა" width="80"></kendo-grid-column>
+      </kendo-grid>
+    </div>
+  </div>
+</div>

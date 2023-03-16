@@ -1,0 +1,16 @@
+<div class="container">
+  <div class="alert alert-danger" *ngIf="posqrFound.response">{{posqrFound.message}}</div>
+  <div class="form-group position-relative">
+    <label for="firstName">დადასტურებული POS QR მერჩანტის ნომერი</label>
+    <input type="number" class="form-control" id="firstName" required [(ngModel)]="id" #input
+           onkeydown="if(event.key==='.'){event.preventDefault();}"
+           oninput="event.target.value = event.target.value.replace(/[^0-9]*/g,'');">
+    <span *ngIf="submitted && !input.value" class="text-danger">ველის შევსება სავალდებულოა</span>
+  </div>
+</div>
+<kendo-dialog-actions>
+  <button kendoButton (click)="onCancelAction()">გაუქმება</button>
+  <button kendoButton id="confButton" (click)="onConfirmAction($event)" [primary]="true">
+    შემოწმება
+  </button>
+</kendo-dialog-actions>

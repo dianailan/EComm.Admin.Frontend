@@ -1,0 +1,54 @@
+.btn {
+  box-shadow: none !important;
+}
+
+.row {
+  flex-wrap: unset !important;
+}
+
+.text-danger-small {
+  font-size: 12px;
+}
+
+.form-control {
+  margin-bottom: .15rem;
+}
+
+.k-button-blue {
+  background-color: #007bff !important;
+  background-image: unset;
+  color: #ffffff;
+
+  &:hover {
+    background-color: #007bff !important;
+    color: #ffffff;
+    background-image: unset;
+  }
+}
+
+@media (min-width: 480px) {
+  .col-sm-auto {
+    flex: 0 0 auto;
+    width: auto;
+  }
+}
+
+.btn-sm {
+  line-height: 22px;
+}
+
+a, a:hover {
+  text-decoration: none;
+}
+
+.item-details-link {
+  color: #ffffff;
+}
+
+.btn-group > .btn-group:not(:first-child), .btn-group > .btn:not(:first-child) {
+  margin-left: -2px;
+}
+
+.k-list-scroller {
+  max-height: 300px !important;
+}

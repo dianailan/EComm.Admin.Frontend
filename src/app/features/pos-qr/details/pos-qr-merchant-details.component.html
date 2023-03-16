@@ -1,0 +1,205 @@
+<div class="row p-0 m-0 mb-1 mt-1 add-terminal-btn">
+  <div class="col p-0 pl-1 pr-1 d-flex justify-content-end terminal-button-container">
+    <!-- <button routerLink="/posterminal/registerPosTerminal" [disabled]="posQrDetails?.status !== 1" (click)="sendMerchantIdToRegisterTerminal()" kendoButton class="kendo-details-button k-button-blue" >ტერმინალის დამატება
+    </button> -->
+  </div>
+</div>
+<div class="main pb-3">
+  <form [formGroup]="formGroup" *ngIf="posQrDetails">
+    <div class="row ml-0 mr-0 merchant-details-row">
+      <div class="col pl-0 pr-0 left-side">
+        <div class="row details-row">
+          <div class="col field-name">მერჩანტის დასახელება</div>
+          <div class="col field-info">
+            <span *ngIf="!editMode" class="editable-field">{{posQrDetails?.tradeName}}</span>
+            <input *ngIf="editMode" type="text" id="tradeName" class="form-control form-control-sm"
+                   formControlName="tradeName">
+            <app-validation-messages *ngIf="formGroup.get('tradeName').invalid && submitted"
+                                     [formGroup]="formGroup" controlName="tradeName" maxlength="27"
+                                     patternErrorMessage="შეიყვანე მხოლოდ ლათინური სიმბოლოები">
+            </app-validation-messages>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">სტატუსი</div>
+          <div class="col field-info">{{posQrDetails?.statusName}}</div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">MCC Code</div>
+          <div class="col field-info">
+            <span *ngIf="!editMode" class="editable-field">{{mccCodeValue}}</span>
+            <select *ngIf="editMode" class="custom-select custom-select-sm" id="mccCodeId" formControlName="mccCodeId">
+              <option *ngFor="let mcc of mccCodes" [ngValue]="mcc.id"
+                      [id]="mcc.id">
+                {{mcc.code + ' ' + mcc.descriptionKa}}
+              </option>
+            </select>
+            <app-validation-messages *ngIf="formGroup.get('mccCodeId').invalid && submitted"
+                                     [formGroup]="formGroup" controlName="mccCodeId">
+            </app-validation-messages>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">მერჩანტ ID</div>
+          <div class="col field-info">
+            <span *ngIf="!editMode || (editMode && posQrDetails.status !== 0)" class="editable-field">{{posQrDetails?.merchantExternalId}} </span>
+            <input *ngIf="editMode && posQrDetails.status === 0" type="text" id="merchantExternalId" class="form-control form-control-sm"
+                   formControlName="merchantExternalId" maxlength="15">
+            <app-validation-messages *ngIf="formGroup.get('merchantExternalId').invalid && submitted"
+                                     [formGroup]="formGroup" controlName="merchantExternalId"
+                                     patternErrorMessage="შეიყვანე მხოლოდ ციფრები">
+            </app-validation-messages>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">Client Secret/ID</div>
+          <div class="col field-info">
+            <button class="btn btn-info btn-sm" [disabled]="posQrDetails.status !== 1" appPermissionsattr [permissionToCheck]="['R_POS_QR_MRC_SCRT_VIEW']" [disabled]="posQrDetails?.status !== 1" (click)="open()">ნახვა</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="row ml-0 mr-0 details-buttons-row">
+
+    <div class="col pl-0 pr-0">
+      <button class="btn btn-info" appPermissionsattr
+              [permissionToCheck]="['R_POS_QR_MRC_Update']" *ngIf="!editMode && posQrDetails?.status !== 2" id="editButton"
+              (click)="setEditMode()">
+        რედაქტირება
+      </button>
+      <button class="btn btn-secondary" *ngIf="editMode" (click)="setEditMode()">გაუქმება</button>
+      <button class="btn btn-primary" *ngIf="editMode" (click)="updatePosQr()" appPermissionsattr
+              [permissionToCheck]="['R_POS_QR_MRC_Update']">
+        შენახვა
+      </button>
+
+      <button class="btn btn-success" id="confirmButton"
+              *ngIf="!editMode && (formGroup.valid && (posQrDetails?.status === 0))"
+              (click)="updatePosQrStatus(posQrId, 1)" appPermissionsattr [permissionToCheck]="['R_POS_QR_MRC_Confirm']">
+        დათანხმება
+      </button>
+      <button class="btn btn-danger" id="denyButton"
+              *ngIf="!editMode && posQrDetails?.status !== 2"
+              (click)="updatePosQrStatus(posQrId, 2)" appPermissionsattr [permissionToCheck]="['R_POS_QR_MRC_Deny']">
+        გაუქმება
+      </button>
+
+      <button class="btn btn-danger" id="blockButton"
+              *ngIf="!editMode  && posQrDetails?.status === 1"
+              (click)="updatePosQrStatus(posQrId, 3)" appPermissionsattr [permissionToCheck]="['R_POS_QR_MRC_Block']">
+        დაბლოკვა
+      </button>
+
+      <button class="btn btn-info" id="unblockButton"
+              *ngIf="!editMode && (formGroup.valid && posQrDetails?.status === 3)"
+              (click)="updatePosQrStatus(posQrId, 1)" appPermissionsattr [permissionToCheck]="['R_POS_QR_MRC_Unblock']">
+        ბლოკის მოხსნა
+      </button>
+    </div>
+  </div>
+</div>
+
+<kendo-dialog title="Client ID/Secret"
+              *ngIf="opened"
+              (close)="close()"
+              [minWidth]="250"
+              [width]="400">
+  <div class="client-container">
+    <div class="client-id">
+      <p>Client ID</p>
+      <button kendoButton (click)="copyId()" themeColor="primary">COPY</button>
+    </div>
+    <div class="client-secret">
+      <p>Client Secret</p>
+      <button kendoButton (click)="copySecret()" themeColor="primary">COPY</button>
+    </div>
+  </div>
+  <kendo-dialog-actions>
+    <button kendoButton (click)="close()" themeColor="primary">
+      გასაგებია
+    </button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+
+<div class="row ml-0 mr-0">
+  <div class="col terminals">
+    <div class="row ml-0 mr-0">
+      <div class="col p-0">
+        <h5>ტერმინალები</h5>
+      </div>
+      <div class="col p-0">
+        <button (click)="registerTerminal()" [disabled]="posQrDetails.status !== 1" class="btn btn-info float-right">
+          დამატება
+        </button>
+      </div>
+    </div>
+    <div class="row ml-0 mr-0 users-grid-data-row terminals-row">
+      <div class="col p-0 grid-data-col">
+        <kendo-grid [data]="posQrDetails?.terminals" [scrollable]="true">
+          <kendo-grid-column field="N" title="N" sortable="false" width="10" class="row-number">
+            <ng-template kendoGridCellTemplate let-rowIndex="rowIndex">
+              <span>{{rowIndex}}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="terminalNo" title="POS QR Terminal ID" width="80"></kendo-grid-column>
+          <kendo-grid-column field="isBnpl" title="BNPL" width="50">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <span>{{ dataItem?.isBnpl ? 'კი' : 'არა' }}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="Details" title="" [width]="30" [sortable]="false" [minResizableWidth]="130">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <div class="btn-group">
+                <a class="item-details-link">
+                  <button class="btn btn-danger"
+                          *ngIf="dataItem.status === 0"
+                          (click)="changeTerminalStatus(dataItem.id, 2)" appPermissionsattr [permissionToCheck]="['R_POS_QR_TRM_Deny']">
+                    უარყოფა
+                  </button>
+
+                  <button class="btn btn-danger"
+                          *ngIf="dataItem.status === 1"
+                          (click)="changeTerminalStatus(dataItem.id, 3)" appPermissionsattr [permissionToCheck]="['R_POS_QR_TRM_Block']">
+                    დაბლოკვა
+                  </button>
+
+                  <button class="btn btn-info"
+                          *ngIf="dataItem.status === 3"
+                          (click)="changeTerminalStatus(dataItem.id, 1)" appPermissionsattr
+                          [permissionToCheck]="['R_POS_QR_TRM_Unblock']">
+                    ბლოკის მოხსნა
+                  </button>
+                </a>
+                <div *ngIf="dataItem.status !== 2"
+                     class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+                  <button class="btn btn-sm dropdown-toggle dropdown-toggle-split"
+                          [ngClass]="{'btn-info': dataItem.status === 3, 'btn-danger': ( dataItem.status === 0) || dataItem.status === 1}"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
+                  </button>
+                  <div class="dropdown-menu" ngbDropdownMenu>
+                    <a class="btn btn-primary btn-sm" ngbDropdownItem>
+                      <button class="btn btn-success"
+                              *ngIf="dataItem.status === 0"
+                              (click)="changeTerminalStatus(dataItem.id, 1)" appPermissionsattr
+                              [permissionToCheck]="['R_POS_QR_TRM_Confirm']">
+                        დათანხმება
+                      </button>
+                    </a>
+                    <a class="btn btn-primary btn-sm" [routerLink]="['/posterminal/' + dataItem.id]" target="_blank"
+                       ngbDropdownItem>
+                      დეტალები
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div kendoDialogContainer></div>

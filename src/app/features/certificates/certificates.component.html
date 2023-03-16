@@ -1,0 +1,92 @@
+<div class="row w-100 mr-0 mt-1 mb-1 ml-0">
+  <div class="col d-flex justify-content-end p-0 pl-1 pr-1">
+    <form (ngSubmit)="sendCertificate()">
+      <input type="file" (change)="uploadCertificate($event)" appPermissionsattr [permissionToCheck]="['R_CERT_Add_Update']" />
+      <button type="submit" appPermissionsattr [permissionToCheck]="['R_CERT_Add_Update']" kendoButton class="k-button-blue">ატვირთვა</button>
+    </form>
+  </div>
+</div>
+<kendo-grid [data]="gridView"
+            [loading]="isLoading"
+            #gridComponent>
+  <kendo-grid-column field="merchantId" title="მერჩანტ ID" width="70">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="მერჩანტ ID">მერჩანტ ID</span>
+    </ng-template>
+  </kendo-grid-column>
+
+  <kendo-grid-column field="validFrom" title="ვალიდურია -დან" width="70">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="ვალიდურია -დან">ვალიდურია -დან</span>
+    </ng-template>
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <date-range-picker from="validFromFrom"
+                         to="validFromTo"
+                         [filterState]="filter">
+      </date-range-picker>
+    </ng-template>
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <span>{{ dataItem.validFrom | date: 'dd/MM/yyyy HH:mm:ss' }}</span>
+    </ng-template>
+  </kendo-grid-column>
+
+  <kendo-grid-column field="validTo" title="ვალიდურია -მდე" width="70">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="ვალიდურია -მდე">ვალიდურია -მდე</span>
+    </ng-template>
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <date-range-picker from="validToFrom"
+                         to="validToTo"
+                         [filterState]="filter">
+      </date-range-picker>
+    </ng-template>
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <span>{{ dataItem.validTo | date: 'dd/MM/yyyy HH:mm:ss' }}</span>
+    </ng-template>
+  </kendo-grid-column>
+
+  <kendo-grid-column field="dateCreated" title="შექმნის თარიღი" width="70">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="შექმნის თარიღი">შექმნის თარიღი</span>
+    </ng-template>
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <date-range-picker from="dateCreatedFrom"
+                         to="dateCreatedTo"
+                         [filterState]="filter">
+      </date-range-picker>
+    </ng-template>
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <span>{{ dataItem.dateCreated | date: 'dd/MM/yyyy HH:mm:ss' }}</span>
+    </ng-template>
+  </kendo-grid-column>
+
+  <kendo-grid-column field="dateModified" title="მოდიფიკაციის თარიღი" width="70">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="მოდიფიკაციის თარიღი">მოდიფიკაციის თარიღი</span>
+    </ng-template>
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <date-range-picker from="dateModifiedFrom"
+                         to="dateModifiedTo"
+                         [filterState]="filter">
+      </date-range-picker>
+    </ng-template>
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <span>{{ dataItem.dateModified | date: 'dd/MM/yyyy HH:mm:ss' }}</span>
+    </ng-template>
+  </kendo-grid-column>
+
+  <kendo-grid-column field="Details" title="" width="35" [sortable]="false">
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <button (click)="resetFilter()" class="btn btn-sm btn-outline-secondary reset-filter">
+        <i class="fa fa-filter"></i>
+      </button>
+    </ng-template>
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <div class="btn-group">
+        <a class="item-details-link">
+          <button class="btn btn-primary btn-sm">დეტალები</button>
+        </a>
+      </div>
+    </ng-template>
+  </kendo-grid-column>
+</kendo-grid>

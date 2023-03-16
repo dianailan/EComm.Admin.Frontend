@@ -1,0 +1,89 @@
+kendo-grid {
+  height: calc(100vh - 164px);
+
+  .k-grid-header {
+    .k-header {
+      font-weight: bold;
+    }
+  }
+}
+
+kendo-grid .k-grid-header .k-header:last-child {
+  display: block;
+  width: 120px;
+  min-width: 100%;
+}
+
+th.k-header:last-child {
+  height: 37px;
+}
+
+.k-grid td {
+  padding: 8px 4px 8px 8px;
+
+  &:last-child {
+    text-align: center;
+    overflow: inherit;
+    width: fit-content;
+    min-width: 120px;
+    width: -moz-fit-content;
+    clear: both;
+    padding: 8px 0;
+  }
+
+  .k-button {
+    border: none;
+  }
+}
+
+.k-dateinput {
+  width: 9.4em;
+}
+
+kendo-grid-filter-cell-operators {
+  display: none;
+}
+
+.k-window-titlebar {
+  padding: 8px 16px;
+
+  .k-window-title {
+    height: 23px;
+  }
+}
+
+.reset-date {
+  padding: 3px 8px 4px 8px;
+  border-radius: 0 2px 2px 0;
+  box-shadow: none;
+  border-color: inherit;
+  color: inherit;
+  margin-left: -2px;
+}
+
+.reset-filter {
+  position: relative;
+  padding: 0 9px 0 9px;
+
+  .fa {
+    font-size: 25px;
+  }
+
+  &:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: -3px;
+    left: 18px;
+    transform: rotate(45deg);
+    width: 3px;
+    height: 30px;
+    background: #6c757d;
+  }
+}
+
+app-action-logs {
+  .k-grid-content tr:last-child td, .k-grid-content-locked tr:last-child td {
+    border-bottom-width: 1px
+  }
+}

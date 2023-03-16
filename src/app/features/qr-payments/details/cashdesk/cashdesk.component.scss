@@ -1,0 +1,68 @@
+.cashdesk-rows {
+  margin-bottom: 1rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .cashdesk-info-container {
+    min-width: 310px;
+  }
+}
+
+.qr-container {
+  min-width: 100px;
+  min-height: 100%;
+  text-align: center;
+
+  qrcode {
+    cursor: pointer;
+  }
+}
+
+.container-border {
+  border: 0.5px solid rgba(0, 0, 0, .1);
+  padding: 15px
+}
+
+.submit-button {
+  margin: .4rem 0;
+}
+
+.add-cashier-button, .delete-cashdesk-button, .delete-cashier-button {
+  line-height: 0;
+  padding: 4px 5px;
+}
+
+.add-qr-to-cashdesk-container {
+  width: 100px;
+  height: 100px;
+  border: 1px solid rgba(0,0,0,.3);
+
+  &:hover {
+    cursor: pointer;
+    box-shadow: 0 0 1px 1px rgba(0,0,0,.2);
+
+    i {
+      font-size: 2.4rem;
+    }
+  }
+
+  i {
+    line-height: 0;
+    margin-top: 20%;
+    font-size: 2rem;
+    color: rgba(0, 0, 0, .3);
+  }
+}
+
+.device-container, .device-info {
+  padding: 10px 0;
+  word-break: break-word;
+}
+
+@media screen and (max-width: 768px) {
+  .cashdesk-row {
+    flex-direction: column;
+  }
+}

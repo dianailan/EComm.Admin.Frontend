@@ -1,0 +1,21 @@
+<kendo-grid [data]="gridView">
+    <kendo-grid-column field="actionType" title="ქმედება" width="100">
+    </kendo-grid-column>
+    <kendo-grid-column field="dateCreated" title="შექმნის თარიღი" width="100">
+        <ng-template kendoGridCellTemplate let-dataItem>
+            <span>{{ dataItem.dateCreated | date: 'dd/MM/yyyy HH:mm:ss' }}</span>
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="userName" title="მომხმარებელი" width="100">
+    </kendo-grid-column>
+    <kendo-grid-column field="actionSource" title="წყარო" width="100">
+    </kendo-grid-column>
+    <kendo-grid-span-column field="log-details" title="ქმედებები" width="600">
+        <kendo-grid-column title="ველის დასახელება" width="100"></kendo-grid-column>
+        <kendo-grid-column title="ძველი მნიშვნელობა" width="100"></kendo-grid-column>
+        <kendo-grid-column title="ახალი მნიშვნელობა" width="100"></kendo-grid-column>
+        <ng-template kendoGridCellTemplate let-dataItem>
+            <app-log-actions [fields]="dataItem.fields"></app-log-actions>
+        </ng-template>
+    </kendo-grid-span-column>
+</kendo-grid>

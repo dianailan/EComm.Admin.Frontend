@@ -1,0 +1,29 @@
+<div class="wrapper-popup">
+  <kendo-daterange>
+    <kendo-dateinput format="dd/MM/yyyy" [formatPlaceholder]="dateInputFormat"
+                     kendoDateRangeStartInput [(ngModel)]="_start" (valueChange)="filterRange($event, _end)"
+                     [style.width]="'90%'">
+    </kendo-dateinput>
+    <kendo-dateinput format="dd/MM/yyyy" [formatPlaceholder]="dateInputFormat"
+                     kendoDateRangeEndInput [(ngModel)]="_end" (valueChange)="filterRange(_start, $event)"
+                     [style.width]="'90%'">
+    </kendo-dateinput>
+    <kendo-daterange-popup #popup>
+      <ng-template kendoDateRangePopupTemplate>
+        <div class="k-widget k-calendar-range k-calendar-infinite">
+          <div id="fixedDates">
+            <button class="fixed-date k-link" (click)="setCurrentDate(); cancelPopup($event, popup)">დღეს</button>
+            <button class="fixed-date k-link" (click)="setYesterdayDate(); cancelPopup($event, popup)">გუშინ</button>
+            <button class="fixed-date k-link" (click)="setWeek(); cancelPopup($event, popup)">1 კვირა</button>
+            <button class="fixed-date k-link" (click)="setMonth(); cancelPopup($event, popup)">1 თვე</button>
+          </div>
+          <kendo-multiviewcalendar kendoDateRangeSelection (blur)="cancelPopup($event, popup)">
+          </kendo-multiviewcalendar>
+        </div>
+      </ng-template>
+    </kendo-daterange-popup>
+    <button (click)="resetDate()" class="btn btn-sm btn-outline-dark reset-date">
+      <i class="fa fa-close"></i>
+    </button>
+  </kendo-daterange>
+</div>

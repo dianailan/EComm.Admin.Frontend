@@ -1,0 +1,19 @@
+<!--<kendo-dialog-titlebar (close)="onCancelAction()">-->
+<!--  <div class="company-check-dialog-button">-->
+<!--    <span class="k-icon k-i-form-element"></span>შეამოწმე კომპანია-->
+<!--  </div>-->
+<!--</kendo-dialog-titlebar>-->
+<div class="container">
+  <div class="alert alert-danger" *ngIf="companyFound.response">{{companyFound.message}}</div>
+  <div class="form-group position-relative">
+    <label for="firstName">დადასტურებული კომპანიის საიდენტ. ნომერი</label>
+    <input type="text" class="form-control" id="firstName" required [(ngModel)]="companyIdentificationNumber">
+    <span *ngIf="submitted && companyIdentificationNumber === ''" class="text-danger">ველის შევსება სავალდებულოა</span>
+  </div>
+</div>
+<kendo-dialog-actions>
+  <button kendoButton (click)="onCancelAction()">გაუქმება</button>
+  <button kendoButton id="confButton" (click)="onConfirmAction($event)" [primary]="true">
+    შემოწმება
+  </button>
+</kendo-dialog-actions>

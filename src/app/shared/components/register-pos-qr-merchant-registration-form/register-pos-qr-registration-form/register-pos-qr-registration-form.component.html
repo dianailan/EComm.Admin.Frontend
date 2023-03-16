@@ -1,0 +1,63 @@
+<div class="row ml-0 mr-0">
+  <div class="col register-posqr-merchant-container p-0">
+    <form [formGroup]="formGroup">
+      <h4 *ngIf="!registerWithTerminal">POS QR მერჩანტის ინფორმაცია</h4>
+      <div *ngIf="!registerWithTerminal">
+        <div class="form-group">
+          <label for="mccCodeId">MCC კოდი</label>
+          <select class="custom-select custom-select-sm" id="mccCodeId" formControlName="mccCodeId">
+            <option *ngFor="let mcc of mccCodes" [ngValue]="mcc.id" [id]="mcc.id">{{mcc.code + ' ' + mcc.descriptionKa}}</option>
+          </select>
+          <app-validation-messages *ngIf="formGroup.get('mccCodeId').invalid && submitted"
+                                   [formGroup]="formGroup" controlName="mccCodeId">
+          </app-validation-messages>
+        </div>
+        <div class="form-group">
+          <label for="tradeName">მერჩანტის დასახელება</label>
+          <input type="text" id="tradeName" class="form-control" formControlName="tradeName">
+          <app-validation-messages *ngIf="formGroup.get('tradeName').invalid && (formGroup.get('tradeName').dirty  || formGroup.get('tradeName').touched || submitted)"
+                                   [formGroup]="formGroup" controlName="tradeName" maxlength="27"
+                                   patternErrorMessage="შეიყვანე მხოლოდ ლათინური სიმბოლოები">
+          </app-validation-messages>
+        </div>
+        <div class="form-group">
+          <label for="paymentMerchantExternalId">მერჩანტ ID</label>
+          <input type="text" id="paymentMerchantExternalId" class="form-control" formControlName="paymentMerchantExternalId" maxlength="15">
+          <app-validation-messages *ngIf="formGroup.get('paymentMerchantExternalId').invalid && (formGroup.get('paymentMerchantExternalId').dirty  || formGroup.get('paymentMerchantExternalId').touched || submitted)"
+                                   [formGroup]="formGroup" controlName="paymentMerchantExternalId"
+                                   patternErrorMessage="შეიყვანე მხოლოდ ციფრები">
+          </app-validation-messages>
+        </div>
+      </div>
+      <div formGroupName="terminal" *ngIf="registerWithTerminal">
+        <h4>POS QR Terminal-ის ინფორმაცია</h4>
+        <div class="form-group">
+          <label for="terminalNo">QR Terminal ID</label>
+          <input type="text" id="terminalNo" class="form-control" formControlName="terminalNo" maxlength="15">
+          <span *ngIf="!formGroup.get('terminal').get('terminalNo').value && submitted && (formGroup.get('terminal').get('physicalTerminalNo').value)"
+                class="text-danger text-danger-small">
+            ველის შევსება სავალდებულოა
+          </span>
+        </div>
+        <div class="form-group">
+          <label for="physicalTerminalNo">ფიზიკური Terminal ID</label>
+          <input type="text" id="physicalTerminalNo" class="form-control" formControlName="physicalTerminalNo" maxlength="8" minlength="8">
+          <span *ngIf="formGroup.get('terminal').get('physicalTerminalNo').value?.length !== 8 && formGroup.get('terminal').get('physicalTerminalNo').value && submitted && formGroup.get('terminal').get('terminalNo').value"
+                class="text-danger text-danger-small">
+            ფორმატი უნდა შედგებოდეს 8 სიმბოლოსგან
+          </span>
+          <span *ngIf="!formGroup.get('terminal').get('physicalTerminalNo').value && submitted && formGroup.get('terminal').get('terminalNo').value"
+                class="text-danger text-danger-small">
+            ველის შევსება სავალდებულოა
+          </span>
+        </div>
+        <div class="form-group">
+          <div class="bnpl-container">
+            <label for="isBnplEnabled">BNPL</label>
+            <input type="checkbox" id="isBnplEnabled" class="form-control bnpl-inp" formControlName="isBnplEnabled">
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,138 @@
+<div class="row w-100 mr-0 mt-1 mb-1 ml-0">
+  <div class="col d-flex justify-content-end p-0 pl-1 pr-1">
+    <button kendoButton class="k-button-blue" (click)="exportTransactions()">ექსპორტი</button>
+  </div>
+</div>
+<kendo-grid [data]="gridView"
+            [loading]="isLoading"
+            #gridComponent>
+  <kendo-grid-column field="userFullName" title="ბარათის მფლობელი" width="70">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="ბარათის მფლობელი">ბარათის მფლობელი</span>
+    </ng-template>
+  </kendo-grid-column>
+  <!--<kendo-grid-column field="phoneNumber" title="ტელეფონის ნომერი" width="70">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="ტელეფონის ნომერი">ტელეფონის ნომერი</span>
+    </ng-template>
+  </kendo-grid-column>-->
+  <kendo-grid-column field="clientNo" title="კლიენტის ნომერი" width="70">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="კლიენტის ნომერი">კლიენტის ნომერი</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="personalId" title="პირადი ნომერი" width="70">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="პირადი ნომერი">პირადი ნომერი</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="product" title="პროდუქტი" width="50">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="პროდუქტი">პროდუქტი</span>
+    </ng-template>
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <span>{{ dataItem?.product }}</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="cardType" title="ბარათის ტიპი" width="50">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="ბარათის ტიპი">ბარათის ტიპი</span>
+    </ng-template>
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <span>{{ dataItem?.cardType }}</span>
+    </ng-template>
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <app-dropdown-filter [textField]="'key'"
+                           [valueField]="'cardType'"
+                           [gridFilter]="filter"
+                           [data]="CreditCardStatusDropDownData">
+      </app-dropdown-filter>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="cardMask" title="ბარათის მასკა" width="60">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="ბარათის მასკა">ბარათის მასკა</span>
+    </ng-template>
+  </kendo-grid-column>
+  <!--<kendo-grid-column field="designId" title="დიზაინ ID" width="60">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="დიზაინ ID">დიზაინ ID</span>
+    </ng-template>
+  </kendo-grid-column>-->
+  <kendo-grid-column field="cardStatus" title="სტატუსი" width="40">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="სტატუსი">სტატუსი</span>
+    </ng-template>
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <span>{{ dataItem?.cardStatus }}</span>
+    </ng-template>
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <app-dropdown-filter [textField]="'key'"
+                           [valueField]="'cardStatus'"
+                           [gridFilter]="filter"
+                           [data]="CardStatusDropDownData">
+      </app-dropdown-filter>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="isPrimary" title="ძირითადი ბარათი" width="50">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="ძირითადი ბარათი">ძირითადი ბარათი</span>
+    </ng-template>
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <app-dropdown-filter [textField]="'key'"
+                           [valueField]="'isPrimary'"
+                           [gridFilter]="filter"
+                           [data]="isPrimaryDropDownData">
+      </app-dropdown-filter>
+    </ng-template>
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <span>{{ dataItem.isPrimary ? 'კი' : 'არა'}} </span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="createdAt" title="დაიმპორტების თარიღი" width="70">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="დაიმპორტების თარიღი">დაიმპორტების თარიღი</span>
+    </ng-template>
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <date-range-picker from="createdAtFrom"
+                         to="createdAtTo"
+                         [filterState]="filter">
+      </date-range-picker>
+    </ng-template>
+
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <span>{{ dataItem.createdAt | date: 'dd/MM/yyyy HH:mm:ss' }}</span>
+    </ng-template>
+  </kendo-grid-column>
+  <!--<kendo-grid-column field="deletedAt" title="დეაქტივაციის თარიღი" width="70">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="დეაქტივაციის თარიღი">დეაქტივაციის თარიღი</span>
+    </ng-template>
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <date-range-picker
+        from="deletedAtFrom"
+        to="deletedAtTo"
+        [filterState]="filter"
+      ></date-range-picker>
+    </ng-template>
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <span>{{ dataItem.deletedAt | date: 'dd/MM/yyyy HH:mm:ss' }}</span>
+    </ng-template>
+  </kendo-grid-column>-->
+
+  <kendo-grid-column field="Details" title="" width="35" [sortable]="false">
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <button (click)="resetFilter()" class="btn btn-sm btn-outline-secondary reset-filter">
+        <i class="fa fa-filter"></i>
+      </button>
+    </ng-template>
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <div class="btn-group">
+        <a [routerLink]="['/cards',dataItem.id]"
+           class="item-details-link">
+          <button class="btn btn-primary btn-sm">დეტალები</button>
+        </a>
+      </div>
+    </ng-template>
+  </kendo-grid-column>
+</kendo-grid>

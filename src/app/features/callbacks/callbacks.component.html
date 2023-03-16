@@ -1,0 +1,107 @@
+<div class="row w-100 mr-0 mt-1 mb-1 ml-0">
+  <div class="col d-flex justify-content-end p-0 pl-1 pr-1">
+    <!--    <button kendoButton class="k-button-blue" (click)="exportTransactions()">ექსპორტი</button>-->
+  </div>
+</div>
+<kendo-grid [data]="gridView"
+            [loading]="isLoading"
+            #gridComponent>
+  <kendo-grid-column field="url" title="URL" width="70">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="URL">URL</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="host" title="HOST" width="70">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="HOST">HOST</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="status" title="სტატუსი" width="60">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="სტატუსი">სტატუსი</span>
+    </ng-template>
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <app-dropdown-filter [textField]="'key'"
+                           [valueField]="'status'"
+                           [gridFilter]="filter"
+                           [data]="CbStatusDropDown">
+      </app-dropdown-filter>
+    </ng-template>
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <span>
+        {{
+        dataItem.statusName
+        }}
+      </span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="comment" title="კომენტარი" width="100">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="კომენტარი">კომენტარი</span>
+    </ng-template>
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <span [ngClass]="{'cursor-pointer': dataItem.comment?.length > commentMaxLength}" (click)="dataItem.comment?.length > commentMaxLength && showFullComment(dataItem.comment)">
+        {{
+        sliceComment(dataItem.comment)
+        }}
+      </span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="webAddress" title="ვებ-გვერდი" width="70">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="ვებ-გვერდი">ვებ-გვერდი</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="merchantExternalId" title="მერჩანტ ID" width="70">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="მერჩანტ ID">მერჩანტ ID</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="dateModified" title="რედაქტირების თარიღი" width="100">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="რედაქტირების თარიღი">რედაქტირების თარიღი</span>
+    </ng-template>
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <date-range-picker from="dateCreatedFrom"
+                         to="dateCreatedTo"
+                         [filterState]="filter">
+      </date-range-picker>
+    </ng-template>
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <span>{{ dataItem.dateModified | date: 'dd/MM/yyyy HH:mm:ss' }}</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="Details" title="" width="60" [sortable]="false">
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <button (click)="resetFilter()" class="btn btn-sm btn-outline-secondary reset-filter">
+        <i class="fa fa-filter"></i>
+      </button>
+    </ng-template>
+    <
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <div class="btn-group">
+        <a [routerLink]="[dataItem.id]"
+           class="item-details-link">
+          <button class="btn btn-primary btn-sm" (click)="confirm(dataItem.id)">დადასტურება</button>
+        </a>
+        <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+          <button appPermissionsattr [permissionToCheck]="['R_SM_Callback_Action']" class="btn btn-primary btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
+          </button>
+          <div class="dropdown-menu" ngbDropdownMenu>
+            <button appPermissionsattr [permissionToCheck]="['R_SM_Callback_Action']" class="btn btn-danger btn-sm" (click)="decline(dataItem.id)"
+                    ngbDropdownItem>
+              უარყოფა
+            </button>
+            <a class="btn-primary btn-sm"
+               ngbDropdownItem [routerLink]="[dataItem.id + '/logs']">
+              ლოგები
+            </a>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </kendo-grid-column>
+</kendo-grid>
+
+<div kendoDialogContainer></div>

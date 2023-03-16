@@ -1,0 +1,524 @@
+<div class="main pb-3">
+  <form [formGroup]="formGroup" *ngIf="webPageDetails">
+    <div class="row ml-0 mr-0 merchant-details-row">
+      <div class="col pl-0 pr-0 left-side">
+        <div class="row details-row">
+          <div class="col field-name">მერჩანტის დასახელება</div>
+          <div class="col field-info">
+            <span *ngIf="!editMode" class="editable-field">{{webPageDetails.tradeName}}</span>
+            <input *ngIf="editMode" type="text" id="tradeName" class="form-control form-control-sm"
+                   formControlName="tradeName">
+            <app-validation-messages *ngIf="formGroup.get('tradeName').invalid && submitted"
+                                     [formGroup]="formGroup" controlName="tradeName" maxlength="27"
+                                     patternErrorMessage="შეიყვანე მხოლოდ ლათინური სიმბოლოები">
+            </app-validation-messages>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">ვებ გვერდის URL</div>
+          <div class="col field-info">
+            <span *ngIf="!editMode" class="editable-field">{{webPageDetails.webAddress}}</span>
+            <input *ngIf="editMode" type="text" id="webAddress" class="form-control form-control-sm"
+                   formControlName="webAddress">
+            <!-- <app-validation-messages *ngIf="formGroup.get('webAddress').invalid && submitted"
+                                          [formGroup]="formGroup" controlName="webAddress">
+            </app-validation-messages> -->
+            <p class="text-danger text-danger-small" id="urlValidatorText" *ngIf="formGroup.controls.webAddress.hasError('invalidUrl') && formGroup.controls['webAddress'].value">
+
+              არასწორი ფორმატი
+            </p>
+            <p class="text-danger text-danger-small" id="requiredText" *ngIf="!formGroup.controls['webAddress'].value">
+              ველის შევსება სავალდებულოა
+            </p>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">სტატუსი</div>
+          <div class="col field-info">{{webPageDetails.statusName}}</div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">კომპანიის სახელი</div>
+          <div class="col field-info">{{webPageDetails.companyJuridicalName}}</div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">მერჩანტ ID</div>
+          <div class="col field-info">
+            <span *ngIf="!editMode || (editMode && webPageDetails.status !== 0)" class="editable-field">{{webPageDetails.paymentMerchantExternalId}}</span>
+            <input *ngIf="editMode && webPageDetails.status === 0" type="text" id="paymentMerchantExternalId" class="form-control form-control-sm"
+                   formControlName="paymentMerchantExternalId" maxlength="15">
+            <app-validation-messages *ngIf="formGroup.get('paymentMerchantExternalId').invalid && submitted"
+                                     [formGroup]="formGroup" controlName="paymentMerchantExternalId"
+                                     patternErrorMessage="შეიყვანე მხოლოდ ციფრები">
+            </app-validation-messages>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">MCC Code</div>
+          <div class="col field-info">
+            <span *ngIf="!editMode" class="editable-field">{{mccCodeValue}}</span>
+            <select *ngIf="editMode" class="custom-select custom-select-sm" id="mccCodeId" formControlName="mccCodeId">
+              <option *ngFor="let mcc of mccCodes" [ngValue]="mcc.id"
+                      [id]="mcc.id">
+                {{mcc.code + ' ' + mcc.descriptionKa}}
+              </option>
+            </select>
+            <app-validation-messages *ngIf="formGroup.get('mccCodeId').invalid && submitted"
+                                     [formGroup]="formGroup" controlName="mccCodeId">
+            </app-validation-messages>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">მასტერ მერჩანტი</div>
+          <div class="col field-info">
+            <span *ngIf="!editMode" class="editable-field">
+              {{
+      webPageDetails.masterWebPage ?
+      webPageDetails.masterWebPage.webAddress + ' ' + webPageDetails.masterWebPage.paymentMerchantExternalId : ''
+              }}
+            </span>
+            <select *ngIf="editMode" class="custom-select custom-select-sm" id="masterWebPageId" formControlName="masterWebPageId">
+              <option></option>
+              <option *ngFor="let mw of masterWebPages" [ngValue]="mw.paymentMerchantId"
+                      [id]="mw.paymentMerchantId">
+                {{mw.webAddress + ' ' + mw.merchantExternalId}}
+              </option>
+            </select>
+            <app-validation-messages *ngIf="formGroup.get('masterWebPageId').invalid && submitted"
+                                     [formGroup]="formGroup" controlName="masterWebPageId">
+            </app-validation-messages>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">შექმნის თარიღი</div>
+          <div class="col field-info">{{webPageDetails.dateCreated | date: 'dd/MM/yyyy HH:mm:ss'}}</div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">რეკურენტული გადახდები</div>
+          <div class="col field-info">
+            <div *ngIf="editMode" class="checkbox-container">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" [checked]="webPageDetails.isRecurringEnabled"
+                       name="isRecurringEnabled" formControlName="isRecurringEnabled" id="isRecurringEnabled" (change)="changeRecurringType($event)">
+                <label class="custom-control-label" for="isRecurringEnabled"></label>
+              </div>
+              <div class="custom-control custom-radio custom-control-inline mr-5">
+                <input type="radio" id="recurringTypeSMS" name="recurringType" class="custom-control-input" formControlName="recurringType" value="0" (click)="onConfirmDialog($event)">
+                <label class="custom-control-label" for="isRecurringEnabledNo">SMS</label>
+              </div>
+              <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="recurringTypeDMS" name="recurringType" class="custom-control-input" formControlName="recurringType" value="1" (click)="onConfirmDialog($event)">
+                <label class="custom-control-label" for="isRecurringEnabledYes">DMS</label>
+              </div>
+            </div>
+            <div *ngIf="!editMode" class="recurringInfo">
+              <span class="editable-field">{{webPageDetails.isRecurringEnabled ? 'კი' : 'არა'}}</span>
+              <span class="dash" *ngIf="webPageDetails.isRecurringEnabled">-</span>
+              <div *ngIf="webPageDetails.isRecurringEnabled" class="reccType">
+                <span *ngIf="webPageDetails.recurringType === 0">SMS</span>
+                <span *ngIf="webPageDetails.recurringType === 1">DMS</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">სპლიტ ფუნქციონალი</div>
+          <div class="col field-info">
+            <div *ngIf="editMode" class="checkbox-container">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" [checked]="webPageDetails.isSplitPaymentEnabled"
+                       name="isRecurringEnabled" formControlName="isSplitPaymentEnabled" id="isSplitPaymentEnabled">
+                <label class="custom-control-label" for="isSplitPaymentEnabled"></label>
+              </div>
+            </div>
+            <span *ngIf="!editMode" class="editable-field">{{webPageDetails.isSplitPaymentEnabled ? 'კი' : 'არა'}}</span>
+          </div>
+        </div>
+        <div class="row m-0">
+          <div class="col p-0">
+            <span class="limits">გადახდის ბმული</span>
+          </div>
+        </div>
+        <div class="row details-row mb-0">
+          <div class="col field-name">გადახდის ბმული</div>
+          <div class="col field-info">
+            <div *ngIf="editMode && webPageDetails.status === 0" class="checkbox-container">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" [checked]="webPageDetails.isPayByLinkEnabled"
+                       name="isPayByLinkEnabled" formControlName="isPayByLinkEnabled" id="isPayByLinkEnabled">
+                <label class="custom-control-label" for="isPayByLinkEnabled"></label>
+              </div>
+            </div>
+            <span *ngIf="!editMode || webPageDetails.status !== 0" class="editable-field">{{webPageDetails.isPayByLinkEnabled ? 'კი' : 'არა'}}</span>
+          </div>
+        </div>
+        <div *ngIf="webPageDetails.isPayByLinkEnabled">
+          <div class="row details-row mt-0">
+            <div class="col"></div>
+            <div class="col">
+              <span class="d-block">
+                <a [href]="'products?merchantExternalId='+webPageDetails.paymentMerchantExternalId+'&sortBy=dateCreated&sortDir=desc&page=0&pageSize=50'"
+                   target="_blank">
+                  პროდუქტები
+                </a>
+              </span>
+              <span class="d-block">
+                <a [href]="'baskets?merchantExternalId='+webPageDetails.paymentMerchantExternalId+'&sortBy=dateCreated&sortDir=desc&page=0&pageSize=50'"
+                   target="_blank">
+                  კალათები
+                </a>
+              </span>
+              <span class="d-block">
+                <a href="{{webPageDetails.payByLinkProductListUrl}}"
+                   target="_blank">
+                  PayByLink-ის პროდუქტების ლინკი
+                </a>
+              </span>
+              <span class="d-block" *ngIf="webPageDetails.clientAgreementUrl">
+                <a href="{{webPageDetails.clientAgreementUrl}}"
+                   target="_blank">
+                  კლიენტთან შეთანხმების დოკუმენტი
+                </a>
+              </span>
+            </div>
+          </div>
+          <div class="row details-row">
+            <div class="col field-name">იმეილი</div>
+            <div class="col field-info">{{webPageDetails.email}}</div>
+          </div>
+          <div class="row details-row">
+            <div class="col field-name">ტელეფონის ნომერი</div>
+            <div class="col field-info">{{webPageDetails.phoneNumber}}</div>
+          </div>
+        </div>
+        <div class="row m-0">
+          <div class="col p-0">
+            <span class="limits">გარემო</span>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">მერჩანტის სტატუსი</div>
+          <div class="col field-info">
+            <div *ngIf="editMode">
+              <div class="custom-control custom-radio custom-control-inline mr-5">
+                <input type="radio" id="limitStatusProd" name="limitStatus" [checked]="webPageDetails.limitStatus === 0"
+                       class="custom-control-input" formControlName="limitStatus" (change)="limitStatusChange($event)"
+                       [value]="0" appPermissionsattr [permissionToCheck]="['R_SM_LimitEnvironmentChange']">
+                <label class="custom-control-label" for="limitStatusProd">რეალური</label>
+              </div>
+              <div class="custom-control custom-radio custom-control-inline mr-5">
+                <input type="radio" id="limitStatusWait" name="limitStatus" [checked]="webPageDetails.limitStatus === 1"
+                       class="custom-control-input" formControlName="limitStatus" (change)="limitStatusChange($event)"
+                       [value]="1" appPermissionsattr [permissionToCheck]="['R_SM_LimitEnvironmentChange']">
+                <label class="custom-control-label" for="limitStatusWait">ელოდება რისკების დასტურს</label>
+              </div>
+              <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="limitStatusTest" name="limitStatus" [checked]="webPageDetails.limitStatus === 2"
+                       class="custom-control-input" formControlName="limitStatus" (change)="limitStatusChange($event)"
+                       [value]="2" appPermissionsattr [permissionToCheck]="['R_SM_LimitEnvironmentChange']">
+                <label class="custom-control-label" for="limitStatusTest">სატესტო</label>
+              </div>
+            </div>
+            <span *ngIf="!editMode"
+                  class="editable-field">
+              {{webPageDetails.limitStatus === 0 ? 'რეალური' : 'სატესტო'}}
+            </span>
+          </div>
+        </div>
+
+        <div *ngIf="formGroup.get('limitStatus').value !== 0">
+          <div class="row details-row">
+            <div class="col field-name">სატესტო ლიმიტი</div>
+            <div class="col field-info">
+              <span *ngIf="!editMode" class="editable-field">{{webPageDetails.testLimit}}</span>
+              <input *ngIf="editMode" type="text" id="testLimit" class="form-control form-control-sm"
+                     formControlName="testLimit" maxlength="16" appPermissionsattr [permissionToCheck]="['R_SM_LimitEnvironmentChange']">
+              <app-validation-messages *ngIf="formGroup.get('testLimit').invalid && submitted"
+                                       [formGroup]="formGroup" controlName="testLimit"
+                                       patternErrorMessage="ფორმატი არასწორია" maxlength="16">
+              </app-validation-messages>
+            </div>
+          </div>
+        </div>
+        <div class="row details-row mb-0">
+          <div class="col">
+            <div class="row m-0">
+              <div class="col p-0">
+                <span class="cb">Callbacks</span>
+              </div>
+            </div>
+            <div class="row details-row" *ngFor="let cb of webPageDetails.callBacks; let i = index">
+              <div class="col-2 field-name">Callback {{i + 1}}</div>
+              <div class="col-10 field-info d-flex align-items-center" style="min-height: 30px">
+                <span style="display: inline-block; margin: 0 5px 5px 0; min-width: 16px">
+                  <span *ngIf="cb.isPrimary" class="fa fa-check" title="ძირითადი"></span>
+                </span>
+                <span class="editable-field">
+                  {{cb.url}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row details-row mb-0">
+          <div class="col">
+            <div class="row m-0">
+              <div class="col p-0">
+                <span class="cb">Child Merchants</span>
+              </div>
+            </div>
+            <div class="child-merchants" *ngIf="webPageDetails?.childWebPages?.length">
+              <div class="table-content">
+                <div class="row m-0">
+                  <div class="col-auto pl-0">
+                    <span class="font-weight-bold">#</span>
+                  </div>
+                  <div class="col p-0">
+                    <span class="font-weight-bold">ვებ-გვერდი</span>
+                  </div>
+                  <div class="col p-0">
+                    <span class="font-weight-bold">მერჩანტ ID</span>
+                  </div>
+                </div>
+                <div class="row m-0" *ngFor="let m of webPageDetails.childWebPages; let i = index">
+                  <div class="col-auto pl-0">
+                    <span class="font-weight-bold">{{i + 1}}</span>
+                  </div>
+                  <div class="col p-0 webaddress">
+                    <span>{{m.webAddress}}</span>
+                  </div>
+                  <div class="col p-0 merchant-external-id">
+                    <span>{{m.paymentMerchantExternalId}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col pl-0 pr-0 right-side">
+        <div class="row details-row mb-0">
+          <div class="col">
+            <div class="row m-0">
+              <div class="col p-0">
+                <span class="limits">Refund</span>
+              </div>
+            </div>
+            <div class="row details-row">
+              <div class="col field-name">შეუძლია Refund</div>
+              <div class="col field-info">
+                <div *ngIf="editMode" class="checkbox-container">
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" [checked]="webPageDetails.canRefund"
+                           name="canRefund" (change)="canRefundChange($event)" formControlName="canRefund" id="canRefund">
+                    <label class="custom-control-label" for="canRefund"></label>
+                  </div>
+                </div>
+                <span *ngIf="!editMode" class="editable-field">{{webPageDetails.canRefund ? 'კი' : 'არა'}}</span>
+              </div>
+            </div>
+
+            <div *ngIf="formGroup.get('canRefund').value">
+              <div class="row details-row">
+                <div class="col field-name">Refund-ის ლიმიტი დღეზე</div>
+                <div class="col field-info">
+                  <span *ngIf="!editMode" class="editable-field">{{webPageDetails.refundLimit.daily}}</span>
+                  <input *ngIf="editMode" type="text" id="refundLimitPerDay" class="form-control form-control-sm"
+                         formControlName="refundLimitPerDay" maxlength="16">
+                  <app-validation-messages *ngIf="formGroup.get('refundLimitPerDay').invalid && submitted"
+                                           [formGroup]="formGroup" controlName="refundLimitPerDay"
+                                           patternErrorMessage="ფორმატი არასწორია" maxlength="16">
+                  </app-validation-messages>
+                </div>
+              </div>
+              <div class="row details-row">
+                <div class="col field-name">Refund-ის ლიმიტი თვეზე</div>
+                <div class="col field-info">
+                  <span *ngIf="!editMode" class="editable-field">{{webPageDetails.refundLimit.monthly}}</span>
+                  <input *ngIf="editMode" type="text" id="refundLimitPerMonth" class="form-control form-control-sm"
+                         formControlName="refundLimitPerMonth" maxlength="16">
+                  <app-validation-messages *ngIf="formGroup.get('refundLimitPerMonth').invalid && submitted"
+                                           [formGroup]="formGroup" controlName="refundLimitPerMonth"
+                                           patternErrorMessage="ფორმატი არასწორია" maxlength="16">
+                  </app-validation-messages>
+                </div>
+              </div>
+            </div>
+            <div class="row m-0">
+              <div class="col p-0">
+                <span class="limits">ლიმიტი</span>
+              </div>
+            </div>
+            <div class="row details-row">
+              <div class="col field-name">ლიმიტი ტრანზაქციაზე</div>
+              <div class="col field-info">
+                <span *ngIf="!editMode" class="editable-field">{{webPageDetails.limitPerTransaction}}</span>
+                <input *ngIf="editMode" type="text" id="limitPerTransaction" class="form-control form-control-sm"
+                       formControlName="limitPerTransaction" maxlength="16">
+                <app-validation-messages *ngIf="formGroup.get('limitPerTransaction').invalid && submitted"
+                                         [formGroup]="formGroup" controlName="limitPerTransaction" maxlength="16"
+                                         patternErrorMessage="ფორმატი არასწორია">
+                </app-validation-messages>
+              </div>
+            </div>
+            <div class="row details-row">
+              <div class="col field-name">ლიმიტი დღეზე</div>
+              <div class="col field-info">
+                <span *ngIf="!editMode" class="editable-field">{{webPageDetails.limitPerDay}}</span>
+                <input *ngIf="editMode" type="text" id="limitPerDay" class="form-control form-control-sm"
+                       formControlName="limitPerDay" maxlength="16">
+                <app-validation-messages *ngIf="formGroup.get('limitPerDay').invalid && submitted"
+                                         [formGroup]="formGroup" controlName="limitPerDay" maxlength="16"
+                                         patternErrorMessage="ფორმატი არასწორია">
+                </app-validation-messages>
+              </div>
+            </div>
+            <div class="row details-row">
+              <div class="col field-name">ლიმიტი თვეზე</div>
+              <div class="col field-info">
+                <span *ngIf="!editMode" class="editable-field">{{webPageDetails.limitPerMonth}}</span>
+                <input *ngIf="editMode" type="text" id="limitPerMonth" class="form-control form-control-sm"
+                       formControlName="limitPerMonth" maxlength="16">
+                <app-validation-messages *ngIf="formGroup.get('limitPerMonth').invalid && submitted"
+                                         [formGroup]="formGroup" controlName="limitPerMonth" maxlength="16"
+                                         patternErrorMessage="ფორმატი არასწორია">
+                </app-validation-messages>
+              </div>
+            </div>
+            <div class="row details-row mb-0">
+              <div class="col p-0">
+                <div class="row ml-0 mr-0 mb-2">
+                  <div class="col">
+                    <span class="additional-info">გადახდის მეთოდები</span>
+                  </div>
+                </div>
+                <div *ngFor="let method of webPageDetails?.paymentMethods" class="row ml-0 mr-0 mt-3 details-row mb-0">
+                  <div class="col field-name">{{method.name}}</div>
+                  <div class="col field-info">
+                    <span *ngIf="!editMode" class="editable-field">{{method.isEnabled ? 'კი' : 'არა'}}</span>
+                    <div *ngIf="editMode" class="checkbox-container">
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input"
+                               (change)="paymentMethodChange($event, method.payMethod, method.isEnabled)"
+                               [value]="method.payMethod" [checked]="method.isEnabled" [name]="method.name"
+                               [id]="method.payMethod">
+                        <label class="custom-control-label"></label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row details-row">
+              <div class="col field-name bnpl" [ngClass]="{'bnpl' : isDisabled && editMode}">BNPL</div>
+              <div class="col field-info">
+                <div *ngIf="editMode" class="checkbox-container">
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" [checked]="webPageDetails.isBnplEnabled"
+                           name="isBnplEnabled" formControlName="isBnplEnabled" id="isBnplEnabled" [attr.disabled]="isDisabled ? true : null">
+                    <label class="custom-control-label" for="isBnplEnabled"></label>
+                  </div>
+                </div>
+                <span *ngIf="!editMode" class="editable-field">{{webPageDetails.isBnplEnabled ? 'კი' : 'არა'}}</span>
+              </div>
+            </div>
+            <div class="row details-row mb-0">
+              <div class="col p-0">
+                <div class="row ml-0 mr-0 mb-2">
+                  <div class="col">
+                    <span class="additional-info">ვალუტები</span>
+                  </div>
+                </div>
+                <div *ngFor="let currency of webPageDetails.paymentCurrencies"
+                     class="row ml-0 mr-0 mt-3 details-row mb-0">
+                  <div class="col field-name">{{currency.name}}</div>
+                  <div class="col field-info">
+                    <span *ngIf="!editMode" class="editable-field">{{currency.isEnabled ? 'კი' : 'არა'}}</span>
+                    <div *ngIf="editMode" class="checkbox-container">
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input"
+                               (change)="currencyChange($event, currency.currency, currency.isEnabled)"
+                               [value]="currency.currency" [checked]="currency.isEnabled" [name]="currency.name"
+                               [id]="currency.currency">
+                        <label class="custom-control-label"></label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="row ml-0 mr-0 details-buttons-row">
+
+    <div class="col pl-0 pr-0">
+      <button class="btn btn-info" appPermissionsattr
+              [permissionToCheck]="['R_SM_Update']" *ngIf="!editMode && webPageDetails?.status !== 2" id="editButton"
+              (click)="setEditMode()">
+        რედაქტირება
+      </button>
+      <button class="btn btn-secondary" *ngIf="editMode" (click)="setEditMode()">გაუქმება</button>
+      <button class="btn btn-primary" *ngIf="editMode" (click)="updateWebPage()" appPermissionsattr
+              [permissionToCheck]="['R_SM_Update']">
+        შენახვა
+      </button>
+
+      <button class="btn btn-success" id="confirmButton"
+              *ngIf="!editMode && (formGroup.valid && (webPageDetails?.status === 0))"
+              (click)="updateWebPageStatus(webPageId, 1)" appPermissionsattr [permissionToCheck]="['R_SM_Confirm']">
+        დათანხმება
+      </button>
+      <button class="btn btn-danger" id="denyButton"
+              *ngIf="!editMode && webPageDetails?.status !== 2"
+              (click)="updateWebPageStatus(webPageId, 2)" appPermissionsattr [permissionToCheck]="['R_SM_Deny']">
+        გაუქმება
+      </button>
+
+      <button class="btn btn-danger" id="blockButton"
+              *ngIf="!editMode  && webPageDetails?.status === 1"
+              (click)="updateWebPageStatus(webPageId, 3)" appPermissionsattr [permissionToCheck]="['R_SM_Block']">
+        დაბლოკვა
+      </button>
+
+      <button class="btn btn-info" id="unblockButton"
+              *ngIf="!editMode && (formGroup.valid && webPageDetails?.status === 3)"
+              (click)="updateWebPageStatus(webPageId, 1)" appPermissionsattr [permissionToCheck]="['R_SM_Unblock']">
+        ბლოკის მოხსნა
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="zero-transactions-container  mt-5 pb-5" *ngIf="zeroTransactions?.data?.length">
+  <div class="zero-transactions-header mb-2">
+    <h6>ნულოვანი ავტორიზაცია</h6>
+  </div>
+  <div class="table-responsive">
+    <kendo-grid [data]="zeroTransactions" [scrollable]="true">
+      <kendo-grid-column field="N" title="N" sortable="false" width="20" class="row-number">
+        <ng-template kendoGridCellTemplate let-rowIndex="rowIndex">
+          <span>{{rowIndex}}</span>
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="operationDate" title="Operation Date" width="80">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <span>{{ dataItem.operationDate | date: 'dd/MM/yyyy HH:mm:ss' }}</span>
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="paymentLogType" title="Payment Log Type" width="50">
+        <ng-template kendoGridCellTemplate let-dateItem>
+          <span>{{dateItem.paymentLogType}}</span>
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="requestBody" title="Request Body" width="80"></kendo-grid-column>
+      <kendo-grid-column field="responseBody" title="Response Body" width="80"></kendo-grid-column>
+      <kendo-grid-column field="amount" title="Amount" width="80"></kendo-grid-column>
+      <kendo-grid-column field="description" title="Description" width="80"></kendo-grid-column>
+    </kendo-grid>
+  </div>
+</div>
+
+<div kendoDialogContainer></div>

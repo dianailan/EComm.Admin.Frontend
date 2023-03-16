@@ -1,0 +1,196 @@
+<div class="row p-0 m-0 mb-1 mt-1">
+  <div class="col p-0 pl-1 pr-1 d-flex justify-content-between">
+    <detail-search [filterState]="state.filter"></detail-search>
+    <button kendoButton appPermissionsattr class="k-button-blue" [permissionToCheck]="['R_TM_Export']"
+            (click)="exportTransactions()">
+      ექსპორტი
+    </button>
+  </div>
+</div>
+<kendo-grid [data]="gridData"
+            [loading]="isDataLoading"
+            #gridComponent>
+  <kendo-grid-column field="createDate" title="თარიღი" [width]="100">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="თარიღი">თარიღი</span>
+    </ng-template>
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <date-range-picker from="createDateFrom"
+                         to="createDateTo"
+                         [filterState]="filter">
+      </date-range-picker>
+    </ng-template>
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <span>{{ dataItem.createDate | date: 'dd/MM/yyyy HH:mm:ss'}}</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="paymentGenId" filter="text" filterable="true" title="გადახდის კოდი"
+                     [width]="70">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="გადახდის კოდი">გადახდის კოდი</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="parentPaymentGenId" filter="text" filterable="true" title="მშობელი გადახდის კოდი"
+                     [width]="70">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="მშობელი გადახდის კოდი">მშობელი გადახდის კოდი</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="transactionId" title="ტრანზაქციის ID" [width]="80">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="ტრანზაქციის ID">ტრანზაქციის ID</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="paymentMerchantId" title="მერჩანტ ID" [width]="60">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="მერჩანტ ID">მერჩანტ ID</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="companyIdentificationNumber" title="კომპანიის საიდენტ." [width]="80">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="კომპანიის საიდენტიფიკაციო ნომერი">კომპანიის საიდენტიფიკაციო ნომერი</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="paymentMerchantName" title="მერჩანტი" [width]="80">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="მერჩანტი">მერჩანტი</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="paymentMethod" title="გადახდის მეთოდი" [width]="80">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="გადახდის მეთოდი">გადახდის მეთოდი</span>
+    </ng-template>
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <span>{{ dataItem?.paymentMethod }}</span>
+    </ng-template>
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <app-dropdown-filter [textField]="'key'"
+                           [valueField]="'paymentMethod'"
+                           [gridFilter]="filter"
+                           [data]="paymentTypeDropdownData">
+      </app-dropdown-filter>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="isBnpl" title="BNPL" [width]="80">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="BNPL">BNPL</span>
+    </ng-template>
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <app-dropdown-filter [textField]="'key'"
+                           [valueField]="'isBnpl'"
+                           [gridFilter]="filter"
+                           [data]="isBnplEnabledDropDownList">
+      </app-dropdown-filter>
+    </ng-template>
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <span *ngIf="dataItem.isBnpl == true">კი</span>
+      <span *ngIf="dataItem.isBnpl == false">არა</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="initiator" title="Initiator" [width]="80">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="რექარინგ გადახდის ტიპი">რექარინგ გადახდის ტიპი</span>
+    </ng-template>
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <app-dropdown-filter [textField]="'key'"
+                           [valueField]="'initiator'"
+                           [gridFilter]="filter"
+                           [data]="initiatorDropDownList">
+      </app-dropdown-filter>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="transactionType" title="ტიპი" [width]="50">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="ტიპი">ტიპი</span>
+    </ng-template>
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <span>{{ dataItem?.transactionTypeName }}</span>
+    </ng-template>
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <app-dropdown-filter [textField]="'key'"
+                           [valueField]="'transactionType'"
+                           [gridFilter]="filter"
+                           [data]="transactionTypeDropdownData">
+      </app-dropdown-filter>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="currency" title="ვალუტა" [width]="45">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="ვალუტა">ვალუტა</span>
+    </ng-template>
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <span>{{ dataItem?.currency }}</span>
+    </ng-template>
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <app-dropdown-filter [textField]="'key'"
+                           [valueField]="'currency'"
+                           [gridFilter]="filter"
+                           [data]="currencyDropdownData">
+      </app-dropdown-filter>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="amount" title="თანხა" [width]="45">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="თანხა">თანხა</span>
+    </ng-template>
+    <ng-template kendoGridFooterTemplate let-dataItem>
+      <span>{{ summaryAmount|number :'1.2-2' }}₾</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="confirmedAmount" title="ჩამოჭრილი თანხა" [width]="45">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="ჩამოჭრილი თანხა">ჩამოჭრილი თანხა</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="returnAmount" title="დაბრუნებული თანხა" [width]="45">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="დაბრუნებული თანხა">დაბრუნებული თანხა</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="paymentStatus" title="სტატუსი" [width]="40">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="სტატუსი">სტატუსი</span>
+    </ng-template>
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <span>{{ dataItem?.statusName }}</span>
+    </ng-template>
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <app-dropdown-filter [textField]="'key'"
+                           [valueField]="'paymentStatus'"
+                           [gridFilter]="filter"
+                           [data]="paymentStatusDropdownData">
+      </app-dropdown-filter>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="Details" title="" [width]="45" [sortable]="false">
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <button (click)="resetFilter()" class="btn btn-sm btn-outline-secondary reset-filter">
+        <i class="fa fa-filter"></i>
+      </button>
+    </ng-template>
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <div class="btn-group">
+        <a [routerLink]="[dataItem.id]"
+           class="item-details-link">
+          <button class="btn btn-primary btn-sm">დეტალები</button>
+        </a>
+        <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+          <button class="btn btn-primary btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
+          </button>
+          <div class="dropdown-menu" ngbDropdownMenu>
+            <a class="btn btn-primary btn-sm" [routerLink]="[dataItem.id+'/logs']" ngbDropdownItem>ლოგები</a>
+            <button *ngIf="dataItem.canCancelTransaction"
+                    class="btn-primary btn btn-md" ngbDropdownItem
+                    (click)="transactionReverseOrRefund(dataItem.id, dataItem.canBeReversed)"
+                    appPermissionsattr [permissionToCheck]="buttonPermission(dataItem.canBeReversed)">
+              {{dataItem.canBeReversed ? 'რევერსალი': 'რეფანდი'}}
+            </button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </kendo-grid-column>
+</kendo-grid>
+
+<div kendoDialogContainer></div>

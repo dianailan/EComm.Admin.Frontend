@@ -1,0 +1,84 @@
+<div class="row w-100 mr-0 mt-1 mb-1 ml-0">
+  <div class="col d-flex justify-content-end p-0 pl-1 pr-1">
+    <button appPermissionsattr [permissionToCheck]="['R_NQRM_GenerateQRCodePortion']" class="generate-button k-button-blue"
+            kendoButton id="generate" (click)="openGenerateModal()">
+      გენერაცია
+    </button>
+    <button kendoButton class="k-button-blue" id="download" appPermissionsattr [permissionToCheck]="['R_NQRM_GenerateQRCodePortion']" (click)="openDownloadModal()">ჩამოტვირთვა</button>
+  </div>
+</div>
+<kendo-grid [data]="gridView"
+            [loading]="isLoading"
+            #gridComponent>
+  <kendo-grid-column field="code" title="კოდი" width="100">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="კოდი">კოდი</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="groupIdentifier" title="პორცია" width="100">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="პორცია">პორცია</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="adminUser" title="მომხმარებელი" width="100">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="მომხმარებელი">მომხმარებელი</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="createDate" title="თარიღი" width="100">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="თარიღი">თარიღი</span>
+    </ng-template>
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <date-range-picker from="createDateFrom"
+                         to="createDateTo"
+                         [filterState]="filter">
+      </date-range-picker>
+    </ng-template>
+
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <span>{{ dataItem.createDate | date: 'dd/MM/yyyy HH:mm:ss' }}</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="Details" title="" width="30" [sortable]="false">
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <button (click)="resetFilter()" class="btn btn-sm btn-outline-secondary reset-filter">
+        <i class="fa fa-filter"></i>
+      </button>
+    </ng-template>
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <div class="btn-group">
+        <button type="button" class="btn btn-primary btn-sm" appPermissionsattr [permissionToCheck]="['R_NQRM_GenerateQRCodePortion']" (click)="print($event, dataItem.code, 1)">
+          გადმოწერა
+        </button>
+        <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+          <button class="btn btn-primary btn-sm dropdown-toggle dropdown-toggle-split" appPermissionsattr [permissionToCheck]="['R_NQRM_GenerateQRCodePortion']" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle></button>
+          <div class="dropdown-menu qr-download-dropdown" ngbDropdownMenu>
+            <button class="btn btn-primary btn-sm" (click)="print($event, dataItem.code, 2)" ngbDropdownItem>
+              ობიექტი
+              სადგამი (150/210)
+            </button>
+            <button class="btn btn-primary btn-sm" (click)="print($event, dataItem.code, 3)" ngbDropdownItem>
+              ობიექტი
+              სტიკერი (120/150)
+            </button>
+            <button class="btn btn-primary btn-sm" (click)="print($event, dataItem.code, 4)" ngbDropdownItem>
+              ტაქსი
+              (90/120)
+            </button>
+            <button class="btn btn-primary btn-sm" (click)="print($event, dataItem.code, 5)" ngbDropdownItem>
+              სალარო
+              ტერმინალი (43/65)
+            </button>
+            <button class="btn btn-primary btn-sm" (click)="print($event, dataItem.code, 6)" ngbDropdownItem>
+              სალარო
+              ტერმინალი - მხოლოდ QR (25/25)
+            </button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </kendo-grid-column>
+</kendo-grid>
+
+<div kendoDialogContainer></div>

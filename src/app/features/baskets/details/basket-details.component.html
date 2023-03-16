@@ -1,0 +1,133 @@
+<div class="container pb-3">
+  <div class="row ml-0 mr-0 merchant-details-row">
+    <div class="col pl-0 pr-0 left-side">
+      <div class="row details-row">
+        <div class="col field-name">სახელი</div>
+        <div class="col field-info">
+          <span class="editable-field">{{basketDetails?.name}}</span>
+        </div>
+      </div>
+      <div class="row details-row">
+        <div class="col field-name">სავაჭრო სახელი</div>
+        <div class="col field-info">
+          <span class="editable-field">{{basketDetails?.merchantTradeName}}</span>
+        </div>
+      </div>
+      <div class="row details-row">
+        <div class="col field-name">სტატუსი</div>
+        <div class="col field-info">{{basketDetails?.status}}</div>
+      </div>
+      <div class="row details-row">
+        <div class="col field-name">მერჩანტ ID</div>
+        <div class="col field-info">
+          <span class="editable-field">{{basketDetails?.merchantExternalId}}</span>
+        </div>
+      </div>
+      <div class="row details-row">
+        <div class="col field-name">კალათის კოდი</div>
+        <div class="col field-info">
+          <span class="editable-field">{{basketDetails?.code}}</span>
+        </div>
+      </div>
+      <div class="row details-row">
+        <div class="col field-name">მერჩანტის გადახდის კოდი</div>
+        <div class="col field-info">
+          <span class="editable-field">{{basketDetails?.paymentMerchantId}}</span>
+        </div>
+      </div>
+      <div class="row details-row">
+        <div class="col field-name">თანხა</div>
+        <div class="col field-info">
+          <span class="editable-field">{{basketDetails?.amount}}</span>
+        </div>
+      </div>
+      <div class="row details-row">
+        <div class="col field-name">ვალუტა</div>
+        <div class="col field-info">
+          <span class="editable-field">{{basketDetails?.currency}}</span>
+        </div>
+      </div>
+      <div class="row details-row">
+        <div class="col field-name">შექმნის თარიღი</div>
+        <div class="col field-info">{{basketDetails?.dateCreated | date: 'dd/MM/yyyy HH:mm:ss'}}</div>
+      </div>
+      <div class="row details-row">
+        <div class="col field-name">რედაქტირების თარიღი</div>
+        <div class="col field-info">{{basketDetails?.dateModified | date: 'dd/MM/yyyy HH:mm:ss'}}</div>
+      </div>
+      <div class="row details-row">
+        <div class="col field-name">ვადის გასვლის თარიღი</div>
+        <div class="col field-info">{{basketDetails?.expirationDate | date: 'dd/MM/yyyy HH:mm:ss'}}</div>
+      </div>
+    </div>
+    <div class="col pl-0 pr-0 right-side">
+      <div class="row details-row">
+        <div class="col field-name">შექმნილია</div>
+        <div class="col field-info">{{basketDetails?.creator}}</div>
+      </div>
+
+      <div class="row details-row">
+        <div class="col field-name">გადახდები</div>
+        <div class="col field-info">
+          <span class="d-block">
+            <a [href]="'transactions?payByLinkBasketId='+basketDetails.id+'&sortBy=dateCreated&sortDir=desc&page=0&pageSize=50'"
+               target="_blank">
+              ტრანზაქციები
+            </a>
+          </span>
+        </div>
+      </div>
+
+      <div class="row details-row mb-0">
+        <div class="col p-0">
+          <div class="row ml-0 mr-0 mb-2">
+            <div class="col">
+              <span class="additional-info">გადახდის მეთოდები</span>
+            </div>
+          </div>
+          <div *ngFor="let method of basketDetails?.payMethodNames" class="row ml-0 mr-0 mt-3 details-row mb-0">
+            <div class="col field-name">{{method}}</div>
+            <div class="col field-info">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row ml-0 mr-0">
+    <div class="col p-0">
+      <div class="zero-transactions-container  mt-5 pb-5" *ngIf="basketDetails?.basketItems?.length">
+        <div class="zero-transactions-header mb-2">
+          <h6>პროდუქტები</h6>
+        </div>
+        <div class="table-responsive">
+          <kendo-grid [data]="basketDetails.basketItems" [scrollable]="true">
+            <kendo-grid-column field="N" title="N" sortable="false" width="20" class="row-number">
+              <ng-template kendoGridCellTemplate let-rowIndex="rowIndex">
+                <span>{{rowIndex}}</span>
+              </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column field="image" title="პროდუქტის სურათი" width="60">
+              <ng-template kendoGridHeaderTemplate>
+                <span matTooltip="პროდუქტის სურათი">პროდუქტის სურათი</span>
+              </ng-template>
+              <ng-template kendoGridCellTemplate let-dataItem>
+
+                <div>
+                  <img [src]="dataItem.image" alt="img" class="product-image">
+                </div>
+              </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column field="productName" title="პროდუქტის სახელი" width="80">
+            </kendo-grid-column>
+            <kendo-grid-column field="currency" title="ვალუტა" width="50">
+            </kendo-grid-column>
+            <kendo-grid-column field="amount" title="თანხა" width="60"></kendo-grid-column>
+            <kendo-grid-column field="quantity" title="რაოდენობა" width="60"></kendo-grid-column>
+          </kendo-grid>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

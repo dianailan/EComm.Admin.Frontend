@@ -1,0 +1,215 @@
+<div class="container pb-3">
+  <form [formGroup]="formGroup">
+    <div class="row ml-0 mr-0 merchant-details-row">
+      <div class="col pl-0 pr-0 left-side">
+        <div class="row details-row">
+          <div class="col field-name">სავაჭრო სახელი</div>
+          <div class="col field-info">
+            <span *ngIf="!editMode" class="editable-field">{{merchantDetails.tradeName}}</span>
+            <input *ngIf="editMode" type="text" id="tradeName" class="form-control form-control-sm" formControlName="tradeName">
+            <app-validation-messages *ngIf="formGroup.get('tradeName').invalid &&  submitted"
+                                     [formGroup]="formGroup" controlName="tradeName" maxlength="27">
+            </app-validation-messages>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">საქმიანობის მისამართი</div>
+          <div class="col field-info">
+            <span *ngIf="!editMode" class="editable-field">{{merchantDetails.address}}</span>
+            <input *ngIf="editMode" type="text" id="address" class="form-control form-control-sm" formControlName="address" maxlength="200">
+            <app-validation-messages *ngIf="formGroup.get('address').invalid &&  submitted"
+                                     [formGroup]="formGroup" controlName="address">
+            </app-validation-messages>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">სტატუსი</div>
+          <div class="col field-info">{{merchantDetails.statusName}}</div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">კომპანიის სახელი</div>
+          <div class="col field-info">{{merchantDetails.companyJuridicalName}}</div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">მერჩანტ ID</div>
+          <div class="col field-info">
+            <span *ngIf="!editMode" class="editable-field">{{merchantDetails.paymentMerchantExternalId}}</span>
+            <input *ngIf="editMode" type="text" id="paymentMerchantExternalId" class="form-control form-control-sm"
+                   formControlName="paymentMerchantExternalId" maxlength="15">
+            <app-validation-messages *ngIf="formGroup.get('paymentMerchantExternalId').invalid && submitted"
+                                     [formGroup]="formGroup" controlName="paymentMerchantExternalId" patternErrorMessage="შეიყვანე მხოლოდ ციფრები">
+            </app-validation-messages>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">MCC Code</div>
+          <div class="col field-info">
+            <span *ngIf="!editMode" class="editable-field">{{mccCodeValue}}</span>
+            <select *ngIf="editMode" id="mccCodeId" class="custom-select custom-select-sm" formControlName="mccCodeId">
+              <option *ngFor="let mcc of mccCodes" [id]="mcc.id" [ngValue]="mcc.id">{{mcc.code + ' ' + mcc.descriptionKa}}</option>
+            </select>
+            <app-validation-messages *ngIf="formGroup.get('mccCodeId').invalid && submitted"
+                                     [formGroup]="formGroup" controlName="mccCodeId">
+            </app-validation-messages>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">საქმიანობის სფერო</div>
+          <div class="col field-info">{{merchantDetails.businessField}}</div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">შექმნის თარიღი</div>
+          <div class="col field-info">{{merchantDetails.dateCreated | date: 'dd/MM/yyyy HH:mm:ss'}}</div>
+        </div>
+      </div>
+      <div class="col pl-0 pr-0 right-side">
+        <div class="row details-row">
+          <div class="col field-name">აღწერა</div>
+          <div class="col field-info">{{merchantDetails.description}}</div>
+        </div>
+
+        <div class="row details-row mb-0">
+          <div class="col">
+            <div class="row m-0">
+              <div class="col p-0">
+                <span class="limits">ლიმიტი</span>
+              </div>
+            </div>
+            <div class="row details-row">
+              <div class="col field-name">ლიმიტი ტრანზაქციაზე</div>
+              <div class="col field-info">
+                <span *ngIf="!editMode" class="editable-field">{{merchantDetails.limitPerTransaction}}</span>
+                <input *ngIf="editMode" type="text" id="limitPerTransaction" class="form-control form-control-sm"
+                       formControlName="limitPerTransaction" maxlength="16">
+                <app-validation-messages *ngIf="formGroup.get('limitPerTransaction').invalid && submitted"
+                                         [formGroup]="formGroup" controlName="limitPerTransaction" patternErrorMessage="ფორმატი არასწორია" maxlength="16">
+                </app-validation-messages>
+              </div>
+            </div>
+            <div class="row details-row">
+              <div class="col field-name">ლიმიტი დღეზე</div>
+              <div class="col field-info">
+                <span *ngIf="!editMode" class="editable-field">{{merchantDetails.limitPerDay}}</span>
+                <input *ngIf="editMode" type="text" id="limitPerDay" class="form-control form-control-sm" formControlName="limitPerDay" maxlength="16">
+                <app-validation-messages *ngIf="formGroup.get('limitPerDay').invalid && submitted"
+                                         [formGroup]="formGroup" controlName="limitPerDay" patternErrorMessage="ფორმატი არასწორია" maxlength="16">
+                </app-validation-messages>
+              </div>
+            </div>
+            <div class="row details-row">
+              <div class="col field-name">ლიმიტი თვეზე</div>
+              <div class="col field-info">
+                <span *ngIf="!editMode" class="editable-field">{{merchantDetails.limitPerMonth}}</span>
+                <input *ngIf="editMode" type="text" id="limitPerMonth" class="form-control form-control-sm" formControlName="limitPerMonth" maxlength="16">
+                <app-validation-messages *ngIf="formGroup.get('limitPerMonth').invalid && submitted"
+                                         [formGroup]="formGroup" controlName="limitPerMonth" patternErrorMessage="ფორმატი არასწორია" maxlength="16">
+                </app-validation-messages>
+              </div>
+            </div>
+            <div class="row m-0">
+              <div class="col p-0">
+                <span class="limits">Refund</span>
+              </div>
+            </div>
+            <div class="row details-row">
+              <div class="col field-name">შეუძლია Refund</div>
+              <div class="col field-info">
+                <div *ngIf="editMode" class="checkbox-container">
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" [checked]="merchantDetails.canRefund" name="canRefund" formControlName="canRefund" (change)="canRefundChange($event)" id="canRefund">
+                    <label class="custom-control-label" for="canRefund"></label>
+                  </div>
+                </div>
+                <span *ngIf="!editMode" class="editable-field">{{merchantDetails.canRefund ? 'კი' : 'არა'}}</span>
+              </div>
+            </div>
+            <div *ngIf="formGroup.get('canRefund').value">
+              <div class="row details-row">
+                <div class="col field-name">Refund-ის ლიმიტი დღეზე</div>
+                <div class="col field-info">
+                  <span *ngIf="!editMode" class="editable-field">{{merchantDetails.refundLimitPerDay}}</span>
+                  <input *ngIf="editMode" type="text" id="refundLimitPerDay" class="form-control form-control-sm" formControlName="refundLimitPerDay" maxlength="16">
+                  <app-validation-messages *ngIf="formGroup.get('refundLimitPerDay').invalid && submitted"
+                                           [formGroup]="formGroup" controlName="refundLimitPerDay" patternErrorMessage="ფორმატი არასწორია" maxlength="16">
+                  </app-validation-messages>
+                </div>
+              </div>
+              <div class="row details-row">
+                <div class="col field-name">Refund-ის ლიმიტი თვეზე</div>
+                <div class="col field-info">
+                  <span *ngIf="!editMode" class="editable-field">{{merchantDetails.refundLimitPerMonth}}</span>
+                  <input *ngIf="editMode" type="text" id="refundLimitPerMonth" class="form-control form-control-sm" formControlName="refundLimitPerMonth" maxlength="16">
+                  <app-validation-messages *ngIf="formGroup.get('refundLimitPerMonth').invalid && submitted"
+                                           [formGroup]="formGroup" controlName="refundLimitPerMonth" patternErrorMessage="ფორმატი არასწორია" maxlength="16">
+                  </app-validation-messages>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="row ml-0 mr-0 details-buttons-row">
+
+    <div class="col pl-0 pr-0">
+      <button class="btn btn-info" *ngIf="!editMode && merchantDetails.status !== 2" id="editButton" appPermissionsattr [permissionToCheck]="['R_FACEM_Update']" (click)="setEditMode()">რედაქტირება</button>
+      <button class="btn btn-secondary" *ngIf="editMode" id="cancelEditButton" (click)="setEditMode()">გაუქმება</button>
+      <button class="btn btn-primary" *ngIf="editMode" (click)="updateMerchant()" id="saveChanges" appPermissionsattr [permissionToCheck]="['R_FACEM_Update']">შენახვა</button>
+
+      <button class="btn btn-success" id="confirmButton"
+              *ngIf="!editMode && (formGroup.valid &&(merchantDetails.status === 0))"
+              (click)="updateMerchantStatus(merchantId, 1)" appPermissionsattr [permissionToCheck]="['R_FACEM_Confirm']">
+        დათანხმება
+      </button>
+      <button class="btn btn-danger" id="denyButton"
+              *ngIf="!editMode && merchantDetails.status !== 2"
+              (click)="updateMerchantStatus(merchantId, 2)" appPermissionsattr [permissionToCheck]="['R_FACEM_Deny']">
+        გაუქმება
+      </button>
+
+      <button class="btn btn-danger" id="blockButton"
+              *ngIf="!editMode && merchantDetails.status === 1"
+              (click)="updateMerchantStatus(merchantId, 3)" appPermissionsattr [permissionToCheck]="['R_FACEM_Block']">
+        დაბლოკვა
+      </button>
+
+      <button class="btn btn-info" id="unblockButton"
+              *ngIf="!editMode && (merchantDetails.status === 3)"
+              (click)="updateMerchantStatus(merchantId, 1)" appPermissionsattr [permissionToCheck]="['R_FACEM_Unblock']">
+        ბლოკის მოხსნა
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="row ml-0 mr-0 mt-2 mb-3" *ngIf="merchantDetails.status !== 2">
+  <div class="col">
+    <div class="terminal-no-input-container">
+      <input type="text" id="tabletNumber" class="terminal-no form-control form-control-sm" [(ngModel)]="terminalNo" placeholder="პლანშეტის ნომერი">
+      <button id="addTerminal" class="add-terminal-button btn btn-sm btn-success" (click)="addTerminalToMerchant()" appPermissionsattr
+              [permissionToCheck]="['R_FACE_TRM_Register']">
+        დამატება
+      </button>
+    </div>
+  </div>
+</div>
+
+<kendo-grid [data]="merchantDetails.faceTerminals" [scrollable]="true">
+  <kendo-grid-column field="N" title="N" sortable="false" width="10" class="row-number">
+    <ng-template kendoGridCellTemplate let-rowIndex="rowIndex">
+      <span>{{rowIndex}}</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="terminalNo" title="პლანშეტის ნომერი" width="80"></kendo-grid-column>
+  <kendo-grid-column field="deviceId" title="Device ID" width="80"></kendo-grid-column>
+  <kendo-grid-column field="terminalStatusName" title="სტატუსი" width="80"></kendo-grid-column>
+  <kendo-grid-column field="dateCreated" title="შექმნის თარიღი" width="80">
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <span>{{ dataItem.dateCreated | date: 'dd/MM/yyyy HH:mm:ss' }}</span>
+    </ng-template>
+  </kendo-grid-column>
+</kendo-grid>
+
+<div kendoDialogContainer></div>

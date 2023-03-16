@@ -1,0 +1,15 @@
+<div class="form-group tbc-merchant-radios">
+  <h5><span>როლი: </span>{{userRole}}</h5>
+
+  <div class="merchants mt-3" *ngIf="webpages">
+    <div class="custom-control custom-checkbox" *ngFor="let m of webpages.requestedMerchants">
+      <input type="checkbox" class="custom-control-input"
+             [value]="m.id" [name]="m.name" [id]="m.id" [checked]="true" disabled>
+      <label class="custom-control-label" [for]="m.id">{{m.name}} <span class="merchant-type">{{m.merchantType}}</span></label>
+    </div>
+  </div>
+</div>
+<kendo-dialog-actions>
+  <button kendoButton (click)="onCancelAction()">უარყოფა</button>
+  <button kendoButton (click)="onConfirmAction()" [primary]="true">დადასტურება</button>
+</kendo-dialog-actions>

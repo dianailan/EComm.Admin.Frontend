@@ -1,0 +1,66 @@
+<div class="container pb-3">
+  <form [formGroup]="formGroup">
+    <div class="row ml-0 mr-0 merchant-details-row">
+      <div class="col pl-0 pr-0 left-side">
+        <div class="row details-row">
+          <div class="col field-name">Device ID</div>
+          <div class="col field-info">
+            <span class="editable-field">{{faceDeviceDetails.deviceId}}</span>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">შექმნის თარიღი</div>
+          <div class="col field-info">{{faceDeviceDetails.dateCreated | date: 'dd/MM/yyyy HH:mm:ss'}}</div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">სტატუსი</div>
+          <div class="col field-info">
+            <span *ngIf="!editMode" class="editable-field">{{faceDeviceDetails.deviceStatusName}}</span>
+            <select *ngIf="editMode" id="status" class="custom-select custom-select-sm" formControlName="status">
+              <option *ngFor="let deviceStatus of deviceStatuses" [id]="deviceStatus.id" [ngValue]="deviceStatus.id">{{deviceStatus.value}}</option>
+            </select>
+            <app-validation-messages *ngIf="formGroup.get('status').invalid && submitted"
+                                     [formGroup]="formGroup" controlName="status">
+            </app-validation-messages>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">კომენტარი</div>
+          <div class="col field-info">
+            <span *ngIf="!editMode" class="editable-field">{{faceDeviceDetails.comment}}</span>
+            <input *ngIf="editMode" type="text" id="comment" class="form-control form-control-sm" formControlName="comment" maxlength="512">
+            <app-validation-messages *ngIf="formGroup.get('comment').invalid &&  submitted"
+                                     [formGroup]="formGroup" controlName="comment">
+            </app-validation-messages>
+          </div>
+        </div>
+      </div>
+      <div class="col pl-0 pr-0 right-side">
+        <div class="row details-row">
+          <div class="col field-name">პლანშეტის ნომერი</div>
+          <div class="col field-info">
+            <span class="editable-field">{{faceDeviceDetails.faceTerminalNo}}</span>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">მერჩანტის სავაჭრო სახელი</div>
+          <div class="col field-info">
+            <span class="editable-field">{{faceDeviceDetails.paymentMerchantTradeName}}</span>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">კომპანიის სახელი</div>
+          <div class="col field-info">{{faceDeviceDetails.companyJuridicalName}}</div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <div class="row ml-0 mr-0 details-buttons-row">
+
+    <div class="col pl-0 pr-0">
+      <button class="btn btn-info" *ngIf="!editMode && faceDeviceDetails.deviceStatus !== 3" id="editButton" appPermissionsattr [permissionToCheck]="['R_FACE_DVC_Update']" (click)="setEditMode()">რედაქტირება</button>
+      <button class="btn btn-secondary" *ngIf="editMode" id="cancelEditButton" (click)="setEditMode()">გაუქმება</button>
+      <button class="btn btn-primary" *ngIf="editMode" (click)="updateFaceDevice()" id="saveChanges" appPermissionsattr [permissionToCheck]="['R_FACE_DVC_Update']">შენახვა</button>
+    </div>
+  </div>
+</div>

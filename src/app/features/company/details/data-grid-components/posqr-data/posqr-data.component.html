@@ -1,0 +1,98 @@
+<kendo-grid [data]="gridData" [scrollable]="true">
+  <kendo-grid-column field="N" title="N" sortable="false" width="10" class="row-number">
+    <ng-template kendoGridCellTemplate let-rowIndex="rowIndex">
+      <span>{{rowIndex}}</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="tradeName" title="დასახელება" width="80"></kendo-grid-column>
+  <kendo-grid-column field="paymentMerchantExternalId" title="მერჩანტის ID" width="80"></kendo-grid-column>
+  <kendo-grid-column field="status" title="სტატუსი" width="50">
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <span>{{ dataItem?.statusName }}</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column title="Client ID/Secret" width="50">
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <div class="col field-info">
+        <button class="btn btn-info btn-sm" appPermissionsattr [permissionToCheck]="['R_POS_QR_MRC_SCRT_VIEW']" [disabled]="dataItem?.status !== 1" (click)="open(dataItem?.id)">ნახვა</button>
+      </div>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="Details" title="" [width]="30" [sortable]="false" [minResizableWidth]="130">
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <div class="btn-group">
+        <a class="item-details-link">
+
+          <a *ngIf="dataItem.status === 2 || isCompanyCanceled" class="btn btn-primary btn-sm" [routerLink]="['/posqr/' + dataItem.id]" target="_blank"
+             ngbDropdownItem>
+            დეტალები
+          </a>
+
+          <button class="btn btn-danger"
+                  *ngIf="dataItem.status === 0 && !isCompanyCanceled"
+                  (click)="updatePosQrMerchantStatus(dataItem.id, 2)" appPermissionsattr [permissionToCheck]="['R_POS_QR_MRC_Deny']">
+            უარყოფა
+          </button>
+
+          <button class="btn btn-danger"
+                  *ngIf="dataItem.status === 1 && !isCompanyCanceled"
+                  (click)="updatePosQrMerchantStatus(dataItem.id, 3)" appPermissionsattr [permissionToCheck]="['R_POS_QR_MRC_Block']">
+            დაბლოკვა
+          </button>
+
+          <button class="btn btn-info"
+                  *ngIf="dataItem.status === 3 && !isCompanyCanceled"
+                  (click)="updatePosQrMerchantStatus(dataItem.id, 1)" appPermissionsattr
+                  [permissionToCheck]="['R_POS_QR_MRC_Unblock']">
+            ბლოკის მოხსნა
+          </button>
+        </a>
+        <div *ngIf="dataItem.status !== 2 && !isCompanyCanceled"
+             class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+          <button class="btn btn-sm dropdown-toggle dropdown-toggle-split"
+                  [ngClass]="{'btn-info': dataItem.status === 3, 'btn-danger': ( dataItem.status === 0) || dataItem.status === 1}"
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
+          </button>
+          <div class="dropdown-menu" ngbDropdownMenu>
+            <a class="btn btn-primary btn-sm" ngbDropdownItem>
+              <button class="btn btn-success"
+                      *ngIf="dataItem.status === 0"
+                      (click)="updatePosQrMerchantStatus(dataItem.id, 1)" appPermissionsattr
+                      [permissionToCheck]="['R_POS_QR_MRC_Confirm']">
+                დათანხმება
+              </button>
+            </a>
+            <a class="btn btn-primary btn-sm" [routerLink]="['/posqr/' + dataItem.id]" target="_blank"
+               ngbDropdownItem>
+              დეტალები
+            </a>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </kendo-grid-column>
+</kendo-grid>
+
+<kendo-dialog title="Client ID/Secret"
+              *ngIf="opened"
+              (close)="close()"
+              [minWidth]="250"
+              [width]="400">
+  <div class="client-container">
+    <div class="client-id">
+      <p>Client ID</p>
+      <button kendoButton (click)="copyId()" themeColor="primary">COPY</button>
+    </div>
+    <div class="client-secret">
+      <p>Client Secret</p>
+      <button kendoButton (click)="copySecret()" themeColor="primary">COPY</button>
+    </div>
+  </div>
+  <kendo-dialog-actions>
+    <button kendoButton (click)="close()" themeColor="primary">
+      გასაგებია
+    </button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+
+<div kendoDialogContainer></div>

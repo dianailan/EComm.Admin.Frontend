@@ -1,0 +1,56 @@
+<div class="container">
+  <div>
+    <div class="client-no">
+      <div class="form-group">
+        <label for="clientNo">კლიენტის ნომერი</label>
+        <input type="text" id="clientNo" [(ngModel)]="user.clientNo" class="form-control">
+      </div>
+      <button [disabled]="user.clientNo?.length <= 0" (click)="checkUser()" class="btn btn-primary w-100">შემოწმება</button>
+    </div>
+    <div class="user-info" *ngIf="userDetails">
+      <div class="name mt-3">
+        <p>{{userDetails.firstname}} {{userDetails.lastname}}</p>
+      </div>
+      <div class="form-group tbc-merchant-radios">
+        <label>აირჩიე როლი</label>
+        <div class="custom-control custom-radio custom-control">
+          <input type="radio" id="superAdmin" name="userRole" class="custom-control-input"
+                 [(ngModel)]="user.role"
+                 (ngModelChange)="checkRole()"
+                 [value]="1">
+          <label class="custom-control-label" for="superAdmin">ადმინისტრატორი</label>
+        </div>
+        <div class="custom-control custom-radio custom-control">
+          <input type="radio" id="admin" name="userRole" class="custom-control-input" [(ngModel)]="user.role"
+                 (ngModelChange)="checkRole()"
+                 [value]="2">
+          <label class="custom-control-label" for="admin">მენეჯერი</label>
+        </div>
+        <div class="custom-control custom-radio custom-control">
+          <input type="radio" id="guest" name="userRole" class="custom-control-input" [(ngModel)]="user.role"
+                 (ngModelChange)="checkRole()"
+                 [value]="3">
+          <label class="custom-control-label" for="guest">სტუმარი</label>
+        </div>
+        <div class="custom-control custom-radio custom-control">
+          <input type="radio" id="developer" name="userRole" class="custom-control-input" [(ngModel)]="user.role"
+                 (ngModelChange)="checkRole()"
+                 [value]="4">
+          <label class="custom-control-label" for="developer">დეველოპერი</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="merchants" *ngIf="companyMerchants">
+      <div class="custom-control custom-checkbox" *ngFor="let m of companyMerchants">
+        <input type="checkbox" class="custom-control-input"
+               [value]="m.id" [name]="m.name" (change)="addMerchants($event)" [id]="m.id" [checked]="m.isChecked || user.role === 1" [disabled]="user.role === 1">
+        <label class="custom-control-label" [for]="m.id">{{m.name}} <span class="merchant-type">{{m.merchantType}}</span></label>
+      </div>
+    </div>
+
+    <div class="submit-btn">
+      <button *ngIf="user.paymentMerchantIds.length > 0" (click)="addUser()" class="btn btn-primary w-100">დამატება</button>
+    </div>
+  </div>
+</div>

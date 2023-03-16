@@ -1,0 +1,114 @@
+<div class="row w-100 mr-0 mt-1 mb-1 ml-0">
+  <div class="col d-flex justify-content-end p-0 pl-1 pr-1">
+    <button kendoButton class="k-button-blue" (click)="exportTransactions()">ექსპორტი</button>
+  </div>
+</div>
+<kendo-grid [data]="gridView"
+            [loading]="isLoading"
+            #gridComponent>
+  <kendo-grid-column field="merchantExternalId" title="მერჩანტის ID" width="70">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="მერჩანტის ID">მერჩანტის ID</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="tradeName" title="მერჩანტის სავაჭრო სახელი" width="70">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="მერჩანტის სავაჭრო სახელი">მერჩანტის სავაჭრო სახელი</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="paymentGenId" title="გადახდის კოდი" width="70">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="გადახდის კოდი">გადახდის კოდი</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="payId" title="მერჩანტის გადახდის კოდი" width="50">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="მერჩანტის გადახდის კოდი">მერჩანტის გადახდის კოდი</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="expiryDate" title="ვადის გასვლა" width="50">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="ვადის გასვლა">ვადის გასვლა</span>
+    </ng-template>
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <date-range-picker from="expiryDate_from"
+                         to="expiryDate_to"
+                         [filterState]="filter">
+      </date-range-picker>
+    </ng-template>
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <span>{{ dataItem.expiryDate | date: 'dd/MM/yyyy' }}</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="cardMask" title="ბარათის მასკა" width="60">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="ბარათის მასკა">ბარათის მასკა</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="status" title="სტატუსი" width="40">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="სტატუსი">სტატუსი</span>
+    </ng-template>
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <app-dropdown-filter [textField]="'key'"
+                           [valueField]="'status'"
+                           [gridFilter]="filter"
+                           [data]="ReccuringCardStatusDropDownData">
+      </app-dropdown-filter>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="cardType" title="ბარათის ტიპი" width="50">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="ბარათის ტიპი">ბარათის ტიპი</span>
+    </ng-template>
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <app-dropdown-filter [textField]="'key'"
+                           [valueField]="'cardType'"
+                           [gridFilter]="filter"
+                           [data]="ReccuringCardTypeDropDownData">
+      </app-dropdown-filter>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="recurringType" title="რექარინგის ტიპი" width="50">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="რექარინგის ტიპი">რექარინგის ტიპი</span>
+    </ng-template>
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <app-dropdown-filter [textField]="'key'"
+                           [valueField]="'recurringType'"
+                           [gridFilter]="filter"
+                           [data]="ReccuringTypeDropDownData">
+      </app-dropdown-filter>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="dateCreated" title="შექმნის თარიღი" width="70">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="dateCreated">შექმნის თარიღი</span>
+    </ng-template>
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <date-range-picker from="from"
+                         to="to"
+                         [filterState]="filter">
+      </date-range-picker>
+    </ng-template>
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <span>{{ dataItem.dateCreated | date: 'dd/MM/yyyy HH:mm:ss' }}</span>
+    </ng-template>
+  </kendo-grid-column>
+
+  <kendo-grid-column field="Details" title="" width="35" [sortable]="false">
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <button (click)="resetFilter()" class="btn btn-sm btn-outline-secondary reset-filter">
+        <i class="fa fa-filter"></i>
+      </button>
+    </ng-template>
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <div class="btn-group">
+        <a [routerLink]="['/reccuring-cards',dataItem.id]"
+           class="item-details-link">
+          <button class="btn btn-primary btn-sm">დეტალები</button>
+        </a>
+      </div>
+    </ng-template>
+  </kendo-grid-column>
+</kendo-grid>

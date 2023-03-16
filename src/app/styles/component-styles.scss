@@ -1,0 +1,139 @@
+app-log-actions {
+  div.k-grid-header {
+    display: none;
+  }
+}
+
+app-action-logs {
+  .k-grid-table {
+    tbody {
+      td {
+        &:last-child {
+          padding: 0;
+        }
+      }
+    }
+  }
+}
+
+app-log-actions {
+  .k-widget {
+    border: none;
+  }
+
+  .k-grid-table {
+    tbody {
+      td {
+        padding-left: 10px !important;
+
+        &:last-child {
+          text-align: left;
+        }
+      }
+
+      tr:last-child {
+        td {
+          border-bottom: none
+        }
+      }
+    }
+  }
+}
+
+kendo-daterange {
+  display: flex;
+}
+
+kendo-grid-list {
+  .k-grid-content {
+    .k-grid-table-wrap {
+      .k-grid-table {
+        tbody {
+          tr {
+            td {
+              word-break: break-all;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+app-logs-details {
+  .k-grid-table {
+    tbody {
+      td {
+        padding: 8px 4px 8px 12px;
+
+        &:last-child {
+          width: auto;
+          text-align: left;
+          padding: 8px 4px 8px 15px;
+        }
+      }
+    }
+  }
+}
+
+app-transaction-details {
+  .k-grid-table {
+    tbody {
+      td {
+        padding: 8px 4px 8px 12px;
+
+        &:last-child {
+          width: auto;
+          text-align: left;
+          padding: 8px 4px 8px 15px;
+        }
+      }
+    }
+  }
+}
+
+app-card-details {
+  .k-grid-table {
+    tbody {
+      td {
+        padding: 8px 4px 8px 12px;
+
+        &:last-child {
+          width: auto;
+          text-align: left;
+          padding: 8px 4px 8px 15px;
+        }
+      }
+    }
+  }
+}
+
+app-users-grid-data, app-webpages-data, app-qrmerchants-data, app-qrpayments-data, app-face-merchants-data {
+  .k-grid-aria-root {
+    overflow: visible !important;
+
+    kendo-grid-list {
+      overflow: visible !important;
+
+      .k-grid-content.k-virtual-content {
+        overflow: visible !important;
+      }
+    }
+  }
+}
+
+app-face-merchant-details {
+  .k-grid-table {
+    tbody {
+      td {
+        padding: 8px 4px 8px 12px;
+
+        &:last-child {
+          width: auto;
+          text-align: left;
+          padding: 8px 4px 8px 15px;
+        }
+      }
+    }
+  }
+}

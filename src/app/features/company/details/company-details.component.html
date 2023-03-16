@@ -1,0 +1,325 @@
+<div class="wrapper" *ngIf="companyResponse">
+  <form [formGroup]="formGroup">
+    <div class="row ml-0 mr-0 first-row">
+      <div class="col">
+        <div class="row details-row ml-0 mr-0">
+          <div class="col field-name p-0">
+            <span>იურიდიული სახელი</span>
+          </div>
+          <div class="col field-info p-0">
+            <span *ngIf="!editMode" class="editable-field">{{companyResponse?.details.name}}</span>
+            <input *ngIf="editMode" type="text" id="name" class="form-control form-control-sm"
+                   formControlName="name">
+            <app-validation-messages *ngIf="formGroup.get('name').invalid && submitted"
+                                     [formGroup]="formGroup" controlName="name" maxlength="256">
+            </app-validation-messages>
+          </div>
+        </div>
+        <div class="row details-row ml-0 mr-0">
+          <div class="col field-name p-0">
+            <span>იურიდიული მისამართი</span>
+          </div>
+          <div class="col field-info p-0">
+            {{companyResponse?.details.juridicalAddress}}
+          </div>
+        </div>
+        <div class="row details-row ml-0 mr-0">
+          <div class="col field-name p-0">
+            <span>კომპანიის იმეილი</span>
+          </div>
+          <div class="col field-info p-0">
+            <span *ngIf="!editMode" class="editable-field">{{companyResponse?.details.companyEmail}}</span>
+            <input *ngIf="editMode" type="text" id="email" class="form-control form-control-sm"
+                   formControlName="email">
+            <app-validation-messages *ngIf="formGroup.get('email').invalid && submitted"
+                                     [formGroup]="formGroup" controlName="email" patternErrorMessage="შეიყვანე ვალიდური იმეილი" maxlength="50">
+            </app-validation-messages>
+          </div>
+        </div>
+        <div class="row details-row ml-0 mr-0">
+          <div class="col field-name p-0">
+            <span>საიდენტიფიკაციო ნომერი</span>
+          </div>
+          <div class="col field-info p-0">
+            <span *ngIf="!editMode" class="editable-field">{{companyResponse.details.identificationNumber}}</span>
+            <input *ngIf="editMode" type="text" id="identificationNumber" class="form-control form-control-sm"
+                   formControlName="identificationNumber">
+            <app-validation-messages *ngIf="formGroup.get('identificationNumber').invalid && submitted"
+                                     [formGroup]="formGroup" controlName="identificationNumber">
+            </app-validation-messages>
+          </div>
+        </div>
+        <div class="row details-row ml-0 mr-0">
+          <div class="col field-name p-0">
+            <span>კლიენტის ნომერი</span>
+          </div>
+          <div class="col field-info p-0">
+            <span *ngIf="!editMode" class="editable-field">{{companyResponse.details.clientNo}}</span>
+            <input *ngIf="editMode" type="text" id="clientNo" class="form-control form-control-sm"
+                   formControlName="clientNo">
+            <app-validation-messages *ngIf="formGroup.get('clientNo').invalid && submitted"
+                                     [formGroup]="formGroup" controlName="clientNo">
+            </app-validation-messages>
+          </div>
+        </div>
+        <div class="row details-row ml-0 mr-0">
+          <div class="col field-name p-0">
+            <span>სტატუსი</span>
+          </div>
+          <div class="col field-info p-0">
+            {{companyResponse.details.statusName}}
+          </div>
+        </div>
+        <div class="row details-row ml-0 mr-0">
+          <div class="col field-name p-0">
+            <span>შექმნის თარიღი</span>
+          </div>
+          <div class="col field-info p-0">
+            {{companyResponse.details.dateCreated | date: 'dd/MM/yyyy HH:mm:ss'}}
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="row details-row ml-0 mr-0">
+          <div class="col field-name p-0">
+            <span>სახელი</span>
+          </div>
+          <div class="col field-info p-0">
+            {{companyResponse.details.generalDirector.firstname}}
+          </div>
+        </div>
+        <div class="row details-row ml-0 mr-0">
+          <div class="col field-name p-0">
+            <span>გვარი</span>
+          </div>
+          <div class="col field-info p-0">
+            {{companyResponse.details.generalDirector.lastname}}
+          </div>
+        </div>
+        <div class="row details-row ml-0 mr-0">
+          <div class="col field-name p-0">
+            <span>პირადი ნომერი</span>
+          </div>
+          <div class="col field-info p-0">
+            {{companyResponse.details.generalDirector.personalNumber}}
+          </div>
+        </div>
+        <div class="row details-row ml-0 mr-0">
+          <div class="col field-name p-0">
+            <span>ტელეფონის ნომერი</span>
+          </div>
+          <div class="col field-info p-0">
+            {{companyResponse.details.generalDirector.phone}}
+          </div>
+        </div>
+        <div class="row details-row ml-0 mr-0">
+          <div class="col field-name p-0">
+            <span>იმეილი</span>
+          </div>
+          <div class="col field-info p-0">
+            {{companyResponse.details.generalDirector.email}}
+          </div>
+        </div>
+      </div>
+      <div class="col flex-grow-0 company-change-status-button-container">
+
+        <button class="btn btn-success"
+                *ngIf="!editMode && companyResponse.details.status === 0"
+                (click)="updateCompanyStatus(1)" appPermissionsattr [permissionToCheck]="['R_CM_Confirm']">
+          დათანხმება
+        </button>
+        <button class="btn btn-danger"
+                *ngIf="!editMode && companyResponse.details.status !== 2"
+                (click)="updateCompanyStatus(2)" appPermissionsattr [permissionToCheck]="['R_CM_Deny']">
+          გაუქმება
+        </button>
+
+        <button class="btn btn-danger"
+                *ngIf="!editMode && companyResponse.details.status === 1"
+                (click)="updateCompanyStatus(3)" appPermissionsattr [permissionToCheck]="['R_CM_Block']">
+          დაბლოკვა
+        </button>
+
+        <button class="btn btn-info"
+                *ngIf="!editMode && companyResponse.details.status === 3"
+                (click)="updateCompanyStatus(1)" appPermissionsattr [permissionToCheck]="['R_CM_Unblock']">
+          ბლოკის მოხსნა
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <div class="row ml-0 mr-0 mt-2 mb-2 details-buttons-row">
+    <div class="col">
+      <button class="btn btn-info" appPermissionsattr
+              [permissionToCheck]="['R_CM_Update']" *ngIf="!editMode && companyResponse.details.status !== 2"
+              id="editButton" (click)="setEditMode()">
+        რედაქტირება
+      </button>
+      <button class="btn btn-secondary" *ngIf="editMode" (click)="setEditMode()">გაუქმება</button>
+      <button class="btn btn-primary" *ngIf="editMode" (click)="updateCompany()" appPermissionsattr
+              [permissionToCheck]="['R_CM_Update']">
+        შენახვა
+      </button>
+    </div>
+  </div>
+
+  <div class="row ml-0 mr-0">
+    <div class="col">
+      <div class="row ml-0 mr-0">
+        <div class="col p-0">
+          <h5>მომხმარებლები</h5>
+        </div>
+        <div class="col p-0">
+          <button *ngIf="companyResponse.details.status !== 2" class="btn btn-info float-right" [disabled]="companyResponse.details.status !== 1"
+                  appPermissionsattr [permissionToCheck]="['R_CM_UserAdd']"
+                  (click)="addUserToCompany()">
+            დამატება
+          </button>
+        </div>
+      </div>
+      <div class="row ml-0 mr-0 users-grid-data-row">
+        <div class="col p-0 grid-data-col">
+          <app-users-grid-data (changeUserRoleSubject)="changeUserRole($event)"
+                               (confirmUserRoleSubject)="confirmUserRole($event)"
+                               (cancelUserSubject)="cancelUser($event)"
+                               [isCompanyCanceled]="companyResponse.details.status === 2"
+                               [gridData]="companyResponse.users">
+          </app-users-grid-data>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row ml-0 mr-0">
+    <div class="col">
+      <div class="row ml-0 mr-0">
+        <div class="col p-0">
+          <h5>POS QR</h5>
+        </div>
+        <div class="col p-0">
+          <button *ngIf="companyResponse.details.status !== 2" class="btn btn-info float-right"
+                  [disabled]="companyResponse.details.status !== 1"
+                  appPermissionsattr [permissionToCheck]="['R_POS_QR_MRC_Register']"
+                  (click)="addPosQrMerchantToCompany()">
+            დამატება
+          </button>
+        </div>
+      </div>
+      <div class="row ml-0 mr-0 users-grid-data-row">
+        <div class="col p-0 grid-data-col">
+          <app-posqr-data (changeStatusSubject)="changePosQrMerchantStatus($event)"
+                          [isCompanyCanceled]="companyResponse.details.status === 2"
+                          [gridData]="companyResponse.posQRMerchants">
+          </app-posqr-data>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row ml-0 mr-0">
+    <div class="col">
+      <div class="row ml-0 mr-0">
+        <div class="col p-0">
+          <h5>ვებ გვერდები</h5>
+        </div>
+        <div class="col p-0">
+          <button *ngIf="companyResponse.details.status !== 2" class="btn btn-info float-right"
+                  [disabled]="companyResponse.details.status !== 1"
+                  appPermissionsattr [permissionToCheck]="['R_SM_Register']"
+                  (click)="addWebPageToCompany()">
+            დამატება
+          </button>
+        </div>
+      </div>
+      <div class="row ml-0 mr-0 users-grid-data-row">
+        <div class="col p-0 grid-data-col">
+          <app-webpages-data (changeStatusSubject)="changeWebPageStatus($event)"
+                             [isCompanyCanceled]="companyResponse.details.status === 2"
+                             [gridData]="companyResponse.webPages">
+          </app-webpages-data>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="row ml-0 mr-0">
+  <div class="col">
+    <div class="row ml-0 mr-0">
+      <div class="col p-0">
+        <h5>QR ობიექტი</h5>
+      </div>
+      <div class="col p-0">
+        <button *ngIf="companyResponse.details.status !== 2" class="btn btn-info float-right"
+                [disabled]="companyResponse.details.status !== 1"
+                appPermissionsattr [permissionToCheck]="['R_QRM_Register']"
+                (click)="addQrPaymentToCompany()">
+          დამატება
+        </button>
+      </div>
+    </div>
+    <div class="row ml-0 mr-0 users-grid-data-row">
+      <div class="col p-0 grid-data-col">
+        <app-qrpayments-data (updateQRPaymentStatusSubject)="changeQRPaymentStatus($event)"
+                             [isCompanyCanceled]="companyResponse.details.status === 2"
+                             [gridData]="companyResponse.qrPayments">
+        </app-qrpayments-data>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <div class="row ml-0 mr-0">
+    <div class="col">
+      <div class="row ml-0 mr-0">
+        <div class="col p-0">
+          <h5>QR სალარო</h5>
+        </div>
+        <div class="col p-0">
+          <button *ngIf="companyResponse.details.status !== 2" class="btn btn-info float-right" appPermissionsattr
+                  [permissionToCheck]="['R_QRM_Register']"
+                  [disabled]="companyResponse.details.status !== 1"
+                  (click)="addMerchantToCompany()">
+            დამატება
+          </button>
+        </div>
+      </div>
+      <div class="row ml-0 mr-0 users-grid-data-row">
+        <div class="col p-0 grid-data-col">
+          <app-qrmerchants-data (updateQRMerchantStatusSubject)="changeQRMerchantStatus($event)"
+                                [isCompanyCanceled]="companyResponse.details.status === 2"
+                                [gridData]="companyResponse.qrMerchants">
+          </app-qrmerchants-data>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row ml-0 mr-0">
+    <div class="col">
+      <div class="row ml-0 mr-0">
+        <div class="col p-0">
+          <h5>Face მერჩანტი</h5>
+        </div>
+        <div class="col p-0">
+          <button *ngIf="companyResponse.details.status !== 2" class="btn btn-info float-right" appPermissionsattr
+                  [permissionToCheck]="['R_QRM_Register']"
+                  [disabled]="companyResponse.details.status !== 1"
+                  (click)="addFaceMerchantToCompany()">
+            დამატება
+          </button>
+        </div>
+      </div>
+      <div class="row ml-0 mr-0 users-grid-data-row">
+        <div class="col p-0 grid-data-col">
+          <app-face-merchants-data (updateFaceMerchantStatusSubject)="changeFaceMerchantStatus($event)"
+                                   [isCompanyCanceled]="companyResponse.details.status === 2"
+                                   [gridData]="companyResponse.faceMerchants">
+          </app-face-merchants-data>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div kendoDialogContainer></div>

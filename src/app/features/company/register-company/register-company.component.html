@@ -1,0 +1,164 @@
+<div class="row m-0">
+  <div class="col pt-3">
+    <div class="row mb-3 mr-0 ml-0">
+      <div class="col p-0  user-info">
+        <div class="row mr-0 ml-0">
+          <div class="col p-0">
+            <p class="userNameLabel">
+              მომხმარებელი:
+              <span class="userName">
+                {{userInfo.name}}
+              </span>
+            </p>
+          </div>
+        </div>
+        <div class="row mr-0 ml-0">
+          <div class="col p-0">
+            <p class="userClientNoLabel">
+              კლიენტის ნომერი:
+              <span class="userClientNo">{{userInfo.clientNo}}</span>
+            </p>
+          </div>
+        </div>
+        <div class="row mr-0 ml-0">
+          <div class="col p-0">
+            <p class="userPhoneLabel">
+              ტელეფონი:
+              <span class="userPhone">
+                {{userInfo.phone}}
+              </span>
+            </p>
+          </div>
+        </div>
+        <div class="row mr-0 ml-0">
+          <div class="col p-0">
+            <p class="userEmailLabel">
+              იმეილი:
+              <span class="userEmail">
+                {{userInfo.email}}
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mr-0 ml-0">
+      <div class="col p-0">
+        <form [formGroup]="companyFormGroup" *ngIf="!nextPage">
+          <div class="row-content company-details">
+            <h3>კომპანიის დეტალები</h3>
+            <label for="name">კომპანიის იურიდიული სახელი</label>
+            <input class="form-control" name="name" id="name" formControlName="name" autofocus />
+            <app-validation-messages *ngIf="companyFormGroup.get('name').invalid && (companyFormGroup.get('name').touched || submitted)"
+                                     [formGroup]="companyFormGroup" controlName="name" maxlength="256">
+            </app-validation-messages>
+
+            <label for="identificationNumber">საიდენტიფიკაციო ნომერი/პირადი ნომერი</label>
+            <input type="text" class="form-control" name="identificationNumber" id="identificationNumber"
+                   formControlName="identificationNumber" />
+            <app-validation-messages *ngIf="companyFormGroup.get('identificationNumber').invalid && (companyFormGroup.get('identificationNumber').touched || submitted)"
+                                     [formGroup]="companyFormGroup" controlName="identificationNumber" minlength="9" maxlength="11"
+                                     patternErrorMessage="შეიყვანე მხოლოდ ციფრები">
+            </app-validation-messages>
+
+            <label for="clientNo">კლიენტის ნომერი</label>
+            <input type="text" class="form-control" name="clientNo" id="clientNo" formControlName="clientNo" />
+            <app-validation-messages *ngIf="companyFormGroup.get('clientNo').invalid && (companyFormGroup.get('clientNo').touched || submitted)"
+                                     [formGroup]="companyFormGroup" controlName="clientNo" patternErrorMessage="შეიყვანე მხოლოდ ციფრები">
+            </app-validation-messages>
+
+            <label for="email">კომპანიის იმეილი</label>
+            <input type="text" class="form-control" name="email" id="email" formControlName="email" />
+            <app-validation-messages *ngIf="companyFormGroup.get('email').invalid && (companyFormGroup.get('email').touched || submitted)"
+                                     [formGroup]="companyFormGroup" controlName="email" maxlength="50" patternErrorMessage="შეიყვანე ვალიდური იმეილი">
+            </app-validation-messages>
+
+            <label for="address">ფაქტიური მისამართი</label>
+            <input type="text" class="form-control" name="address" id="address" formControlName="address" />
+            <app-validation-messages *ngIf="companyFormGroup.get('address').invalid && (companyFormGroup.get('address').touched || submitted)"
+                                     [formGroup]="companyFormGroup" controlName="address">
+            </app-validation-messages>
+
+            <div class="form-group payment-services">
+              <h3>გადახდის სერვისები</h3>
+              <div class="radio-button-container d-flex flex-row">
+                <div class="custom-control custom-radio custom-control-inline">
+                  <input type="radio" id="webpayment" name="merchantType" class="custom-control-input"
+                         formControlName="merchantType"
+                         [value]="1">
+                  <label class="custom-control-label" for="webpayment">გადახდები საიტზე</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                  <input type="radio" id="qrpayment" name="merchantType" class="custom-control-input"
+                         formControlName="merchantType"
+                         [value]="2">
+                  <label class="custom-control-label" for="qrpayment">QR-ით გადახდა</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                  <input type="radio" id="intpr" name="merchantType" class="custom-control-input"
+                         formControlName="merchantType"
+                         [value]="3">
+                  <label class="custom-control-label" for="intpr">ინტეგრირებული QR სალარო</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                  <input type="radio" id="face" name="merchantType" class="custom-control-input"
+                         formControlName="merchantType"
+                         [value]="4">
+                  <label class="custom-control-label" for="face">Face მერჩანტი</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                  <input type="radio" id="posQr" name="merchantType" class="custom-control-input"
+                         formControlName="merchantType"
+                         [value]="5">
+                  <label class="custom-control-label" for="posQr">POS QR</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <app-web-page-registration-form *ngIf="nextPage && this.companyFormGroup.get('merchantType').value === 1"
+                                        [formSubmit]="formSubmitSub()" (form)="getAdditionalFormValue($event)"
+                                        [mccCodes]="mccCodes" [paymentLimits]="merchantPaymentLimit"
+                                        [showMasterSelectBox]="false"
+                                        [paymentMethods]="webpagePaymentMethods"
+                                        [currencies]="webpageCurrencies"
+                                        [refundLimits]="merchantRefundLimit">
+        </app-web-page-registration-form>
+
+        <app-register-qr-payment-registration-form *ngIf="nextPage && this.companyFormGroup.get('merchantType').value === 2" [formSubmit]="formSubmitSub()"
+                                                   (form)="getAdditionalFormValue($event)" [paymentLimits]="merchantPaymentLimit"
+                                                   [refundLimits]="merchantRefundLimit">
+        </app-register-qr-payment-registration-form>
+
+        <app-register-qr-merchant-form *ngIf="nextPage && this.companyFormGroup.get('merchantType').value === 3"
+                                       [formSubmit]="formSubmitSub()"
+                                       (form)="getAdditionalFormValue($event)" [paymentLimits]="merchantPaymentLimit"
+                                       [refundLimits]="merchantRefundLimit">
+        </app-register-qr-merchant-form>
+        <app-register-face-merchant-form *ngIf="nextPage && this.companyFormGroup.get('merchantType').value === 4"
+                                         [formSubmit]="formSubmitSub()"
+                                         [mccCodes]="mccCodes"
+                                         (form)="getAdditionalFormValue($event)" [paymentLimits]="merchantPaymentLimit"
+                                         [refundLimits]="merchantRefundLimit">
+        </app-register-face-merchant-form>
+        <app-register-pos-qr-registration-form *ngIf="nextPage && this.companyFormGroup.get('merchantType').value === 5"
+                                               [formSubmit]="formSubmitSub()"
+                                               [mccCodes]="mccCodes"
+                                               (form)="getAdditionalFormValue($event)"
+                                               [registerWithTerminal]="isRegisterTerminalPage">
+        </app-register-pos-qr-registration-form>
+      </div>
+    </div>
+    <div class="row mr-0 ml-0">
+      <div class="col p-0 pb-2 submit-button-container">
+        <button *ngIf="nextPage" class="btn btn-primary d-inline float-right" (click)="formSubmit()" [disabled]="isRegisterTerminalPage && isTerminalFilled">დამატება</button>
+        <button *ngIf="nextPage && !isRegisterTerminalPage && this.companyFormGroup.get('merchantType').value === 5" class="btn btn-primary d-inline float-right terminal-page-btn" [disabled]="isTerminalBtnDisabled" (click)="terminalPage()">ტემრინალის დამატება</button>
+        <button *ngIf="!nextPage" class="btn btn-primary d-inline float-right" (click)="next()"
+                [disabled]="!companyFormGroup.valid">
+          შემდეგი
+        </button>
+        <button *ngIf="nextPage" class="btn btn-primary d-inline float-left" (click)="prev()">უკან</button>
+      </div>
+    </div>
+  </div>
+</div>

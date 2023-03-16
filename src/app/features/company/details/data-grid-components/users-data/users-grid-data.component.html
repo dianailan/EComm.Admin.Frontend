@@ -1,0 +1,79 @@
+<kendo-grid [data]="gridData" [scrollable]="true">
+  <kendo-grid-column field="N" title="N" sortable="false" width="10" class="row-number">
+    <ng-template kendoGridCellTemplate let-rowIndex="rowIndex">
+      <span>{{rowIndex}}</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="firstname" title="სახელი" width="50"></kendo-grid-column>
+  <kendo-grid-column field="lastname" title="გვარი" width="50"></kendo-grid-column>
+  <kendo-grid-column field="clientNo" title="კლიენტის ნომერი" width="50"></kendo-grid-column>
+  <kendo-grid-column field="phoneNumber" title="ტელეფონი" width="40"></kendo-grid-column>
+  <kendo-grid-column field="role" title="როლი" width="40">
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <span>{{ dataItem?.role }}</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="status" title="სტატუსი" width="70">
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <span>
+        {{dataItem.status}}
+        <span *ngIf="dataItem.requestedRole"><br>{{dataItem.requestedRole}}-ს როლზე მოთხოვნა დასადასტურებელია</span>
+        <span *ngIf="dataItem.requestedMerchantIds"><br>მერჩანტების ცვლილებაზე მოთხოვნა დასადასტურებელია</span>
+      </span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="Details" title="" [width]="50" [sortable]="false">
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <div class="btn-group">
+        <a class="item-details-link">
+          <a *ngIf="dataItem.status === 2 || isCompanyCanceled" class="btn btn-primary btn-sm" target="_blank"
+             [routerLink]="['/users/' + dataItem.userId]"
+             ngbDropdownItem>
+            დეტალები
+          </a>
+          <button *ngIf="dataItem.status !== 2 && !isCompanyCanceled" class="btn btn-primary" appPermissionsattr
+                  [permissionToCheck]="['R_CM_UserRoleChange']"
+                  (click)="changeUserRole(dataItem.userId)">
+            როლი და მერჩანტები
+          </button>
+        </a>
+        <div *ngIf="dataItem.status !== 2 && !isCompanyCanceled"
+             class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+          <button class="btn btn-primary btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
+          </button>
+          <div class="dropdown-menu" ngbDropdownMenu>
+            <a class="btn btn-primary btn-sm" ngbDropdownItem>
+              <button appPermissionsattr [permissionToCheck]="['R_CM_UserDelete']"
+                      class="btn btn-sm"
+                      style="background-color: unset; color: #000; padding-left: 0;"
+                      (click)="cancelUser(dataItem.userId)">
+                გაუქმება
+              </button>
+            </a>
+            <a *ngIf="dataItem.requestedRole">
+              <button class="btn btn-sm btn-success"
+                      appPermissionsattr
+                      [permissionToCheck]="['R_CM_UserRoleChangeConfirm']"
+                      (click)="confirmUserRole(dataItem.userId, dataItem.requestedMerchantIds, dataItem.requestedRole)">
+                დადასტ./უარყოფა
+              </button>
+              <!--              <button *ngIf="dataItem.requestedRole" appPermissionsattr-->
+              <!--                      [permissionToCheck]="['R_CM_UserRoleChangeConfirm']"-->
+              <!--                      (click)="confirmUserRole(dataItem.userId, true)" class="btn btn-sm btn-success w-50"><i-->
+              <!--                class="fa fa-check"></i></button>-->
+              <!--              <button *ngIf="dataItem.requestedRole" appPermissionsattr-->
+              <!--                      [permissionToCheck]="['R_CM_UserRoleChangeDeny']"-->
+              <!--                      (click)="confirmUserRole(dataItem.userId, false)" class="btn btn-sm btn-danger w-50"><i-->
+              <!--                class="fa fa-close"></i></button>-->
+            </a>
+            <a class="btn btn-primary btn-sm" target="_blank" [routerLink]="['/users/' + dataItem.userId]"
+               ngbDropdownItem>
+              დეტალები
+            </a>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </kendo-grid-column>
+</kendo-grid>

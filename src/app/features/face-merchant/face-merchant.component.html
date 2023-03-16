@@ -1,0 +1,91 @@
+<div class="row p-0 m-0 mb-1 mt-1">
+    <div class="col p-0 pl-1 pr-1 d-flex justify-content-end">
+        <button kendoButton class="kendo-details-button k-button-blue" appPermissionsattr
+                [permissionToCheck]="['R_FACEM_Register']" (click)="openDialog()">
+            Face მერჩანტის დამატება
+        </button>
+    </div>
+</div>
+<kendo-grid [data]="gridView"
+            [loading]="isLoading"
+            #gridComponent>
+    <kendo-grid-column field="companyName" title="კომპანიის სახელი" width="90">
+        <ng-template kendoGridHeaderTemplate>
+            <span matTooltip="კომპანიის სახელი">კომპანიის სახელი</span>
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="tradeName" title="სავაჭრო სახელი" width="90">
+        <ng-template kendoGridHeaderTemplate>
+            <span matTooltip="სავაჭრო სახელი">სავაჭრო სახელი</span>
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="externalMerchantId" title="მერჩანტ ID" width="90">
+        <ng-template kendoGridHeaderTemplate>
+            <span matTooltip="მერჩანტ ID">მერჩანტ ID</span>
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="companyIdentificationNumber" title="კომპანიის საიდენტიფიკაციო ნომერი" width="50">
+        <ng-template kendoGridHeaderTemplate>
+            <span matTooltip="კომპანიის საიდენტიფიკაციო ნომერი">კომპანიის საიდენტიფიკაციო ნომერი</span>
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="status" title="სტატუსი" width="40">
+        <ng-template kendoGridHeaderTemplate>
+            <span matTooltip="სტატუსი">სტატუსი</span>
+        </ng-template>
+        <ng-template kendoGridFilterCellTemplate let-filter>
+            <app-dropdown-filter [textField]="'key'"
+                                 [valueField]="'status'"
+                                 [gridFilter]="filter"
+                                 [data]="faceMerchantStatusDropDownData">
+            </app-dropdown-filter>
+        </ng-template>
+        <ng-template kendoGridCellTemplate let-dataItem>
+            <span>{{ dataItem?.statusName }}</span>
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="dateCreated" title="შექმნის თარიღი" width="90">
+        <ng-template kendoGridHeaderTemplate>
+            <span matTooltip="შექმნის თარიღი">შექმნის თარიღი</span>
+        </ng-template>
+        <ng-template kendoGridFilterCellTemplate let-filter>
+            <date-range-picker from="dateCreatedFrom"
+                               to="dateCreatedTo"
+                               [filterState]="filter">
+            </date-range-picker>
+        </ng-template>
+        <ng-template kendoGridCellTemplate let-dataItem>
+            <span>{{ dataItem.dateCreated | date: 'dd/MM/yyyy HH:mm:ss' }}</span>
+        </ng-template>
+    </kendo-grid-column>
+
+    <kendo-grid-column field="Details" title="" width="45" [sortable]="false">
+        <ng-template kendoGridFilterCellTemplate let-filter>
+            <button (click)="resetFilter()" class="btn btn-sm btn-outline-secondary reset-filter">
+                <i class="fa fa-filter"></i>
+            </button>
+        </ng-template>
+        <
+        <ng-template kendoGridCellTemplate let-dataItem>
+            <div class="btn-group">
+                <a [routerLink]="[dataItem.id]"
+                   class="item-details-link">
+                    <button class="btn btn-primary btn-sm">დეტალები</button>
+                </a>
+                <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+                    <button class="btn btn-primary btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
+                    </button>
+                    <div class="dropdown-menu" ngbDropdownMenu>
+                        <a class="btn btn-primary btn-sm" *hasPermission="['R_AL_View']" [routerLink]="[dataItem.id + '/logs']"
+                           ngbDropdownItem>
+                            ლოგები
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </kendo-grid-column>
+</kendo-grid>
+
+<div kendoDialogContainer></div>

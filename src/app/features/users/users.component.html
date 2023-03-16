@@ -1,0 +1,125 @@
+<div class="row p-0 m-0 mb-1 mt-1">
+  <div class="col p-0 pl-1 pr-1 d-flex justify-content-end">
+    <button appPermissionsattr [permissionToCheck]="['R_UM_Create']" class="k-button-blue" kendoButton
+            (click)="registerUser()">
+      მომხმარებლის დამატება
+    </button>
+  </div>
+</div>
+<kendo-grid [data]="gridView"
+            [loading]="isLoading"
+            #gridComponent>
+  <kendo-grid-column field="username" title="მობილურის ნომერი" [width]="70">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="მობილურის ნომერი">მობილურის ნომერი</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="firstname" title="სახელი" [width]="60">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="სახელი">სახელი</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="lastname" title="გვარი" [width]="60">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="გვარი">გვარი</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="clientNo" title="კლიენტის ნომერი" [width]="70">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="კლიენტის ნომერი">კლიენტის ნომერი</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="personalId" title="პირადი ნომერი" [width]="70">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="პირადი ნომერი">პირადი ნომერი</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="email" title="იმეილი" [width]="80">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="იმეილი">იმეილი</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="authorizationProvider" title="დალოგინებულია" [width]="80">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="დალოგინებულია">დალოგინებულია</span>
+    </ng-template>
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <span>{{ dataItem?.authorizationProvider == 0 ? 'TBC Online' : dataItem?.authorizationProvider == 1 ? 'TPay' : 'None' }}</span>
+    </ng-template>
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <app-dropdown-filter [gridFilter]="filter"
+                           [data]="authorizationProviderList"
+                           [textField]="'key'"
+                           [valueField]="'authorizationProvider'">
+      </app-dropdown-filter>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="status" title="სტატუსი" [width]="60">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="სტატუსი">სტატუსი</span>
+    </ng-template>
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <span>
+        {{
+ dataItem?.status == 0 ? 'აქტიური' :
+        dataItem?.status == 1 ? 'დაბლოკილი' :
+        dataItem?.status == 2 ? 'გაუქმებული' : ''
+        }}
+      </span>
+    </ng-template>
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <app-dropdown-filter [gridFilter]="filter"
+                           [data]="UserStatusList"
+                           textField="key"
+                           valueField="status">
+      </app-dropdown-filter>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="createDate" title="შექმნის თარიღი" [width]="80">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="შექმნის თარიღი">შექმნის თარიღი</span>
+    </ng-template>
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <date-range-picker from="createDateFrom"
+                         to="createDateTo"
+                         [filterState]="filter">
+      </date-range-picker>
+    </ng-template>
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <span>{{ dataItem.createdAt | date: 'dd/MM/yyyy HH:mm:ss' }}</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="Details" title="" [width]="40" [sortable]="false">
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <button (click)="resetFilter()" class="btn btn-sm btn-outline-secondary reset-filter">
+        <i class="fa fa-filter"></i>
+      </button>
+    </ng-template>
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <div class="btn-group">
+        <a [routerLink]="[dataItem.id]"
+           class="item-details-link">
+          <button class="btn btn-primary btn-sm">დეტალები</button>
+        </a>
+        <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+          <button class="btn btn-primary btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
+          </button>
+          <div class="dropdown-menu" ngbDropdownMenu>
+            <a class="btn btn-primary btn-sm" ngbDropdownItem>
+              <button class="btn btn-sm"
+                      style="background-color: unset; color: #000; padding-left: 0;"
+                      (click)="deleteUserConfirm(dataItem.id)" appPermissionsattr
+                      [permissionToCheck]="['R_UM_Delete']" [disabled]="dataItem.status === 2 || dataItem.authorizationProvider === 0">
+                გაუქმება
+              </button>
+            </a>
+            <a class="btn btn-primary btn-sm" [routerLink]="[dataItem.id + '/logs']" ngbDropdownItem>ლოგები</a>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </kendo-grid-column>
+</kendo-grid>
+
+<div kendoDialogContainer></div>

@@ -1,0 +1,86 @@
+<div class="row mr-0 ml-0 mb-2 mt-2 w-100">
+  <div class="col">
+    <div class="row mr-0 ml-0 cashdesk-rows" *ngFor="let cashDesk of cashDesks; let i = index">
+      <div class="col p-0">
+        <div class="row ml-0 mr-0">
+          <div class="col p-0">
+            <button *ngIf="!isMerchantCanceled" [id]="'removeCashdesk_'+i" class="btn btn-sm btn-danger mb-1 delete-cashdesk-button" appPermissionsattr
+                    [permissionToCheck]="['R_QRM_RemoveCashDesk']" (click)="deleteCashDesk(cashDesk.id)">
+              <i class="fa fa-trash-o"></i>
+            </button>
+          </div>
+        </div>
+        <div class="row m-0 cashdesk-row">
+          <div class="col container-border cashdesk-info-container">
+            <div class="cash-desk-info d-flex flex-row justify-content-between">
+              <div class="d-inline-block">
+                <p class="qr-code-name" [ngClass]="{'mb-0': cashDesk.generatorUserId}">{{cashDesk.code}}</p>
+                <span class="mat-small d-block" *ngIf="cashDesk.generatorUserId">(უსახელო)</span>
+                <input type="text" [id]="'cashDeskName_'+i" kendoTextBox [(ngModel)]="cashDesk.cashDeskName">
+                <br>
+                <button *ngIf="!isMerchantCanceled" class="btn btn-info btn-sm submit-button"
+                        [id]="'submit_'+i"
+                        (click)="updateCashDeskName(cashDesk.cashDeskName, cashDesk.id)" appPermissionsattr
+                        [permissionToCheck]="['R_QRM_Update']">
+                  Submit
+                </button>
+                <br>
+                <button *ngIf="!cashDesk.device && !isMerchantCanceled" [id]="'addDevice_'+i" class="btn btn-sm btn-info" appPermissionsattr [permissionToCheck]="['R_QRM_AddCashDesk']"
+                        (click)="addDeviceToCashDesk(cashDesk.id)">
+                  დივაისის დამატება
+                </button>
+              </div>
+              <div class="d-inline-block qr-container float-right">
+                <qrcode *ngIf="cashDesk.qrCode" [qrdata]="cashDesk.qrCode" width="100" (click)="printQr(cashDesk.code)"></qrcode>
+                <button *ngIf="!cashDesk.qrCode && !isMerchantCanceled" [id]="'addQrToCashdesk_'+i" appPermissionsattr [permissionToCheck]="['R_QRM_GenerateQR']" class="add-qr-to-cashdesk-container" (click)="generateQr(cashDesk.id)">
+                  <i class="fa fa-plus add-qr-to-cashdesk"></i>
+                </button>
+              </div>
+            </div>
+            <div *ngIf="cashDesk.device" class="d-flex flex-column device-container">
+              <div class="delete-device-container">
+                <button *ngIf="!isMerchantCanceled" [id]="'removeDevice_'+i" class="btn btn-sm btn-danger" appPermissionsattr [permissionToCheck]="['R_QRM_RemoveCashDesk']"
+                        (click)="deleteDevice(cashDesk.device.id)">
+                  დივაისის წაშლა
+                </button>
+              </div>
+              <div class="device-info d-flex flex-column">
+                <span>დივაისის საქარხნო ნომერი: {{cashDesk.device.serialNumber}}</span>
+                <span>დივაისის SMS ნომერი: {{cashDesk.device.simCardNumber}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col container-border" *ngFor="let cashier of cashiers">
+            <div>
+              <div class="col">
+                <button *ngIf="!cashDesk.cashiers[cashier] && !isMerchantCanceled" appPermissionsattr [permissionToCheck]="['R_QRM_AddOperator']" (click)="addCashierToCashDesk(cashDesk.id)"
+                        [id]="'addCashierToCashdesk_'+i"
+                        class="btn btn-primary btn-sm d-inline float-right add-cashier-button">
+                  <i class="fa fa-plus"></i>
+                </button>
+                <button *ngIf="cashDesk.cashiers[cashier] && (cashDesk.cashiers.length > 1 || cashDesk.device) && !isMerchantCanceled"
+                        [id]="'deleteCashierFromCashdesk_'+i"
+                        class="btn btn-sm btn-danger d-inline float-right mb-1 delete-cashier-button" appPermissionsattr
+                        [permissionToCheck]="['R_QRM_RemoveOperator']"
+                        (click)="deleteCashier(cashDesk.cashiers[cashier].cashDeskCashierId)">
+                  <i class="fa fa-trash-o"></i>
+                </button>
+                <div *ngIf="cashDesk.cashiers[cashier]">
+                  <p class="mb-0">
+                    <span>სახელი: </span> <span>{{cashDesk.cashiers[cashier].firstname}}</span>
+                  </p>
+                  <p class="mb-0">
+                    <span>გვარი: </span> <span>{{cashDesk.cashiers[cashier].lastname}}</span>
+                  </p>
+                  <p class="mb-0">
+                    <span>ტელეფონი: </span> <span>{{cashDesk.cashiers[cashier].phoneNumber}}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

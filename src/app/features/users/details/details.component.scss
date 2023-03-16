@@ -1,0 +1,44 @@
+.container {
+  padding-top: 50px;
+  width: 700px;
+
+  .row {
+    //width: 600px;
+    margin: auto;
+
+    .wrapper {
+      //width: 600px;
+      padding-top: 20px;
+      padding-bottom: 0;
+      border: 1px solid rgba(117, 117, 117, 0.1);
+      border-radius: 5px;
+      margin: 20px 0 20px 0;
+    }
+
+    .col {
+      .row {
+        margin-bottom: 20px;
+      }
+    }
+  }
+}
+
+.box-shadow-danger {
+  box-shadow: 0 0 6px 6px rgba(220, 53, 69, .2);
+}
+
+.box-shadow-primary {
+  box-shadow: 0 0 6px 6px rgba(0, 123, 255, .2);
+}
+
+.details-header {
+  padding-bottom: 20px;
+}
+
+.client-no-error {
+  font-size: 12px;
+  color: red;
+  position: absolute;
+  bottom: -15px;
+  left: 15px;
+}

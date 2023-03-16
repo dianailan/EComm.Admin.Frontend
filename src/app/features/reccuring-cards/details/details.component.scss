@@ -1,0 +1,20 @@
+kendo-grid {
+  height: auto;
+  max-height: 400px;
+}
+
+* {
+  font-size: 14px;
+}
+
+.form-group.row > div {
+  padding: calc(.375rem + 1px);
+}
+
+.form-group.row > div > div {
+  word-break: break-word;
+}
+
+.row {
+  margin-bottom: 0;
+}

@@ -1,0 +1,20 @@
+form {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.bnpl-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+
+  label, input {
+    margin-bottom: 0;
+  }
+}
+
+.bnpl-inp {
+  margin-left: 11px;
+  width: 15px;
+  height: 15px;
+}

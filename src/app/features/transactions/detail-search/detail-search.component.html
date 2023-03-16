@@ -1,0 +1,72 @@
+<div class="row mr-0 ml-0">
+  <button (click)="openCloseFilter()" kendoButton
+          class="additional-filter-toggle k-button-blue">
+    {{show == false ? 'გაფართოებული ძებნა' : 'ფილტრის მოხსნა'}}
+  </button>
+
+  <div class="col" [@showHide]="show == false ? 'hide' : 'show'">
+    <label>
+      <input kendoTextBox type="text" [(ngModel)]="userInfo" (input)="change($event.target.value, $event.target.name)"
+             name="userInfo" placeholder="მომხმარებელი">
+    </label>
+    <label>
+      <input kendoTextBox type="text" [(ngModel)]="rrn" (input)="change($event.target.value, $event.target.name)"
+             name="rrn" placeholder="RRN">
+    </label>
+    <label>
+      <input kendoTextBox type="text" [(ngModel)]="terminalNo" (input)="change($event.target.value, $event.target.name)"
+             name="terminalNo" placeholder="POS QR Terminal ID">
+    </label>
+    <label>
+      <input kendoTextBox type="text" [(ngModel)]="physicalTerminalNo" (input)="change($event.target.value, $event.target.name)"
+             name="physicalTerminalNo" placeholder="ფიზიკური Terminal ID">
+    </label>
+    <label>
+      <input kendoTextBox type="text" [(ngModel)]="operatorContact"
+             (input)="change($event.target.value, $event.target.name)" name="operatorContact" placeholder="მოლარე">
+    </label>
+    <label>
+      <input kendoTextBox type="text" [(ngModel)]="qRCode" (input)="change($event.target.value, $event.target.name)"
+             name="qRCode" placeholder="QR Code">
+    </label>
+    <label>
+      <input kendoTextBox type="text" [(ngModel)]="merchantPaymentId"
+             (input)="change($event.target.value, $event.target.name)"
+             name="merchantPaymentId" placeholder="მერჩანტის გადახდის კოდი">
+    </label>
+    <label>
+      <app-dropdown-filter [textField]="'key'"
+                           [valueField]="'paymentType'"
+                           [gridFilter]="_filterState"
+                           [data]="paymentTypeList">
+      </app-dropdown-filter>
+    </label>
+    <label>
+      <app-dropdown-filter [textField]="'key'"
+                           [valueField]="'paymentObjectType'"
+                           [gridFilter]="_filterState"
+                           [data]="paymentObjectTypeList">
+      </app-dropdown-filter>
+    </label>
+    <label>
+      <app-dropdown-filter [textField]="'key'"
+                           [valueField]="'paymentChannel'"
+                           [gridFilter]="_filterState"
+                           [data]="paymentChannelList">
+      </app-dropdown-filter>
+    </label>
+    <label>
+      <app-dropdown-filter [textField]="'key'"
+                           [valueField]="'initializerType'"
+                           [gridFilter]="_filterState"
+                           [data]="initializerTypeList">
+      </app-dropdown-filter>
+    </label>
+    <label>
+      <input kendoCheckBox type="checkbox" [(ngModel)]="hadCancellationProblem"
+             (input)="change($event.target.value === 'on', $event.target.name)"
+             name="hadCancellationProblem">
+      პრობლემა თანხის დაბრუნებისას
+    </label>
+  </div>
+</div>

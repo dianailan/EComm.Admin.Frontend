@@ -1,0 +1,25 @@
+.client-container {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 20px;
+
+  .client-id, .client-secret {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+
+    p {
+      margin-bottom: 0;
+      font-weight: bold;
+    }
+
+    button {
+      width: 150px;
+    }
+  }
+
+  .client-id {
+    gap: 57px;
+  }
+}

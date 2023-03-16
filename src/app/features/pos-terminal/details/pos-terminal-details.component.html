@@ -1,0 +1,132 @@
+<div class="main pb-3">
+  <form [formGroup]="formGroup" *ngIf="posQrTerminalDetails">
+    <div class="row ml-0 mr-0 merchant-details-row">
+      <div class="col pl-0 pr-0 left-side">
+        <div class="row details-row">
+          <div class="col field-name">შექმნის თარიღი</div>
+          <div class="col field-info">{{posQrTerminalDetails.dateCreated | date: 'dd/MM/yyyy HH:mm:ss'}}</div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">POS QR Terminal ID</div>
+          <div class="col field-info">
+            <span *ngIf="!editMode || (editMode && posQrTerminalDetails.status !== 0)" class="editable-field">{{posQrTerminalDetails?.terminalNo}} </span>
+            <input *ngIf="editMode && posQrTerminalDetails.status === 0" type="text" id="terminalNo" class="form-control form-control-sm"
+                   formControlName="terminalNo" maxlength="15">
+            <!-- <app-validation-messages *ngIf="formGroup.get('terminalNo').invalid && submitted"
+                                          [formGroup]="formGroup" controlName="terminalNo"
+                                          patternErrorMessage="შეიყვანე მხოლოდ ციფრები">
+            </app-validation-messages> -->
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">ფიზიკური Terminal ID</div>
+          <div class="col field-info">
+            <span *ngIf="!editMode || (editMode && posQrTerminalDetails.status !== 0)" class="editable-field">{{posQrTerminalDetails?.physicalTerminalNo}} </span>
+            <input *ngIf="editMode && posQrTerminalDetails.status === 0" type="text" id="physicalTerminalNo" class="form-control form-control-sm"
+                   formControlName="physicalTerminalNo" maxlength="8" minlength="8">
+            <!-- <app-validation-messages *ngIf="formGroup.get('physicalTerminalNo').value.length !== 8 && submitted"
+                                          [formGroup]="formGroup" controlName="physicalTerminalNo"
+                                          patternErrorMessage="შეიყვანე მხოლოდ ციფრები">
+            </app-validation-messages> -->
+            <span *ngIf="formGroup.get('physicalTerminalNo').value.length !== 8 && submitted"
+                  class="text-danger text-danger-small">
+              ფორმატი უნდა შედგებოდეს 8 სიმბოლოსგან
+            </span>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">მერჩანტ ID</div>
+          <div class="col field-info">
+            <span class="editable-field">{{posQrTerminalDetails?.paymentMerchantExternalId}} </span>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">სტატუსი</div>
+          <div class="col field-info">
+            <span class="editable-field">{{posQrTerminalDetails?.posQRTerminalStatusName}} </span>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">BNPL</div>
+          <div class="col field-info">
+            <span *ngIf="!editMode" class="editable-field">{{posQrTerminalDetails?.isBnplEnabled ? 'კი' : 'არა'}} </span>
+            <input *ngIf="editMode && posQrTerminalDetails.status !== 2" type="checkbox" id="physicalTerminalNo" class="form-control form-control-sm bnpl"
+                   formControlName="isBnplEnabled" maxlength="15">
+            <app-validation-messages *ngIf="formGroup.get('isBnplEnabled').invalid && submitted"
+                                     [formGroup]="formGroup" controlName="isBnplEnabled"
+                                     patternErrorMessage="შეიყვანე მხოლოდ ციფრები">
+            </app-validation-messages>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">Client Secret/ID</div>
+          <div class="col field-info">
+            <button class="btn btn-info btn-sm" [disabled]="posQrTerminalDetails.status !== 1 || posQrTerminalDetails.merchantStatus !== 1" (click)="open()">ნახვა</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="row ml-0 mr-0 details-buttons-row">
+
+    <div class="col pl-0 pr-0">
+      <button class="btn btn-info" appPermissionsattr
+              [permissionToCheck]="['R_POS_QR_TRM_Update']" *ngIf="!editMode && posQrTerminalDetails?.status !== 2" id="editButton"
+              (click)="setEditMode()">
+        რედაქტირება
+      </button>
+      <button class="btn btn-secondary" *ngIf="editMode" (click)="setEditMode()">გაუქმება</button>
+      <button class="btn btn-primary" *ngIf="editMode" (click)="updatePosQrTerminal()" appPermissionsattr
+              [permissionToCheck]="['R_POS_QR_TRM_Update']">
+        შენახვა
+      </button>
+
+      <button class="btn btn-success" id="confirmButton"
+              *ngIf="!editMode && (formGroup.valid && (posQrTerminalDetails?.status === 0))"
+              (click)="updatePosQrTerminalStatus(posQrTerminalId, 1)" appPermissionsattr [permissionToCheck]="['R_POS_QR_TRM_Confirm']">
+        დათანხმება
+      </button>
+      <button class="btn btn-danger" id="denyButton"
+              *ngIf="!editMode && posQrTerminalDetails?.status !== 2"
+              (click)="updatePosQrTerminalStatus(posQrTerminalId, 2)" appPermissionsattr [permissionToCheck]="['R_POS_QR_TRM_Deny']">
+        გაუქმება
+      </button>
+
+      <button class="btn btn-danger" id="blockButton"
+              *ngIf="!editMode  && posQrTerminalDetails?.status === 1"
+              (click)="updatePosQrTerminalStatus(posQrTerminalId, 3)" appPermissionsattr [permissionToCheck]="['R_POS_QR_TRM_Block']">
+        დაბლოკვა
+      </button>
+
+      <button class="btn btn-info" id="unblockButton"
+              *ngIf="!editMode && (formGroup.valid && posQrTerminalDetails?.status === 3)"
+              (click)="updatePosQrTerminalStatus(posQrTerminalId, 1)" appPermissionsattr [permissionToCheck]="['R_POS_QR_TRM_Unblock']">
+        ბლოკის მოხსნა
+      </button>
+    </div>
+  </div>
+</div>
+
+<kendo-dialog title="Client ID/Secret"
+              *ngIf="opened"
+              (close)="close()"
+              [minWidth]="250"
+              [width]="400">
+  <div class="client-container">
+    <div class="client-id">
+      <p>Client ID</p>
+      <button kendoButton (click)="copyId()" themeColor="primary">COPY</button>
+    </div>
+    <div class="client-secret">
+      <p>Client Secret</p>
+      <button kendoButton (click)="copySecret()" themeColor="primary">COPY</button>
+    </div>
+  </div>
+  <kendo-dialog-actions>
+    <button kendoButton (click)="close()" themeColor="primary">
+      გასაგებია
+    </button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+<div kendoDialogContainer></div>

@@ -1,0 +1,34 @@
+<div class="row m-0">
+  <div class="col pt-3">
+    <div class="row mb-3 mr-0 ml-0">
+      <div class="col p-0  company-info">
+        <div class="row mr-0 ml-0">
+          <div class="col p-0">
+            <p class="juridicalNameLabel">
+              იურიდიული სახელი:
+              <span class="juridicalName">
+                {{companyModel.juridicalName}}
+              </span>
+            </p>
+          </div>
+        </div>
+        <div class="row mr-0 ml-0">
+          <div class="col p-0">
+            <p class="identificationNumberLabel">
+              საიდენტიფიკაციო ნომერი:
+              <span class="identificationNumber">
+                {{companyModel.identificationNumber}}
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-register-qr-merchant-form [formSubmit]="formSubmitSub()" (form)="registerQrMerchant($event)" [paymentLimits]="merchantPaymentLimit" [refundLimits]="merchantRefundLimit"></app-register-qr-merchant-form>
+    <div class="row mr-0 ml-0">
+      <div class="col p-0 pb-2 submit-button-container">
+        <button class="btn btn-primary w-100" id="submitButton" (click)="formSubmit()">დამატება</button>
+      </div>
+    </div>
+  </div>
+</div>

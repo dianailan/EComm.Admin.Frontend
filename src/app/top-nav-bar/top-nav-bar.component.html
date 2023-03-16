@@ -1,0 +1,18 @@
+<nav class="navbar navbar-expand-lg navbar-light white-bg pl-0 pr-0 mr-0">
+  <div class="row w-100 m-0">
+    <div class="col">
+      <div>
+        <button id="navToggle" class="custom-toggler btn btn-primary btn-custom" type="button"
+                (click)="navBarToggle()">
+          <i class="fa fa-bars"></i>
+        </button>
+      </div>
+    </div>
+    <div class="col pr-1 ">
+      <div class="user-info-container">
+        <h6 class="d-inline mb-0">{{useName}}</h6>
+        <button class="btn btn-info" id="logOut" (click)="logout()">გამოსვლა<i class="fa fa-sign-out ml-1"></i></button>
+      </div>
+    </div>
+  </div>
+</nav>

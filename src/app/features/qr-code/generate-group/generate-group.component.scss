@@ -1,0 +1,14 @@
+.generate-group-button {
+  font-size: 18px;
+  line-height: 1.3em;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}

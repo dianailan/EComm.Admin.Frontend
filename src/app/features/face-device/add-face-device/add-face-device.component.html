@@ -1,0 +1,14 @@
+<div class="container">
+  <div class="alert alert-danger" *ngIf="addDevice.response">{{addDevice.message}}</div>
+  <div class="form-group position-relative">
+    <label for="deviceID">დივაისის ID</label>
+    <input type="text" class="form-control" id="deviceID" [(ngModel)]="deviceID">
+    <span class="text-danger" *ngIf="submitted && !deviceID">ველის შევსება სავალდებულოა</span>
+  </div>
+</div>
+<kendo-dialog-actions>
+  <button kendoButton (click)="onCancelAction()">გაუქმება</button>
+  <button kendoButton id="confButton" (click)="onConfirmAction()" [primary]="true">
+    დამატება
+  </button>
+</kendo-dialog-actions>

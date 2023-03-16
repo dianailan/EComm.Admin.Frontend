@@ -1,0 +1,99 @@
+<div class="ibox-content ">
+  <div class="row mr-0 ml-0">
+    <div class="col-md-6 col">
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label">ბარათის მფლობელი</label>
+        <div class="col-md-6">
+          <div>{{details?.cardOwnerFullName}}</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label">პირადი ნომერი</label>
+        <div class="col-md-6">
+          <div>{{details?.personalId}}</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label">კლიენტის ნომერი</label>
+        <div class="col-md-6">
+          <div>{{details?.clientNo}}</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label">ტელეფონის ნომერი</label>
+        <div class="col-md-6">
+          <div>{{details?.phoneNumber}}</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label">ბარათის ტიპი</label>
+        <div class="col-md-6">
+          <div>{{details?.cardType }}</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label">ბარათის ნომერი</label>
+        <div class="col-md-6">
+          <div>{{details?.cardMask}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col">
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label">ძირითადი ბარათი</label>
+        <div class="col-md-6">
+          <div>{{details?.isPrimary ? 'კი' : 'არა'}}</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label">პროდუქტი</label>
+        <div class="col-md-6">
+          <div>{{details?.product}}</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label">სტატუსი</label>
+        <div class="col-md-6">
+          <div>{{details?.cardStatus }}</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label">დიზაინ ID</label>
+        <div class="col-md-6">
+          <div>{{details?.designId }}</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label">დაიმპორტების თარიღი</label>
+        <div class="col-md-6">
+          <div>{{details?.createdAt | date: 'dd/MM/yyyy HH:mm:ss'}}</div>
+        </div>
+      </div>
+      <!--<div class="form-group row">
+        <label class="col-md-3 col-form-label">დეაქტივაციის თარიღი</label>
+        <div class="col-md-6">
+          {{details?.deletedAt | date: 'dd/MM/yyyy HH:mm:ss'}}
+        </div>
+      </div>-->
+    </div>
+  </div>
+  <!--<div class="table-responsive">
+    <kendo-grid [data]="gridData" [scrollable]="true">
+      <kendo-grid-column field="N" title="N" sortable="false" width="10" class="row-number">
+        <ng-template kendoGridCellTemplate let-rowIndex="rowIndex">
+          <span>{{rowIndex}}</span>
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="operationDate" title="Operation Date" width="80"></kendo-grid-column>
+      <kendo-grid-column field="paymentLogType" title="Payment Log Type" width="50">
+        <ng-template kendoGridCellTemplate let-dateItem>
+          <span>{{dateItem.paymentLogType}}</span>
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="requestBody" title="Request Body" width="80"></kendo-grid-column>
+      <kendo-grid-column field="responseBody" title="Response Body" width="80"></kendo-grid-column>
+      <kendo-grid-column field="amount" title="Amount" width="80"></kendo-grid-column>
+      <kendo-grid-column field="description" title="Description" width="80"></kendo-grid-column>
+    </kendo-grid>
+  </div>-->
+</div>

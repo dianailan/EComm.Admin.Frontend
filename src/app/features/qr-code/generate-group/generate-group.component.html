@@ -1,0 +1,11 @@
+<div class="example-config">
+  <div class="alert alert-danger" *ngIf="!(error.success)">{{error.message}}</div>
+  <label for="quantity">რაოდენობა</label>
+  <input type="number" id="quantity" class="form-control" [(ngModel)]="quantity" min="0">
+</div>
+<kendo-dialog-actions>
+  <button kendoButton id="generateGroup" (click)="generateGroup($event)" [primary]="true" [disabled]="quantity == undefined"
+          class="k-button">
+    გენერაცია
+  </button>
+</kendo-dialog-actions>

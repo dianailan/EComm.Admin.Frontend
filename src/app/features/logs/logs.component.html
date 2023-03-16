@@ -1,0 +1,85 @@
+<div class="row p-0 m-0 mb-1 mt-1">
+  <div class="col p-0 pl-1 pr-1 d-flex justify-content-end">
+    <button kendoButton (click)="exportLogs()" class="k-button-blue">ექსპორტი</button>
+  </div>
+</div>
+<kendo-grid [data]="gridData"
+            [loading]="isDataLoading"
+            #gridComponent>
+  <kendo-grid-column field="userName" title="მომხმარებელი" [width]="100">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="მომხმარებელი">მომხმარებელი</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="actionEntity" filter="text" filterable="true" title="ობიექტი"
+                     [width]="80">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="ობიექტი">ობიექტი</span>
+    </ng-template>
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <app-dropdown-filter [textField]="'key'"
+                           [valueField]="'actionEntity'"
+                           [gridFilter]="filter"
+                           [data]="actionEntityDropDownData">
+      </app-dropdown-filter>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="actionType" title="ქმედება" [width]="80">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="ქმედება">ქმედება</span>
+    </ng-template>
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <app-dropdown-filter [textField]="'key'"
+                           [valueField]="'actionType'"
+                           [gridFilter]="filter"
+                           [data]="actionTypeDropDownData">
+      </app-dropdown-filter>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="actionSource" title="წყარო" [width]="60">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="წყარო">წყარო</span>
+    </ng-template>
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <app-dropdown-filter [textField]="'key'"
+                           [valueField]="'actionSource'"
+                           [gridFilter]="filter"
+                           [data]="actionSourceDropDownData">
+      </app-dropdown-filter>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="actionEntityPk" title="უნიკალური იდენტიფიქატორი" [width]="60">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="უნიკალური იდენტიფიქატორი">უნიკალური იდენტიფიქატორი</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="dateCreated" title="შექმნის თარიღი" [width]="80">
+    <ng-template kendoGridHeaderTemplate>
+      <span matTooltip="შექმნის თარიღი">შექმნის თარიღი</span>
+    </ng-template>
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <date-range-picker from="dateCreated_From"
+                         to="dateCreated_To"
+                         [filterState]="filter">
+      </date-range-picker>
+    </ng-template>
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <span>{{ dataItem.dateCreated | date: 'dd/MM/yyyy HH:mm:ss'}}</span>
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="Details" title="" [width]="25" [sortable]="false">
+    <ng-template kendoGridFilterCellTemplate let-filter>
+      <button (click)="resetFilter()" class="btn btn-sm btn-outline-secondary reset-filter">
+        <i class="fa fa-filter"></i>
+      </button>
+    </ng-template>
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <div class="btn-group">
+        <a [routerLink]="[dataItem.id]"
+           class="item-details-link">
+          <button class="btn btn-primary btn-sm">დეტალები</button>
+        </a>
+      </div>
+    </ng-template>
+  </kendo-grid-column>
+</kendo-grid>

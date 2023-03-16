@@ -1,0 +1,12 @@
+<div class="container">
+  <div class="form-group position-relative">
+    <label for="comment">კომენტარი</label>
+    <input type="text" class="form-control" id="comment" required [(ngModel)]="comment">
+  </div>
+</div>
+<kendo-dialog-actions>
+  <button kendoButton (click)="onCancelAction()">გაუქმება</button>
+  <button kendoButton id="confButton" (click)="onConfirmAction()" [primary]="true">
+    დადასტურება
+  </button>
+</kendo-dialog-actions>

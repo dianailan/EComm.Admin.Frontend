@@ -1,0 +1,107 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~bootstrap/dist/css/bootstrap.min.css";
+@import "~font-awesome/css/font-awesome.css";
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+@import "./app/styles/kendo-styles.scss";
+@import "./app/styles/custom.scss";
+@import "./app/styles/component-styles.scss";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "TBC Din Nusxuri", sans-serif;
+}
+
+html, body {
+  height: 100%;
+}
+
+input, select {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+body {
+  margin: 0;
+}
+
+.page-content-wrap {
+  overflow: auto;
+}
+
+.top-nav-bar-container {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #ffffff;
+}
+
+@media screen and (max-width: 700px) {
+  .page-content-wrap {
+    min-width: calc(100vw - 50px);
+  }
+}
+
+//scrollbar styles
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 8px;
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(127, 119, 119, 0.59);
+}
+
+.color {
+  background-color: #0d8ddb;
+  color: #0f0f0f;
+}
+
+.snackbar-success {
+  color: #155724;
+  background-color: #d4edda;
+}
+
+.snackbar-danger {
+  color: #721c24;
+  background-color: #f8d7da;
+}
+
+.mat-button {
+  color: #0f0f0f;
+}
+
+.kendo-details-button {
+  padding: 4px 3px
+}
+
+.k-calendar-header > .k-today {
+  display: none;
+}
+
+.mat-progress-bar-fill::after {
+  background-color: #007bff !important;
+}
+
+.dropdown-menu.show {
+  right: 0 !important;
+  left: auto !important;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.custom-control-input {
+  z-index: 1 !important;
+}

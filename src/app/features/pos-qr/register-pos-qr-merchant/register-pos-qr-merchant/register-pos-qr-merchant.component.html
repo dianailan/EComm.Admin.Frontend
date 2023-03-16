@@ -1,0 +1,14 @@
+<div class="row m-0">
+  <div class="col pt-3">
+    <app-register-pos-qr-registration-form [formSubmit]="formSubmitSub()"
+                                           (form)="registerPosQrMerchant($event)"
+                                           [mccCodes]="mccCodes"
+                                           [registerWithTerminal]="false">
+    </app-register-pos-qr-registration-form>
+    <div class="row mr-0 ml-0">
+      <div class="col p-0 pb-2 submit-button-container">
+        <button class="btn btn-primary w-100" (click)="formSubmit()">რეგისტრაცია</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,74 @@
+<div class="ibox-content ">
+  <div class="row mr-0 ml-0">
+    <div class="col-md-6 col">
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label">Recurring ID</label>
+        <div class="col-md-6">
+          <div>{{details?.recId}}</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label">სტატუსი</label>
+        <div class="col-md-6">
+          <div>{{details?.status}}</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label">ბარათის ტიპი</label>
+        <div class="col-md-6">
+          <div>{{details?.cardType }}</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label">ბარათის მასკა</label>
+        <div class="col-md-6">
+          <div>{{details?.cardMask}}</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label">ვადის გასვლის თარიღი</label>
+        <div class="col-md-6">
+          <div>{{details?.expiryDate| date: 'dd/MM/yyyy'}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col">
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label">გადახდების მერჩანტ ID</label>
+        <div class="col-md-6">
+          <div>{{details?.merchantExternalId}}</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label">მერჩანტის სავაჭრო სახელი</label>
+        <div class="col-md-6">
+          <div>{{details?.tradeName}}</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label">გადახდის კოდი</label>
+        <div class="col-md-6">
+          <div>{{details?.paymentGenId }}</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label">მერჩანტის გადახდის კოდი</label>
+        <div class="col-md-6">
+          <div>{{details?.merchantPaymentId }}</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label">შექმნის თარიღი</label>
+        <div class="col-md-6">
+          <div>{{details?.dateCreated | date: 'dd/MM/yyyy HH:mm:ss'}}</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label">მოდიფიცირების თარიღი</label>
+        <div class="col-md-6">
+          <div>{{details?.dateModified | date: 'dd/MM/yyyy HH:mm:ss'}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

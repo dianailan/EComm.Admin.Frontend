@@ -1,0 +1,36 @@
+<div class="example-config">
+  <div class="alert alert-danger" *ngIf="!(error.success)">{{error.message}}</div>
+  <label for="portion">პორციის ნომერი</label>
+  <input type="text" id="portion" class="form-control" [(ngModel)]="groupIdentifier">
+  <div class="custom-control custom-radio">
+    <input type="radio" class="custom-control-input" id="standard" [value]="1" [(ngModel)]="groupType">
+    <label class="custom-control-label" for="standard">სტანდარტული</label>
+  </div>
+  <div class="custom-control custom-radio">
+    <input type="radio" class="custom-control-input" id="150/210" [value]="2" [(ngModel)]="groupType">
+    <label class="custom-control-label" for="150/210">ობიექტი სადგამი (150/210)</label>
+  </div>
+  <div class="custom-control custom-radio">
+    <input type="radio" class="custom-control-input" id="120/150" [value]="3" [(ngModel)]="groupType">
+    <label class="custom-control-label" for="120/150">ობიექტი სტიკერი (120/150)</label>
+  </div>
+  <div class="custom-control custom-radio">
+    <input type="radio" class="custom-control-input" id="90/120" [value]="4" [(ngModel)]="groupType">
+    <label class="custom-control-label" for="90/120">ტაქსი (90/120)</label>
+  </div>
+  <div class="custom-control custom-radio">
+    <input type="radio" class="custom-control-input" id="43/65" [value]="5" [(ngModel)]="groupType">
+    <label class="custom-control-label" for="43/65">სალარო ტერმინალი (43/65)</label>
+  </div>
+  <div class="custom-control custom-radio">
+    <input type="radio" class="custom-control-input" id="25/25" [value]="6" [(ngModel)]="groupType">
+    <label class="custom-control-label" for="25/25">სალარო ტერმინალი - მხოლოდ QR (25/25)</label>
+  </div>
+</div>
+<kendo-dialog-actions>
+  <button kendoButton (click)="printGroup($event)" [primary]="true" [disabled]="!groupIdentifier"
+          id="downloadGroup"
+          class="k-button">
+    ჩამოტვირთვა
+  </button>
+</kendo-dialog-actions>

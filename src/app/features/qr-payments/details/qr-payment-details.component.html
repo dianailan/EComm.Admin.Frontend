@@ -1,0 +1,338 @@
+<div class="container pb-3">
+  <form [formGroup]="formGroup" *ngIf="qrPaymentDetails">
+    <div class="row ml-0 mr-0 merchant-details-row">
+      <div class="col pl-0 pr-0 left-side">
+        <div class="row details-row">
+          <div class="col field-name">სავაჭრო სახელი KA</div>
+          <div class="col field-info">
+            <span *ngIf="!editMode" class="editable-field">{{qrPaymentDetails.tradeNameKa}}</span>
+            <input *ngIf="editMode" type="text" id="tradeNameKa" class="form-control form-control-sm"
+                   formControlName="tradeNameKa">
+            <app-validation-messages *ngIf="formGroup.get('tradeNameKa').invalid &&  submitted"
+                                     [formGroup]="formGroup" controlName="tradeNameKa" patternErrorMessage="შეიყვანე მხოლოდ ქართული ასოები">
+            </app-validation-messages>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">სავაჭრო სახელი EN</div>
+          <div class="col field-info">
+            <span *ngIf="!editMode" class="editable-field">{{qrPaymentDetails.tradeNameEn}}</span>
+            <input *ngIf="editMode" type="text" id="tradeNameEn" class="form-control form-control-sm"
+                   formControlName="tradeNameEn">
+            <app-validation-messages *ngIf="formGroup.get('tradeNameEn').invalid &&  submitted"
+                                     [formGroup]="formGroup" controlName="tradeNameEn" patternErrorMessage="შეიყვანე მხოლოდ ლათნური ასოები">
+            </app-validation-messages>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">
+            QR-ის ტიპი
+          </div>
+          <div class="col field-info">
+            <div class="row ml-0 mr-0">
+              <div class="col p-0 d-flex align-items-center">
+                <input id="isMobileQr" type="checkbox" [disabled]="qrPaymentDetails.isMobileQR"
+                       [value]="qrPaymentDetails.isMobileQR"
+                       [checked]="qrPaymentDetails.isMobileQR">
+                <label for="isMobileQr" class="mb-0">MobileQR</label>
+              </div>
+            </div>
+            <div class="row ml-0 mr-0">
+              <div class="col p-0 d-flex align-items-center">
+                <input id="isPrintedQr" type="checkbox" [disabled]="qrPaymentDetails.isPrintedQR"
+                       [value]="qrPaymentDetails.isPrintedQR"
+                       [checked]="qrPaymentDetails.isPrintedQR">
+                <label for="isPrintedQr" class="mb-0">PrintedQR</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">
+            სტატუსი
+          </div>
+          <div class="col field-info">
+            <span class="editable-field">{{qrPaymentDetails.statusName}}</span>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">
+            კომპანიის სახელი
+          </div>
+          <div class="col field-info">
+            <span class="editable-field">{{qrPaymentDetails.companyJuridicalName}}</span>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">
+            მერჩანტ ID
+          </div>
+          <div class="col field-info">
+            <span *ngIf="!editMode" class="editable-field">{{qrPaymentDetails.paymentMerchantExternalId}}</span>
+            <input *ngIf="editMode" id="paymentMerchantExternalId" type="text" class="form-control form-control-sm"
+                   formControlName="paymentMerchantExternalId" maxlength="15">
+            <app-validation-messages *ngIf="formGroup.get('paymentMerchantExternalId').invalid &&  submitted"
+                                     [formGroup]="formGroup" controlName="paymentMerchantExternalId"
+                                     patternErrorMessage="შეიყვანე მხოლოდ ციფრები">
+            </app-validation-messages>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">MCC Code</div>
+          <div class="col field-info">
+            <span *ngIf="!editMode" class="editable-field">{{mccCodeValue}}</span>
+            <select *ngIf="editMode" id="mccCodeId" class="custom-select custom-select-sm" formControlName="mccCodeId">
+              <option *ngFor="let mcc of mccCodes" [id]="mcc.id"
+                      [ngValue]="mcc.id">
+                {{mcc.code + ' ' + mcc.descriptionKa}}
+              </option>
+            </select>
+            <app-validation-messages *ngIf="formGroup.get('mccCodeId').invalid && submitted"
+                                     [formGroup]="formGroup" controlName="mccCodeId">
+            </app-validation-messages>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">
+            საქმიანობის სფერო
+          </div>
+          <div class="col field-info">
+            <span class="editable-field">{{qrPaymentDetails.businessField}}</span>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">
+            შექმნის თარიღი
+          </div>
+          <div class="col field-info">
+            <span class="editable-field">{{qrPaymentDetails.dateCreated | date: 'dd/MM/yyyy HH:mm:ss'}}</span>
+          </div>
+        </div>
+        <div class="row details-row mb-0">
+          <div class="col p-0">
+            <div class="row ml-0 mr-0 mb-2">
+              <div class="col">
+                <span class="additional-info">დამატებითი ინფორმაცია</span>
+              </div>
+            </div>
+            <div class="row ml-0 mr-0 mt-3 details-row mb-0">
+              <div class="col field-name">ანგარიშის ნომერი</div>
+              <div class="col field-info">
+                <span *ngIf="!editMode" class="editable-field">{{qrPaymentDetails.accountNumber}}</span>
+                <input *ngIf="editMode" type="text" id="accountNumber" class="form-control form-control-sm"
+                       formControlName="accountNumber" maxlength="22">
+                <app-validation-messages *ngIf="formGroup.get('accountNumber').invalid && submitted"
+                                         [formGroup]="formGroup" controlName="accountNumber" maxlength="22" minlength="22">
+                </app-validation-messages>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">
+            ამონაწერის მოთხოვნა
+          </div>
+          <div class="col field-info">
+            <span class="editable-field">{{qrPaymentDetails.sendingPeriod}}</span>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">
+            ამონაწერი მეილზე
+          </div>
+          <div class="col field-info">
+            <span class="editable-field">{{qrPaymentDetails.emailForRecords}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="col pl-0 pr-0 right-side">
+        <div class="row details-row">
+          <div class="col field-name">
+            აღწერა
+          </div>
+          <div class="col field-info">
+            <span class="editable-field">{{qrPaymentDetails.description}}</span>
+          </div>
+        </div>
+        <div class="row details-row mb-0">
+          <div class="col">
+            <div class="row m-0">
+              <div class="col p-0">
+                <span class="limits">ლიმიტი</span>
+              </div>
+            </div>
+            <div class="row details-row">
+              <div class="col field-name">
+                ლიმიტი ტრანზაქციაზე
+              </div>
+              <div class="col field-info">
+                <span *ngIf="!editMode" class="editable-field">{{qrPaymentDetails.paymentLimits.transaction}}</span>
+                <input *ngIf="editMode" type="text" id="limitPerTransaction" class="form-control form-control-sm"
+                       formControlName="limitPerTransaction" maxlength="16">
+                <app-validation-messages *ngIf="formGroup.get('limitPerTransaction').invalid &&  submitted"
+                                         [formGroup]="formGroup" controlName="limitPerTransaction"
+                                         patternErrorMessage="ფორმატი არასწორია" maxlength="16">
+                </app-validation-messages>
+              </div>
+            </div>
+            <div class="row details-row">
+              <div class="col field-name">
+                ლიმიტი დღეზე
+              </div>
+              <div class="col field-info">
+                <span *ngIf="!editMode" class="editable-field">{{qrPaymentDetails.paymentLimits.daily}}</span>
+                <input *ngIf="editMode" type="text" id="limitPerDay" class="form-control form-control-sm"
+                       formControlName="limitPerDay" maxlength="16">
+                <app-validation-messages *ngIf="formGroup.get('limitPerDay').invalid &&  submitted"
+                                         [formGroup]="formGroup" controlName="limitPerDay"
+                                         patternErrorMessage="ფორმატი არასწორია" maxlength="16">
+                </app-validation-messages>
+              </div>
+            </div>
+            <div class="row details-row">
+              <div class="col field-name">
+                ლიმიტი თვეზე
+              </div>
+              <div class="col field-info">
+                <span *ngIf="!editMode" class="editable-field">{{qrPaymentDetails.paymentLimits.monthly}}</span>
+                <input *ngIf="editMode" type="text" id="limitPerMonth" class="form-control form-control-sm"
+                       formControlName="limitPerMonth" maxlength="16">
+                <app-validation-messages *ngIf="formGroup.get('limitPerMonth').invalid &&  submitted"
+                                         [formGroup]="formGroup" controlName="limitPerMonth"
+                                         patternErrorMessage="ფორმატი არასწორია" maxlength="16">
+                </app-validation-messages>
+              </div>
+            </div>
+            <div class="row m-0">
+              <div class="col p-0">
+                <span class="limits">Refund</span>
+              </div>
+            </div>
+            <div class="row details-row">
+              <div class="col field-name">შეუძლია Refund</div>
+              <div class="col field-info">
+                <div *ngIf="editMode" class="checkbox-container">
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" [checked]="qrPaymentDetails.canRefund"
+                           name="canRefund" formControlName="canRefund" (change)="canRefundChange($event)"
+                           id="canRefund">
+                    <label class="custom-control-label" for="canRefund"></label>
+                  </div>
+                </div>
+                <span *ngIf="!editMode" class="editable-field">{{qrPaymentDetails.canRefund ? 'კი' : 'არა'}}</span>
+              </div>
+            </div>
+            <div *ngIf="formGroup.get('canRefund').value">
+              <div class="row details-row">
+                <div class="col field-name">Refund-ის ლიმიტი დღეზე</div>
+                <div class="col field-info">
+                  <span *ngIf="!editMode" class="editable-field">{{qrPaymentDetails.refundLimit.daily}}</span>
+                  <input *ngIf="editMode" type="text" id="refundLimitPerDay" class="form-control form-control-sm"
+                         formControlName="refundLimitPerDay" maxlength="16">
+                  <app-validation-messages *ngIf="formGroup.get('refundLimitPerDay').invalid && submitted"
+                                           [formGroup]="formGroup" controlName="refundLimitPerDay"
+                                           patternErrorMessage="ფორმატი არასწორია" maxlength="16">
+                  </app-validation-messages>
+                </div>
+              </div>
+              <div class="row details-row">
+                <div class="col field-name">Refund-ის ლიმიტი თვეზე</div>
+                <div class="col field-info">
+                  <span *ngIf="!editMode" class="editable-field">{{qrPaymentDetails.refundLimit.monthly}}</span>
+                  <input *ngIf="editMode" type="text" id="refundLimitPerMonth" class="form-control form-control-sm"
+                         formControlName="refundLimitPerMonth" maxlength="16">
+                  <app-validation-messages *ngIf="formGroup.get('refundLimitPerMonth').invalid && submitted"
+                                           [formGroup]="formGroup" controlName="refundLimitPerMonth"
+                                           patternErrorMessage="ფორმატი არასწორია" maxlength="16">
+                  </app-validation-messages>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="row ml-0 mr-0 details-buttons-row">
+
+    <div class="col pl-0 pr-0">
+      <button class="btn btn-info" *ngIf="!editMode && qrPaymentDetails?.status !== 2" appPermissionsattr
+              id="editButton"
+              [permissionToCheck]="['R_QRM_Update']" (click)="setEditMode()">
+        რედაქტირება
+      </button>
+      <button class="btn btn-secondary" *ngIf="editMode" id="cancelEditButton" (click)="setEditMode()">გაუქმება</button>
+      <button class="btn btn-primary" *ngIf="editMode" id="saveChanges" (click)="updateMerchant()" appPermissionsattr
+              [permissionToCheck]="['R_QRM_Update']">
+        შენახვა
+      </button>
+
+      <button class="btn btn-success" id="confirmButton"
+              *ngIf="!editMode && (formGroup.valid && (qrPaymentDetails?.status === 0))"
+              (click)="updateQrPaymentStatus( 1)" appPermissionsattr [permissionToCheck]="['R_QRM_Confirm']">
+        დათანხმება
+      </button>
+      <button class="btn btn-danger" id="denyButton"
+              *ngIf="!editMode &&  (qrPaymentDetails?.status !== 2)"
+              (click)="updateQrPaymentStatus( 2)" appPermissionsattr [permissionToCheck]="['R_QRM_Deny']">
+        გაუქმება
+      </button>
+
+      <button class="btn btn-danger" id="blockButton"
+              *ngIf="!editMode && qrPaymentDetails?.status === 1"
+              (click)="updateQrPaymentStatus(3)" appPermissionsattr [permissionToCheck]="['R_QRM_Block']">
+        დაბლოკვა
+      </button>
+
+      <button class="btn btn-info" id="unblockButton"
+              *ngIf="!editMode && (formGroup.valid && qrPaymentDetails?.status === 3)"
+              (click)="updateQrPaymentStatus(1)" appPermissionsattr [permissionToCheck]="['R_QRM_Unblock']">
+        ბლოკის
+        მოხსნა
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="row ml-0 mr-0" *ngIf="qrPaymentDetails?.qrCashDesks?.length > 0">
+  <div class="col p-0">
+    <div class="row m-0">
+      <div class="col border-top">
+        <h5 class="cashdesk-header">სალაროები</h5>
+      </div>
+    </div>
+    <app-cashdesks [cashDesks]="qrPaymentDetails.qrCashDesks" class="w-100"
+                   [isMerchantCanceled]="qrPaymentDetails.status === 2"
+                   (deleteCashDestSubject)="deleteCashDesk($event)"
+                   (addCashierSubject)="addCashierToCashDesk($event)"
+                   (addDeviceSubject)="addDeviceToCashDesk($event)"
+                   (updateCashDeskNameSubject)="updateCashDeskName($event)"
+                   (deleteCashierSubject)="deleteCashier($event)"
+                   (deleteDeviceSubject)="deleteDevice($event)"
+                   (generateQrSubject)="generateQr($event)"
+                   (printQrSubject)="printQr($event)">
+    </app-cashdesks>
+  </div>
+</div>
+
+<div class="row ml-0 mr-0">
+  <div class="col w-auto add-cashdesk-buttons-container">
+    <button *ngIf="qrPaymentDetails?.status !== 2" class="btn btn-primary" appPermissionsattr
+            [permissionToCheck]="['R_QRM_AddCashDesk']" id="addCashDesk" (click)="addCashDesk()">
+      სალაროს დამატება
+    </button>
+    <button *ngIf="qrPaymentDetails?.status !== 2" class="btn btn-primary" appPermissionsattr
+            [permissionToCheck]="['R_QRM_AddCashDesk']" id="addCashDeskDevice" (click)="addCashDeskWithDevice()">
+      სალაროს
+      დამატება დივაისით
+    </button>
+    <button *ngIf="qrPaymentDetails?.status !== 2" class="btn btn-primary" appPermissionsattr
+            [permissionToCheck]="['R_QRM_LinkQRToMerchant']" id="addQr" (click)="addCashDeskWithExistingQR()">
+      უსახელო
+      QR-ის დამატება
+    </button>
+  </div>
+</div>
+
+<div kendoDialogContainer></div>

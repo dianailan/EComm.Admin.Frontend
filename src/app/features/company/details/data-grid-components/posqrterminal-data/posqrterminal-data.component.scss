@@ -1,0 +1,39 @@
+kendo-grid {
+  height: auto;
+  max-height: 500px;
+}
+
+//.k-grid-container {
+//  overflow: scroll !important;
+//}
+
+.dropdown-toggle-split {
+  padding-left: 0.2rem;
+  padding-right: 0.2rem;
+}
+
+.client-container {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 20px;
+
+  .client-id, .client-secret {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+
+    p {
+      margin-bottom: 0;
+      font-weight: bold;
+    }
+
+    button {
+      width: 150px;
+    }
+  }
+
+  .client-id {
+    gap: 57px;
+  }
+}

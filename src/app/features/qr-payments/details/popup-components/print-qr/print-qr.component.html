@@ -1,0 +1,40 @@
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="standard150" id="standard150" [value]="1" [(ngModel)]="qrType">
+  <label class="form-check-label" for="standard150">
+    სტანდარტული
+  </label>
+</div>
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="BlueBackground150" id="BlueBackground150" [value]="2" [(ngModel)]="qrType">
+  <label class="form-check-label" for="BlueBackground150">
+    ობიექტი სადგამი (150/210)
+  </label>
+</div>
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="BlueBackground120" id="BlueBackground120" [value]="3" [(ngModel)]="qrType">
+  <label class="form-check-label" for="BlueBackground120">
+    ობიექტი სტიკერი (120/150)
+  </label>
+</div>
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="BlueBackground90" id="BlueBackground90" [value]="4" [(ngModel)]="qrType">
+  <label class="form-check-label" for="BlueBackground90">
+    ტაქსი (90/120)
+  </label>
+</div>
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="BlueBackground43" id="BlueBackground43" [value]="5" [(ngModel)]="qrType">
+  <label class="form-check-label" for="BlueBackground43">
+    სალარო ტერმინალი (43/65)
+  </label>
+</div>
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="OnlyQr" id="OnlyQr" [value]="6" [(ngModel)]="qrType">
+  <label class="form-check-label" for="OnlyQr">
+    სალარო ტერმინალი - მხოლოდ QR (25/25)
+  </label>
+</div>
+<kendo-dialog-actions>
+  <button kendoButton (click)="onCancelAction()">Cancel</button>
+  <button kendoButton (click)="onConfirmAction()" [primary]="true">Submit</button>
+</kendo-dialog-actions>

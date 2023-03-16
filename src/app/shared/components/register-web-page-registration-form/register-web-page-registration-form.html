@@ -1,0 +1,188 @@
+<div class="row ml-0 mr-0">
+  <div class="col register-web-page-container p-0">
+    <form [formGroup]="formGroup">
+      <h4>ელ-კომერციის მერჩანტის ინფორმაცია</h4>
+      <div class="form-group">
+        <label for="address">ვებ გვერდის URL</label>
+        <input type="text" id="address" class="form-control" formControlName="address">
+        <!-- <app-validation-messages
+               *ngIf="formGroup.get('address').invalid && (formGroup.get('address').touched || submitted)"
+               [formGroup]="formGroup" controlName="address" patternErrorMessage="გთხოვთ, შეიყვანოთ სწორი ფორმატით">
+        </app-validation-messages> -->
+        <span class="text-danger text-danger-small" *ngIf="formGroup.controls.address.hasError('invalidUrl') && formGroup.controls.address.value">
+          არასწორი ფორმატი
+        </span>
+        <span class="text-danger text-danger-small" *ngIf="!formGroup.controls.address.value && formGroup.controls.address.touched">
+          ველის შევსება სავალდებულოა
+        </span>
+      </div>
+
+      <div>
+        <div class="form-group">
+          <label for="mccCodeId">MCC კოდი</label>
+          <select class="custom-select custom-select-sm" id="mccCodeId" formControlName="mccCodeId">
+            <option *ngFor="let mcc of mccCodes" [ngValue]="mcc.id" [id]="mcc.id">{{mcc.code + ' ' + mcc.descriptionKa}}</option>
+          </select>
+          <app-validation-messages *ngIf="formGroup.get('mccCodeId').invalid && submitted"
+                                   [formGroup]="formGroup" controlName="mccCodeId">
+          </app-validation-messages>
+        </div>
+
+        <div class="form-group">
+          <label for="tradeName">მერჩანტის დასახელება</label>
+          <input type="text" id="tradeName" class="form-control" formControlName="tradeName">
+          <app-validation-messages *ngIf="formGroup.get('tradeName').invalid && (formGroup.get('tradeName').dirty  || formGroup.get('tradeName').touched || submitted)"
+                                   [formGroup]="formGroup" controlName="tradeName" maxlength="27"
+                                   patternErrorMessage="შეიყვანე მხოლოდ ლათინური სიმბოლოები">
+          </app-validation-messages>
+        </div>
+        <div class="form-group">
+          <label for="paymentMerchantExternalId">მერჩანტ ID</label>
+          <input type="text" id="paymentMerchantExternalId" class="form-control" formControlName="paymentMerchantExternalId" maxlength="15">
+          <app-validation-messages *ngIf="formGroup.get('paymentMerchantExternalId').invalid && (formGroup.get('paymentMerchantExternalId').dirty  || formGroup.get('paymentMerchantExternalId').touched || submitted)"
+                                   [formGroup]="formGroup" controlName="paymentMerchantExternalId"
+                                   patternErrorMessage="შეიყვანე მხოლოდ ციფრები">
+          </app-validation-messages>
+        </div>
+        <div class="form-group" *ngIf="showMasterSelectBox">
+          <label for="masterWebPageId">მასტერ მერჩანტი</label>
+          <select class="custom-select custom-select-sm" id="masterWebPageId" formControlName="masterWebPageId">
+            <option></option>
+            <option *ngFor="let master of masterWebPages" [ngValue]="master.paymentMerchantId" [id]="master.paymentMerchantId">{{master.merchantExternalId + ' ' + master.webAddress}}</option>
+          </select>
+          <app-validation-messages *ngIf="formGroup.get('mccCodeId').invalid && submitted"
+                                   [formGroup]="formGroup" controlName="mccCodeId">
+          </app-validation-messages>
+        </div>
+        <div formGroupName="paymentLimit">
+          <div class="form-group">
+            <label for="transaction">ლიმიტი ტრანზაქციაზე</label>
+            <input type="text" id="transaction" class="form-control" formControlName="transaction" maxlength="16">
+            <app-validation-messages *ngIf="formGroup.get('paymentLimit').get('transaction').invalid && (formGroup.get('paymentLimit').get('transaction').dirty  || formGroup.get('paymentLimit').get('transaction').touched || submitted)"
+                                     [formGroup]="formGroup.get('paymentLimit')" controlName="transaction" maxlength="16"
+                                     patternErrorMessage="არასწორი ფორმატი">
+            </app-validation-messages>
+          </div>
+          <div class="form-group">
+            <label for="day">ლიმიტი დღეზე</label>
+            <input type="text" id="day" class="form-control" formControlName="day" maxlength="16">
+            <app-validation-messages *ngIf="formGroup.get('paymentLimit').get('day').invalid && (formGroup.get('paymentLimit').get('day').dirty  || formGroup.get('paymentLimit').get('day').touched || submitted)"
+                                     [formGroup]="formGroup.get('paymentLimit')" controlName="day" maxlength="16"
+                                     patternErrorMessage="არასწორი ფორმატი">
+            </app-validation-messages>
+          </div>
+          <div class="form-group">
+            <label for="month">ლიმიტი თვეზე</label>
+            <input type="text" id="month" class="form-control" formControlName="month" maxlength="16">
+            <app-validation-messages *ngIf="formGroup.get('paymentLimit').get('month').invalid && (formGroup.get('paymentLimit').get('month').dirty  || formGroup.get('paymentLimit').get('month').touched || submitted)"
+                                     [formGroup]="formGroup.get('paymentLimit')" controlName="month" minlength="16"
+                                     patternErrorMessage="არასწორი ფორმატი">
+            </app-validation-messages>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <h5>გადახდის მეთოდები</h5>
+          <div class="checkbox-container" *ngFor="let _ of webpagePaymentMethods; let i = index" formArrayName="paymentMethods">
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input"
+                     [name]="_.name"
+                     [checked]="_.isEnabled"
+                     [id]="_.name"
+                     [value]="_.payMethod"
+                     (change)="addMethodToArray($event)">
+              <label class="custom-control-label" [for]="_.name">{{_.name}}</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="isRec-container">
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" formControlName="isBnplEnabled" class="custom-control-input"
+                     name="bnpl"
+                     id="isBnplEnabled">
+              <label class="custom-control-label">BNPL</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <h5>ვალუტები</h5>
+          <div class="checkbox-container" *ngFor="let _ of webpageCurrencies; let i = index" formArrayName="currencies">
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input"
+                     [name]="_.name"
+                     [checked]="_.isEnabled"
+                     [id]="_.name"
+                     [value]="_.currency"
+                     (change)="addCurrencyToArray($event)">
+              <label class="custom-control-label" [for]="_.name">{{_.name}}</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="isRec-container">
+            <h5>რეკურენტული გადახდები</h5>
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" formControlName="isRecurringEnabled" class="custom-control-input recc-inp"
+                     name="recurring"
+                     id="isRecurringEnabled"
+                     (change)="onRecurringStatus($event)">
+              <label class="custom-control-label recc-inp"></label>
+            </div>
+          </div>
+          <div class="custom-control custom-radio custom-control-inline mr-5">
+            <input type="radio" id="recurringTypeSMS" name="recurringType" class="custom-control-input" formControlName="recurringType" [value]="0">
+            <label class="custom-control-label" for="isRecurringEnabledNo">SMS</label>
+          </div>
+          <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" id="recurringTypeDMS" name="recurringType" class="custom-control-input" formControlName="recurringType" [value]="1">
+            <label class="custom-control-label" for="isRecurringEnabledYes">DMS</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <h5>გადახდის ბმული</h5>
+          <div class="custom-control custom-radio custom-control-inline mr-5">
+            <input type="radio" id="isPayByLinkEnabledNo" name="isPayByLinkEnabled" class="custom-control-input" formControlName="isPayByLinkEnabled" [value]="false">
+            <label class="custom-control-label" for="isPayByLinkEnabledNo">არა</label>
+          </div>
+          <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" id="isPayByLinkEnabledYes" name="isPayByLinkEnabled" class="custom-control-input" formControlName="isPayByLinkEnabled" [value]="true">
+            <label class="custom-control-label" for="isPayByLinkEnabledYes">კი</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <h5>შეუძლია Refund</h5>
+          <div class="custom-control custom-radio custom-control-inline mr-5">
+            <input type="radio" id="canRefundNo" name="canRefund" class="custom-control-input" formControlName="canRefund" (change)="canRefundChange($event)" [value]="false">
+            <label class="custom-control-label" for="canRefundNo">არა</label>
+          </div>
+          <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" id="canRefundYes" name="canRefund" class="custom-control-input" formControlName="canRefund" (change)="canRefundChange($event)" [value]="true">
+            <label class="custom-control-label" for="canRefundYes">კი</label>
+          </div>
+        </div>
+        <div formGroupName="refundLimit" *ngIf="formGroup.get('canRefund').value">
+          <div class="form-group">
+            <label for="refundDay">Refund-ის ლიმიტი დღეზე</label>
+            <input type="text" id="refundDay" class="form-control" formControlName="day" maxlength="16">
+            <app-validation-messages *ngIf="formGroup.get('refundLimit').get('day').invalid && (formGroup.get('refundLimit').get('day').dirty  || formGroup.get('refundLimit').get('day').touched || submitted)"
+                                     [formGroup]="formGroup.get('refundLimit')" controlName="day" maxlength="16"
+                                     patternErrorMessage="არასწორი ფორმატი">
+            </app-validation-messages>
+          </div>
+          <div class="form-group">
+            <label for="refundMonth">Refund-ის ლიმიტი თვეზე</label>
+            <input type="text" id="refundMonth" class="form-control" formControlName="month" maxlength="16">
+            <app-validation-messages *ngIf="formGroup.get('refundLimit').get('month').invalid && (formGroup.get('refundLimit').get('month').dirty  || formGroup.get('refundLimit').get('month').touched || submitted)"
+                                     [formGroup]="formGroup.get('refundLimit')" controlName="month" minlength="16"
+                                     patternErrorMessage="არასწორი ფორმატი">
+            </app-validation-messages>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

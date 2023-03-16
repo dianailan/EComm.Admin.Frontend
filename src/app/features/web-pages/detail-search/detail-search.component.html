@@ -1,0 +1,19 @@
+<div class="row mr-0 ml-0">
+  <button (click)="openCloseFilter()" kendoButton
+          class="additional-filter-toggle k-button-blue">
+    {{show == false ? 'გაფართოებული ძებნა' : 'ფილტრის მოხსნა'}}
+  </button>
+
+  <div class="col" [@showHide]="show == false ? 'hide' : 'show'">
+    <label>
+      <kendo-dropdownlist [data]="limitStatusList"
+                          (valueChange)="change($event, 'limitStatus')"
+                          [value]="limitStatus"
+                          [valuePrimitive]="true"
+                          [textField]="'key'"
+                          [valueField]="'value'"
+                          [defaultItem]="{'key': 'მერჩანტის სტატუსი (ყველა)', 'value': null}">
+      </kendo-dropdownlist>
+    </label>
+  </div>
+</div>

@@ -1,0 +1,40 @@
+<!--&lt;!&ndash;<form>&ndash;&gt;-->
+<!--&lt;!&ndash;  <div class="form-group">&ndash;&gt;-->
+<!--&lt;!&ndash;    <label for="clientNo">კლიენტის ნომერი</label>&ndash;&gt;-->
+<!--&lt;!&ndash;    <input type="text" id="clientNo" class="form-control" formControlName="clientNo">&ndash;&gt;-->
+<!--&lt;!&ndash;    <app-validation-messages *ngIf="formGroup.get('clientNo').invalid && submitted"&ndash;&gt;-->
+<!--&lt;!&ndash;                             [formGroup]="formGroup" controlName="clientNo">&ndash;&gt;-->
+<!--&lt;!&ndash;    </app-validation-messages>&ndash;&gt;-->
+<!--&lt;!&ndash;  </div>&ndash;&gt;-->
+<!--  <div class="form-group">-->
+<!--    <label for="clientNo">კლიენტის ნომერი</label>-->
+<!--    <input type="text" id="clientNo" class="form-control" [(ngModel)]="clientNumber">-->
+<!--  </div>-->
+<!--&lt;!&ndash;  <div class="form-group tbc-merchant-radios">&ndash;&gt;-->
+<!--&lt;!&ndash;    <label>აირჩიე როლი</label>&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="custom-control custom-radio custom-control">&ndash;&gt;-->
+<!--&lt;!&ndash;      <input type="radio" id="superAdmin" name="userRole" class="custom-control-input" formControlName="userRole"&ndash;&gt;-->
+<!--&lt;!&ndash;             [value]="1">&ndash;&gt;-->
+<!--&lt;!&ndash;      <label class="custom-control-label" for="superAdmin">ადმინისტრატორი</label>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="custom-control custom-radio custom-control">&ndash;&gt;-->
+<!--&lt;!&ndash;      <input type="radio" id="admin" name="userRole" class="custom-control-input" formControlName="userRole"&ndash;&gt;-->
+<!--&lt;!&ndash;             [value]="2">&ndash;&gt;-->
+<!--&lt;!&ndash;      <label class="custom-control-label" for="admin">მენეჯერი</label>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="custom-control custom-radio custom-control">&ndash;&gt;-->
+<!--&lt;!&ndash;      <input type="radio" id="guest" name="userRole" class="custom-control-input" formControlName="userRole"&ndash;&gt;-->
+<!--&lt;!&ndash;             [value]="3">&ndash;&gt;-->
+<!--&lt;!&ndash;      <label class="custom-control-label" for="guest">სტუმარი</label>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="custom-control custom-radio custom-control">&ndash;&gt;-->
+<!--&lt;!&ndash;      <input type="radio" id="developer" name="userRole" class="custom-control-input" formControlName="userRole"&ndash;&gt;-->
+<!--&lt;!&ndash;             [value]="4">&ndash;&gt;-->
+<!--&lt;!&ndash;      <label class="custom-control-label" for="developer">დეველოპერი</label>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;  </div>&ndash;&gt;-->
+<!--&lt;!&ndash;</form>&ndash;&gt;-->
+<!--<kendo-dialog-actions>-->
+<!--  <button kendoButton (click)="onCancelAction()">Cancel</button>-->
+<!--  <button kendoButton (click)="onConfirmAction()" [primary]="true">Submit</button>-->
+<!--</kendo-dialog-actions>-->

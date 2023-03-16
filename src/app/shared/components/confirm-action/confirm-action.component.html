@@ -1,0 +1,9 @@
+<div class="container">
+  <div class="alert alert-info">{{message ? message : 'ნამდვილად გსურს მოქმედების შესრულება?'}}</div>
+</div>
+<kendo-dialog-actions>
+  <button kendoButton (click)="onCancelAction()">არა</button>
+  <button kendoButton id="confButton" (click)="onConfirmAction($event)" [primary]="true">
+    კი
+  </button>
+</kendo-dialog-actions>

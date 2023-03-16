@@ -1,0 +1,105 @@
+<div class="container pb-3">
+  <form [formGroup]="formGroup">
+    <div class="row ml-0 mr-0 merchant-details-row">
+      <div class="col pl-0 pr-0 left-side">
+        <div class="row details-row">
+          <div class="col field-name">სავაჭრო სახელი</div>
+          <div class="col field-info">
+            <span class="editable-field">{{faceTerminalDetails.tradeName}}</span>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">სტატუსი</div>
+          <div class="col field-info">
+            <span *ngIf="!editMode" class="editable-field">{{faceTerminalDetails.terminalStatusName}}</span>
+            <select *ngIf="editMode" id="status" class="custom-select custom-select-sm" formControlName="status">
+              <option *ngFor="let terminalStatus of terminalStatuses" [id]="terminalStatus.id" [ngValue]="terminalStatus.id">{{terminalStatus.value}}</option>
+            </select>
+            <app-validation-messages *ngIf="formGroup.get('status').invalid && submitted"
+                                     [formGroup]="formGroup" controlName="status">
+            </app-validation-messages>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">კომენტარი</div>
+          <div class="col field-info">
+            <span *ngIf="!editMode" class="editable-field">{{faceTerminalDetails.comment}}</span>
+            <input *ngIf="editMode" type="text" id="comment" class="form-control form-control-sm" formControlName="comment" maxlength="512">
+            <app-validation-messages *ngIf="formGroup.get('comment').invalid &&  submitted"
+                                     [formGroup]="formGroup" controlName="comment">
+            </app-validation-messages>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">კომპანიის სახელი</div>
+          <div class="col field-info">{{faceTerminalDetails.companyJuridicalName}}</div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">მერჩანტ ID</div>
+          <div class="col field-info">
+            <span class="editable-field">{{faceTerminalDetails.paymentMerchantExternalId}}</span>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">პლანშეტის ნომერი</div>
+          <div class="col field-info">
+            <span class="editable-field">{{faceTerminalDetails.terminalNo}}</span>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">Device ID</div>
+          <div class="col field-info">
+            <span class="editable-field">{{faceTerminalDetails.deviceId}}</span>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">MCC Code</div>
+          <div class="col field-info">
+            <span class="editable-field">{{faceTerminalDetails.mccCodeId}}</span>
+          </div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">საქმიანობის სფერო</div>
+          <div class="col field-info">{{faceTerminalDetails.businessField}}</div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">შექმნის თარიღი</div>
+          <div class="col field-info">{{faceTerminalDetails.dateCreated | date: 'dd/MM/yyyy HH:mm:ss'}}</div>
+        </div>
+      </div>
+      <div class="col pl-0 pr-0 right-side">
+        <div class="row details-row">
+          <div class="col field-name">აღწერა</div>
+          <div class="col field-info">{{faceTerminalDetails.description}}</div>
+        </div>
+        <div class="row details-row">
+          <div class="col field-name">GPS</div>
+          <div class="col field-info">{{faceTerminalDetails.gps}}</div>
+        </div>
+        <div class="row details-row mb-0">
+          <div class="col">
+            <div class="row m-0">
+              <div class="col p-0">
+                <span class="limits">Refund</span>
+              </div>
+            </div>
+            <div class="row details-row">
+              <div class="col field-name">შეუძლია Refund</div>
+              <div class="col field-info">
+                <span class="editable-field">{{faceTerminalDetails.canRefund ? 'კი' : 'არა'}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <div class="row ml-0 mr-0 details-buttons-row" *ngIf="IsMerchantNotDeclined">
+
+    <div class="col pl-0 pr-0">
+      <button class="btn btn-info" *ngIf="!editMode && faceTerminalDetails.terminalStatus !== 1 &&  faceTerminalDetails.terminalStatus !== 3" id="editButton" appPermissionsattr [permissionToCheck]="['R_FACE_TRM_Update']" (click)="setEditMode()">რედაქტირება</button>
+      <button class="btn btn-secondary" *ngIf="editMode" id="cancelEditButton" (click)="setEditMode()">გაუქმება</button>
+      <button class="btn btn-primary" *ngIf="editMode" (click)="updateFaceTerminal()" id="saveChanges" appPermissionsattr [permissionToCheck]="['R_FACE_TRM_Update']">შენახვა</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="alert alert-danger" *ngIf="userRegistered.response">{{userRegistered?.message}}</div>
+  <form [formGroup]="formGroup">
+    <div class="form-group position-relative">
+      <label for="clientNoOrPersonalId">კლიენტის ნომერი ან პ/ნ</label>
+      <input type="text" class="form-control" id="clientNoOrPersonalId" formControlName="clientNoOrPersonalId" required>
+      <app-validation-messages *ngIf="formGroup.get('clientNoOrPersonalId').invalid && (formGroup.get('clientNoOrPersonalId').dirty || formGroup.get('clientNoOrPersonalId').touched)"
+                               [formGroup]="formGroup" controlName="clientNoOrPersonalId" patternErrorMessage="შეიყვანე მხოლოდ ციფრები">
+      </app-validation-messages>
+    </div>
+    <div class="form-group register-user-type">
+      <label>რეგისტრაციის ტიპი</label>
+      <div class="custom-control custom-radio custom-control">
+        <input type="radio" id="registerUserType_0" name="registerUserType" class="custom-control-input" formControlName="registerUserType"
+               [value]="0">
+        <label class="custom-control-label" for="registerUserType_0">კლიენტის ნომერი</label>
+      </div>
+      <div class="custom-control custom-radio custom-control">
+        <input type="radio" id="registerUserType_1" name="registerUserType" class="custom-control-input" formControlName="registerUserType"
+               [value]="1">
+        <label class="custom-control-label" for="registerUserType_1">პირადი ნომერი</label>
+      </div>
+    </div>
+  </form>
+</div>
+<kendo-dialog-actions>
+  <button kendoButton (click)="onCancelAction()">გაუქმება</button>
+  <button kendoButton id="confButton" (click)="onConfirmAction($event)" [primary]="true" [disabled]="!formGroup.valid">
+    დამატება
+  </button>
+</kendo-dialog-actions>

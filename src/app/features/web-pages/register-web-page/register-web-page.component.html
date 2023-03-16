@@ -1,0 +1,43 @@
+<div class="row m-0">
+  <div class="col pt-3">
+    <div class="row mb-3 mr-0 ml-0">
+      <div class="col p-0  company-info">
+        <div class="row mr-0 ml-0">
+          <div class="col p-0">
+            <p class="juridicalNameLabel">
+              კომპანიის იურიდიული სახელი:
+              <span class="juridicalName">
+                {{companyModel.juridicalName}}
+              </span>
+            </p>
+          </div>
+        </div>
+        <div class="row mr-0 ml-0">
+          <div class="col p-0">
+            <p class="identificationNumberLabel">
+              კომპანიის საიდენტიფიკაციო ნომერი:
+              <span class="identificationNumber">
+                {{companyModel.identificationNumber}}
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-web-page-registration-form [formSubmit]="formSubmitSub()"
+                                    (form)="registerWebPage($event)"
+                                    [mccCodes]="mccCodes"
+                                    [masterWebPages]="masterWebPages"
+                                    [showMasterSelectBox]="true"
+                                    [paymentLimits]="merchantPaymentLimit"
+                                    [paymentMethods]="payMethods"
+                                    [currencies]="currencies"
+                                    [refundLimits]="merchantRefundLimit">
+    </app-web-page-registration-form>
+    <div class="row mr-0 ml-0">
+      <div class="col p-0 pb-2 submit-button-container">
+        <button class="btn btn-primary w-100" (click)="formSubmit()">დამატება</button>
+      </div>
+    </div>
+  </div>
+</div>

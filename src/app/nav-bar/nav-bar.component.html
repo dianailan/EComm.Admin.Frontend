@@ -1,0 +1,92 @@
+<nav class="navbar navbar-expand-lg navbar-dark p-0" [ngClass]="show ? 'show' : 'hidden-bar'">
+  <div class="nav-header">
+    <img src="./assets/tpay.svg" alt="">
+    <p class="navbar-brand">Control Panel</p>
+  </div>
+  <div class="navbar-nav flex-column" *ngIf="loadNavBar">
+    <!--    <a *hasPermission="['R_V_View']" class="nav-item nav-link" [routerLink]="['/dashboard']"-->
+    <!--       [routerLinkActive]="['active']">-->
+    <!--      <i class="fa fa-th-large mr-1"></i><span>Dashboard</span> <span class="sr-only">(current)</span>-->
+    <!--    </a>-->
+    <a class="nav-item nav-link" id="companies" *hasPermission="['R_V_View','R_CM_View']" [routerLink]="['/companies']"
+       [routerLinkActive]="['active']">
+      <i class="fa fa-building mr-1"></i><span>კომპანიები</span>
+    </a>
+    <a class="nav-item nav-link" id="webpages" *hasPermission="['R_V_View','R_SM_View']" [routerLink]="['/webpages']"
+       [routerLinkActive]="['active']">
+      <i class="fa fa-globe mr-1"></i><span>ვებ-გვერდები</span>
+    </a>
+    <a class="nav-item nav-link" id="callbacks" *hasPermission="['R_V_View','R_SM_Callback_Action']" [routerLink]="['/callbacks']"
+       [routerLinkActive]="['active']">
+      <i class="fa fa-globe mr-1"></i><span>ქოლბექები</span>
+    </a>
+    <a class="nav-item nav-link" id="merchant-logos" *hasPermission="['R_V_View','R_SM_View']" [routerLink]="['/merchant-logos']"
+       [routerLinkActive]="['active']">
+      <i class="fa fa-image mr-1"></i><span>ლოგოები</span>
+    </a>
+    <a class="nav-item nav-link" id="products" *hasPermission="['R_V_View','R_SM_View']" [routerLink]="['/products']"
+       [routerLinkActive]="['active']">
+      <i class="fa fa-product-hunt mr-1"></i><span>პროდუქტები</span>
+    </a>
+    <a class="nav-item nav-link" id="baskets" *hasPermission="['R_V_View','R_SM_View']" [routerLink]="['/baskets']"
+       [routerLinkActive]="['active']">
+      <i class="fa fa-shopping-basket mr-1"></i><span>კალათები</span>
+    </a>
+    <a class="nav-item nav-link" id="qrpayments" *hasPermission="['R_V_View','R_QRM_View']" [routerLink]="['/qrpayments']"
+       [routerLinkActive]="['active']">
+      <i class="fa fa-qrcode mr-1"></i><span>QR ობიექტები</span>
+    </a>
+    <a class="nav-item nav-link" id="qrpayments" *hasPermission="['R_V_View','R_POS_QR_MRC_View']" [routerLink]="['/posqr']"
+       [routerLinkActive]="['active']">
+      <i class="fa fa-qrcode mr-1"></i><span>POS QR</span>
+    </a>
+    <a class="nav-item nav-link" id="qrpayments" *hasPermission="['R_V_View','R_SM_View']" [routerLink]="['/posterminal']"
+       [routerLinkActive]="['active']">
+      <i class="fa fa-qrcode mr-1"></i><span>POS QR Terminal</span>
+    </a>
+    <a class="nav-item nav-link" id="qrmerchants" *hasPermission="['R_V_View','R_QRM_View']" [routerLink]="['/qrmerchant']"
+       [routerLinkActive]="['active']">
+      <i class="fa fa-qrcode mr-1"></i><span>QR სალაროები</span>
+    </a>
+    <a class="nav-item nav-link" id="qrcodes" *hasPermission="['R_V_View','R_NQRM_View']" [routerLink]="['/qrcode']"
+       [routerLinkActive]="['active']">
+      <i class="fa fa-qrcode mr-1"></i><span>QR უსახელო</span>
+    </a>
+    <a class="nav-item nav-link" id="facemerchants" *hasPermission="['R_V_View','R_FACEM_View']" [routerLink]="['/facemerchant']"
+       [routerLinkActive]="['active']">
+      <i class="fa fa-smile-o mr-1"></i><span>Face მერჩანტი</span>
+    </a>
+    <a class="nav-item nav-link" id="faceterminals" *hasPermission="['R_V_View','R_FACE_TRM_View']" [routerLink]="['/faceterminal']"
+       [routerLinkActive]="['active']">
+      <i class="fa fa-smile-o mr-1"></i><span>Face პლანშეტი</span>
+    </a>
+    <a class="nav-item nav-link" id="facedevices" *hasPermission="['R_V_View','R_FACE_DVC_View']" [routerLink]="['/facedevice']"
+       [routerLinkActive]="['active']">
+      <i class="fa fa-smile-o mr-1"></i><span>Face დივაისი</span>
+    </a>
+    <a class="nav-item nav-link" id="transactions" *hasPermission="['R_V_View','R_TM_View']" [routerLink]="['/transactions']"
+       [routerLinkActive]="['active']">
+      <i class="fa fa-credit-card-alt mr-1"></i><span>ტრანზაქციები</span>
+    </a>
+    <a class="nav-item nav-link" id="cards" *hasPermission="['R_V_View','R_TM_View']" [routerLink]="['/cards']"
+       [routerLinkActive]="['active']">
+      <i class="fa fa-credit-card-alt mr-1"></i><span>ბარათები</span>
+    </a>
+    <a class="nav-item nav-link" id="reccuring-cards" *hasPermission="['R_V_View','R_TM_View']" [routerLink]="['/reccuring-cards']"
+       [routerLinkActive]="['active']">
+      <i class="fa fa-credit-card-alt mr-1"></i><span>დამახსოვრებული ბარათები</span>
+    </a>
+    <a class="nav-item nav-link" id="users" *hasPermission="['R_V_View','R_UM_View']" [routerLink]="['/users']"
+       [routerLinkActive]="['active']">
+      <i class="fa fa-users mr-1"></i><span>მომხმარებლები</span>
+    </a>
+    <a class="nav-item nav-link" id="certificates" *hasPermission="['R_CERT_View','R_CERT_Add_Update']" [routerLink]="['/certificates']"
+       [routerLinkActive]="['active']">
+      <i class="fa fa-users mr-1"></i><span>სერტიფიკატი</span>
+    </a>
+    <a class="nav-item nav-link" id="logs" *hasPermission="['R_V_View','R_AL_View']" [routerLink]="['/logs']"
+       [routerLinkActive]="['active']">
+      <i class="fa fa-history mr-1"></i><span>ქმედების ლოგები</span>
+    </a>
+  </div>
+</nav>

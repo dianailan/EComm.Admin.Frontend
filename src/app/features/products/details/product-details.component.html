@@ -1,0 +1,109 @@
+<div class="container pb-3">
+  <div class="row ml-0 mr-0 merchant-details-row">
+    <div class="col pl-0 pr-0 left-side">
+      <div class="row details-row">
+        <div class="col field-name">მერჩანტის სავაჭრო სახელი</div>
+        <div class="col field-info">
+          <span class="editable-field">{{productDetails.merchantTradeName}}</span>
+        </div>
+      </div>
+      <div class="row details-row">
+        <div class="col field-name">მერჩანტ ID</div>
+        <div class="col field-info">
+          <span class="editable-field">{{productDetails.merchantExternalId}}</span>
+        </div>
+      </div>
+      <div class="row details-row">
+        <div class="col field-name">სტატუსი</div>
+        <div class="col field-info">{{productDetails.status}}</div>
+      </div>
+
+      <div class="row details-row">
+        <div class="col field-name">პროდუქტის დასახელება</div>
+        <div class="col field-info">
+          <span class="editable-field">{{productDetails.name}}</span>
+        </div>
+      </div>
+      <div class="row details-row">
+        <div class="col field-name">პროდუქტის კოდი</div>
+        <div class="col field-info">
+          <span class="editable-field">{{productDetails.code}}</span>
+        </div>
+      </div>
+      <div class="row details-row">
+        <div class="col field-name">ყიდვის მაქსიმალური რაოდენობა</div>
+        <div class="col field-info">
+          <span class="editable-field">{{productDetails.maxQuantityPerBuy}}</span>
+        </div>
+      </div>
+      <div class="row details-row">
+        <div class="col field-name">თანხა</div>
+        <div class="col field-info">
+          <span class="editable-field">{{productDetails.amount}}</span>
+        </div>
+      </div>
+      <div class="row details-row">
+        <div class="col field-name">ვალუტა</div>
+        <div class="col field-info">
+          <span class="editable-field">{{productDetails.currency}}</span>
+        </div>
+      </div>
+      <div class="row details-row">
+        <div class="col field-name">პროდუქტის ტიპი</div>
+        <div class="col field-info">{{productDetails.productType}}</div>
+      </div>
+      <div class="row details-row">
+        <div class="col field-name">მრავალჯერადი</div>
+        <div class="col field-info">{{productDetails.isReusable ? 'კი' : 'არა'}}</div>
+      </div>
+    </div>
+    <div class="col pl-0 pr-0 right-side">
+      <div class="row details-row">
+        <div class="col field-name">აღწერა</div>
+        <div class="col field-info">{{productDetails.description}}</div>
+      </div>
+      <div class="row details-row">
+        <div class="col">
+          <div>
+            <img [src]="getImgUrl(productDetails.fileName)" alt="" class="product-image">
+          </div>
+        </div>
+      </div>
+
+      <div class="row details-row">
+        <div class="col field-name">გადახდები</div>
+        <div class="col field-info">
+          <span class="d-block">
+            <a [href]="'transactions?payByLinkProductId='+productDetails.id+'&sortBy=dateCreated&sortDir=desc&page=0&pageSize=50'"
+               target="_blank">
+              ტრანზაქციები
+            </a>
+          </span>
+        </div>
+      </div>
+
+      <div class="row details-row mb-0">
+        <div class="col p-0">
+          <div class="row ml-0 mr-0 mb-2">
+            <div class="col">
+              <span class="additional-info">გადახდის მეთოდები</span>
+            </div>
+          </div>
+          <div *ngFor="let method of productDetails?.payMethodNames" class="row ml-0 mr-0 mt-0 details-row mb-0">
+            <div class="col field-name">{{method}}</div>
+            <div class="col field-info">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row details-row">
+        <div class="col field-name">შექმნის თარიღი</div>
+        <div class="col field-info">{{productDetails.dateCreated | date: 'dd/MM/yyyy HH:mm:ss'}}</div>
+      </div>
+      <div class="row details-row">
+        <div class="col field-name">რედაქტირების თარიღი</div>
+        <div class="col field-info">{{productDetails.dateModified | date: 'dd/MM/yyyy HH:mm:ss'}}</div>
+      </div>
+    </div>
+  </div>
+</div>

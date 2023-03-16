@@ -1,0 +1,119 @@
+.navbar {
+  display: inline-block;
+  width: 220px;
+  background: #2f4050 !important;
+  height: 100%;
+
+  .navbar-collapse {
+    overflow-y: auto;
+  }
+
+  .nav-header {
+    height: 100px !important;
+    padding: 20px 15px;
+
+    img {
+      display: block;
+    }
+
+    p {
+      font-size: 14px;
+      padding-top: 0;
+    }
+  }
+
+  .navbar-nav {
+    overflow-y: auto;
+    height: calc(100% - 110px)
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    color: #fff;
+
+    &:hover {
+      background: #0f0f0f;
+    }
+
+    .fa {
+      width: 24px;
+    }
+
+    span {
+      font-size: 15px;
+      font-weight: 500;
+    }
+  }
+}
+
+.nav-link {
+  &.active {
+    background: #0f0f0f !important;
+  }
+}
+
+@media screen and (max-width: 925px) {
+  .navbar {
+    width: 50px;
+
+    .nav-header {
+      height: 110px;
+
+      img {
+        content: url(/images/tpay_cropped.png);
+      }
+
+      p {
+        display: none;
+      }
+
+      a {
+        display: none;
+      }
+    }
+
+    .nav-item {
+      span {
+        display: none;
+      }
+    }
+  }
+}
+
+.hidden-bar {
+  width: 50px;
+
+  .nav-header {
+    height: 110px;
+
+    img {
+      content: url('/images/tpay_cropped.png');
+    }
+
+    p {
+      display: none;
+    }
+  }
+
+  .nav-item {
+    span {
+      display: none;
+    }
+  }
+}
+
+//scrollbar styles
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar {
+  width: 3px;
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #000000;
+}

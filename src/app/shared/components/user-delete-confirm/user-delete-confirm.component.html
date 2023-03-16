@@ -1,0 +1,21 @@
+<div class="container">
+  <div class="alert alert-danger">მომხმარებელი მიბმულია ერთ ან მეტ კომპანია/QR სალაროზე, მისი წაშლის შემთხვევაში კავშირები დაიკარგება.</div>
+  <kendo-grid [data]="companyList"
+              scrollable="virtual"
+              style="height: unset">
+    <kendo-grid-column field="companyName" title="კომპანიის სახელი" [width]="80">
+    </kendo-grid-column>
+    <kendo-grid-column field="companyIdentificationNumber" title="საიდენტ. ნომერი" [width]="80">
+    </kendo-grid-column>
+    <kendo-grid-column field="qrCashDeskName" title="QR სალარო" [width]="80">
+    </kendo-grid-column>
+    <kendo-grid-column field="merchantExternalId" title="გადახდების მერჩანტ აიდი" [width]="80">
+    </kendo-grid-column>
+  </kendo-grid>
+</div>
+<kendo-dialog-actions>
+  <button kendoButton (click)="onCancelAction()">დახურვა</button>
+  <button kendoButton id="confButton" (click)="onConfirmAction()" [primary]="true">
+    გაგრძელება
+  </button>
+</kendo-dialog-actions>
